@@ -1,22 +1,47 @@
 package hello_web;
 
-import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
+@Controller
 @RestController
 public class GreetingController {
 
-    private static final String template = "Hello, %s!";
+    @Autowired
+    private CampRepository campRepository;
 
-    @RequestMapping("/greeting")
-    public Quote greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        RestTemplate restTemplate = new RestTemplate();
-        Quote quote = restTemplate.getForObject(
-                "http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
-        return quote;
+    @RequestMapping("/findById")
+    public String getCampByID(@RequestParam(value = "ID", defaultValue = "1") String id) {
+        return campRepository.findById(Long.valueOf(id)).get().toString();
+    }
+
+    @RequestMapping("/findByName")
+    public String getCampByName(@RequestParam(value = "Name", defaultValue = "Vantit") String name) {
+
+        String resCamp = "";
+
+        for (Camp iCamp : campRepository.findAllByName(name)) {
+            resCamp=resCamp.concat(iCamp.toString());
+            resCamp=resCamp.concat("\n");
+        }
+
+        return resCamp;
+    }
+
+    @RequestMapping("/all")
+    public String getCampAll() {
+
+        String resCamp = "";
+
+        for (Camp iCamp : campRepository.findAll()) {
+            resCamp=resCamp.concat(iCamp.toString());
+            resCamp=resCamp.concat("\n");
+        }
+
+        return resCamp;
     }
 }
