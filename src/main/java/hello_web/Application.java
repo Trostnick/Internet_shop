@@ -2,10 +2,8 @@ package hello_web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.CommandLineRunner;
@@ -26,11 +24,11 @@ public class Application {
         return (args) -> {
             log.info("Start work");
             // save a couple of customers
-            repository.save(new Camp("Slavyane", "2018-07-05", "2018-07-14"));
-            repository.save(new Camp("Vantit", "2018-07-19", "2018-07-25"));
-            repository.save(new Camp("Project S", "2018-07-30", "2018-08-08"));
-            repository.save(new Camp("Vantit", "2019-07-19", "2019-07-25"));
-
+            /*repository.save(new Camp("Slavyane", "2018-07-05","2018-07-14"));
+            repository.save(new Camp("Vantit", "2018-07-19","2018-07-25"));
+            repository.save(new Camp("Project S", "2018-07-30","2018-08-08"));
+            repository.save(new Camp("Vantit", "2019-07-19","2019-7-25"));
+*/
             // fetch all customers
             log.info("Camps found with findAll():");
             log.info("-------------------------------");

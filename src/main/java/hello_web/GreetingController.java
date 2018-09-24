@@ -1,8 +1,10 @@
 package hello_web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,8 +27,8 @@ public class GreetingController {
         String resCamp = "";
 
         for (Camp iCamp : campRepository.findAllByName(name)) {
-            resCamp=resCamp.concat(iCamp.toString());
-            resCamp=resCamp.concat("\n");
+            resCamp = resCamp.concat(iCamp.toString());
+            resCamp = resCamp.concat("\n");
         }
 
         return resCamp;
@@ -38,10 +40,18 @@ public class GreetingController {
         String resCamp = "";
 
         for (Camp iCamp : campRepository.findAll()) {
-            resCamp=resCamp.concat(iCamp.toString());
-            resCamp=resCamp.concat("\n");
+            resCamp = resCamp.concat(iCamp.toString());
+            resCamp = resCamp.concat("\n");
         }
 
         return resCamp;
+    }
+
+    @RequestMapping("/add")
+    public String addCamp(@RequestParam String name, @RequestParam String dateStart,
+                          @RequestParam String dateFinish) {
+        Camp camp = new Camp(name, dateStart, dateFinish);
+        campRepository.save(camp);
+        return "Saved";
     }
 }
