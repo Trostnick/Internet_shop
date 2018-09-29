@@ -3,6 +3,7 @@ package hello_web;
 import javax.persistence.Id;
 
 import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
@@ -16,6 +17,7 @@ public class Camp {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
     private LocalDate dateStart;
     private LocalDate dateFinish;
