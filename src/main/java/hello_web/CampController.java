@@ -1,9 +1,13 @@
 package hello_web;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,13 +22,23 @@ public class CampController {
     @Autowired
     private CampRepository campRepository;
 
-    @RequestMapping("/findById")
-    public String getCampByID(@RequestParam(value = "ID", defaultValue = "1") String id) {
-        return campRepository.findById(Long.valueOf(id)).get().toString();
+    @GetMapping("/findById")
+    public String getCampByID(@RequestParam String id) {
+        /*campRepository.findById(Long.valueOf(id)).ifPresent(camp -> {
+            String campString = camp.toString();
+            return campString;
+        });
+        return "По данному идентификатору записи не обнаружено";*/
+        Optional<Camp> camp= campRepository.findById(Long.valueOf(id));
+        if (camp.isPresent())
+        {
+            return camp.get().toString();
+        }
+        return "По данному идентификатору записи не обнаружено";
     }
 
-    @RequestMapping("/findByName")
-    public String getCampByName(@RequestParam(value = "Name", defaultValue = "Vantit") String name) {
+    @GetMapping("/findByName")
+    public String getCampByName(@RequestParam String name) {
 
         String resCamp = "";
 
@@ -36,7 +50,7 @@ public class CampController {
         return resCamp;
     }
 
-    @RequestMapping("/all")
+    @GetMapping("/all")
     public String getCampAll() {
 
         String resCamp = "";
@@ -52,11 +66,34 @@ public class CampController {
         return resCamp;
     }
 
-    @RequestMapping("/add")
-    public String addCamp(@RequestParam String name, @RequestParam String dateStart,
-                          @RequestParam String dateFinish) {
-        Camp camp = new Camp(name, dateStart, dateFinish);
-        campRepository.save(camp);
+    @PostMapping("/add")
+    public String addCamp(@RequestBody String body/*, @RequestBody String dateStart,
+                          @RequestBody String dateFinish*/) {
+        Camp newCamp = new Camp();
+        for(String param : body.split(",")){
+            String[] current = param.split("=");
+
+            switch (current[0].replaceAll(" ","")){
+                case "name": newCamp.setName(current[1].replaceAll(" ","")); break;
+                case "dateStart": newCamp.setDateStart(current[1].replaceAll(" ",""));break;
+                case "dateFinish": newCamp.setDateFinish(current[1].replaceAll(" ",""));break;
+
+            }
+
+        }
+        campRepository.save(newCamp);
         return "Saved";
+    }
+
+    @GetMapping("/remove")
+    public String removeCampById(@RequestParam String id) {
+        Optional<Camp> camp= campRepository.findById(Long.valueOf(id));
+        if (camp.isPresent())
+        {
+            String campString = camp.get().toString();
+            campRepository.deleteById(Long.valueOf(id));
+            return "Удалена запись " + campString;
+        }
+        return "По данному идентификатору записи не обнаружено";
     }
 }
