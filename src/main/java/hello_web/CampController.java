@@ -1,9 +1,7 @@
 package hello_web;
 
-import java.util.List;
 import java.util.Optional;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,9 +27,8 @@ public class CampController {
             return campString;
         });
         return "По данному идентификатору записи не обнаружено";*/
-        Optional<Camp> camp= campRepository.findById(Long.valueOf(id));
-        if (camp.isPresent())
-        {
+        Optional<Camp> camp = campRepository.findById(Long.valueOf(id));
+        if (camp.isPresent()) {
             return camp.get().toString();
         }
         return "По данному идентификатору записи не обнаружено";
@@ -46,7 +43,9 @@ public class CampController {
             resCamp = resCamp.concat(iCamp.toString());
             resCamp = resCamp.concat("\n");
         }
-
+        if (resCamp.isEmpty()) {
+            return "Записи не обнаружены";
+        }
         return resCamp;
     }
 
@@ -60,23 +59,28 @@ public class CampController {
             resCamp = resCamp.concat(iCamp.toString());
             resCamp = resCamp.concat("\n");
         }
-
-        if (resCamp.isEmpty()) return "Таблица Camps пуста";
-
+        if (resCamp.isEmpty()) {
+            return "Записи не обнаружены";
+        }
         return resCamp;
     }
 
     @PostMapping("/add")
-    public String addCamp(@RequestBody String body/*, @RequestBody String dateStart,
-                          @RequestBody String dateFinish*/) {
+    public String addCamp(@RequestBody String body) {
         Camp newCamp = new Camp();
-        for(String param : body.split(",")){
+        for (String param : body.split(",")) {
             String[] current = param.split("=");
 
-            switch (current[0].replaceAll(" ","")){
-                case "name": newCamp.setName(current[1].replaceAll(" ","")); break;
-                case "dateStart": newCamp.setDateStart(current[1].replaceAll(" ",""));break;
-                case "dateFinish": newCamp.setDateFinish(current[1].replaceAll(" ",""));break;
+            switch (current[0].replaceAll(" ", "")) {
+                case "name":
+                    newCamp.setName(current[1]);
+                    break;
+                case "dateStart":
+                    newCamp.setDateStart(current[1]);
+                    break;
+                case "dateFinish":
+                    newCamp.setDateFinish(current[1]);
+                    break;
 
             }
 
@@ -87,9 +91,8 @@ public class CampController {
 
     @GetMapping("/remove")
     public String removeCampById(@RequestParam String id) {
-        Optional<Camp> camp= campRepository.findById(Long.valueOf(id));
-        if (camp.isPresent())
-        {
+        Optional<Camp> camp = campRepository.findById(Long.valueOf(id));
+        if (camp.isPresent()) {
             String campString = camp.get().toString();
             campRepository.deleteById(Long.valueOf(id));
             return "Удалена запись " + campString;
