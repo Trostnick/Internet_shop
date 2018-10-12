@@ -1,40 +1,37 @@
 package hello_web;
 
-import javax.persistence.Id;
-
-import javax.persistence.Entity;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Entity
+@Table(name="camp")
 public class Camp {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private LocalDate dateStart;
     private LocalDate dateFinish;
+    private int ageMin;
+    private int ageMax;
+    private int childrenCount;
+    private String info;
+    //TODO: с иконкой и типом хранения подумать как добавлять её
+    private String icon;
 
-    protected Camp() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private CampType type;
 
-    public Camp(String name, LocalDate dateStart, LocalDate dateFinish) {
-        this.name = name;
-        this.dateStart = dateStart;
-        this.dateFinish = dateFinish;
-    }
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    private Place place;
 
-    public Camp(String name, String dateStart, String dateFinish) {
-        this.name = name;
-        this.dateStart = LocalDate.parse(dateStart);
-        this.dateFinish = LocalDate.parse(dateFinish);
+    public Camp() {
     }
 
     public Long getId() {
@@ -57,24 +54,72 @@ public class Camp {
         return dateStart;
     }
 
-    public void setDateStart(LocalDate LocalDateStart) {
-        this.dateStart = LocalDateStart;
-    }
-
-    public void setDateStart(String dateStart) {
-        this.dateStart = LocalDate.parse(dateStart);
+    public void setDateStart(LocalDate dateStart) {
+        this.dateStart = dateStart;
     }
 
     public LocalDate getDateFinish() {
         return dateFinish;
     }
 
-    public void setDateFinish(LocalDate LocalDateFinish) {
-        this.dateFinish = LocalDateFinish;
+    public void setDateFinish(LocalDate dateFinish) {
+        this.dateFinish = dateFinish;
     }
 
-    public void setDateFinish(String dateFinish) {
-        this.dateFinish = LocalDate.parse(dateFinish);
+    public int getAgeMin() {
+        return ageMin;
+    }
+
+    public void setAgeMin(int ageMin) {
+        this.ageMin = ageMin;
+    }
+
+    public int getAgeMax() {
+        return ageMax;
+    }
+
+    public void setAgeMax(int ageMax) {
+        this.ageMax = ageMax;
+    }
+
+    public int getChildrenCount() {
+        return childrenCount;
+    }
+
+    public void setChildrenCount(int childrenCount) {
+        this.childrenCount = childrenCount;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public CampType getType() {
+        return type;
+    }
+
+    public void setType(CampType type) {
+        this.type = type;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 
     @Override
@@ -84,6 +129,5 @@ public class Camp {
                 "Camp[id=%d, name='%s', Start='%s', Finish='%s']",
                 id, name, format.format(dateStart), format.format(dateFinish));
     }
-
 
 }

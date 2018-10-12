@@ -4,13 +4,13 @@ create database demo;
 use demo;
 
 create table place_type (
-	id				int 	primary key 	not null,
+	id				int 	primary key 	not null 	unique 	auto_increment,
 	name 			varchar(30) 			not null 
 );
 
 
 create table place(
-	id				int 	primary key 	not null,
+	id				int 	primary key 	not null 	unique 	auto_increment,
 	name 			varchar(30) 			not null,
 	info			text,
 	adress			text,
@@ -21,12 +21,12 @@ create table place(
 );
 
 create table camp_type(
-	id				int 	primary key 	not null,
+	id				int 	primary key 	not null 	unique 	auto_increment,
 	name 			varchar(30) 			not null
 );
 
 create table camp(
-	id				int 	primary key 	not null,
+	id				int 	primary key 	not null 	unique 	auto_increment,
 	name 			varchar(30) 			not null ,
 	date_start		date					not null,
 	date_finish		date					not null,
@@ -34,20 +34,21 @@ create table camp(
 	age_max			int						not null,
 	children_count	int						not null,
 	info			text,
-	icon			blob,
+	
 	type_id			int
-		references camp_type(id)
-		on update cascade
-		on delete set null,
+		references 	camp_type(id)
+		on update 	cascade
+		on delete 	set null,
 	place_id		int
 		references 	place(id)
 		on update 	cascade
-		on delete	set null
+		on delete	set null,
+	icon			blob	
 );
 
 
 create table camp_photo(
-	id				int 	primary key 	not null,
+	id				int 	primary key 	not null 	unique 	auto_increment,
 	image			varchar(80)				not null,
 	camp_id			int						not null
 		references	camp(id)
@@ -56,7 +57,7 @@ create table camp_photo(
 );
 	
 create table user_status(
-	id				int 	primary key 	not null,
+	id				int 	primary key 	not null 	unique 	auto_increment,
 	name 			varchar(30) 			not null 
 );
 
@@ -69,7 +70,7 @@ insert into user_status values
 
 
 create table user(
-	id				int 	primary key		not null,
+	id				int 	primary key		not null 	unique 	auto_increment,
 	name 			varchar(50),	
 	login 			varchar(20)				not null,
 	password		varchar(100)			not null,
@@ -80,7 +81,7 @@ create table user(
 
 
 create table order_status(
-	id				int 	primary key		not null,
+	id				int 	primary key		not null 	unique 	auto_increment,
 	name			varchar(30)				not null
 )
 ;
@@ -95,7 +96,7 @@ insert into order_status values
 ;
 
 create table buy_order(
-	id				int primary key			not null,
+	id				int primary key			not null 	unique 	auto_increment,
 	user_id			int						not null
 		references 	user(id)
 		on update 	cascade
@@ -107,7 +108,7 @@ create table buy_order(
 	
 	
 create table order_camp_id(
-	id				int 	primary key 	not null,
+	id				int 	primary key 	not null 	unique 	auto_increment,
 	count			int		default 1		not null,						
 	order_id		int						not null
 		references 	buy_order(id)			

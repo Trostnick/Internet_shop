@@ -1,5 +1,6 @@
 package hello_web;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +18,46 @@ import org.springframework.stereotype.Controller;
 @RestController
 public class CampController {
 
-    @Autowired
-    private CampRepository campRepository;
+    private final CampRepository campRepository;
 
-    @GetMapping("/findById")
+    private final PtypeRepository ptypeRepository;
+
+    private final CtypeRepository ctypeRepository;
+
+    private final UserRepository userRepository;
+
+    private final UstatusRepository ustatusRepository;
+
+    private final OrderRepository orderRepository;
+
+    private final OstatusRepository ostatusRepository;
+
+    private final PlaceRepository placeRepository;
+
+    private final OrderCampIdRepository orderCampIdRepository;
+
+    private final CampPhotoRepository campPhotoRepository;
+
+    @Autowired
+    public CampController(CampRepository campRepository, PtypeRepository ptypeRepository,
+                          CtypeRepository ctypeRepository, UserRepository userRepository,
+                          UstatusRepository ustatusRepository, OrderRepository orderRepository,
+                          OstatusRepository ostatusRepository, PlaceRepository placeRepository,
+                          OrderCampIdRepository orderCampIdRepository, CampPhotoRepository campPhotoRepository) {
+        this.campRepository = campRepository;
+        this.ptypeRepository = ptypeRepository;
+        this.ctypeRepository = ctypeRepository;
+        this.ustatusRepository = ustatusRepository;
+        this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.ostatusRepository = ostatusRepository;
+        this.placeRepository = placeRepository;
+        this.orderCampIdRepository = orderCampIdRepository;
+        this.campPhotoRepository = campPhotoRepository;
+
+    }
+
+    @GetMapping("/findcampById")
     public String getCampByID(@RequestParam String id) {
         /*campRepository.findById(Long.valueOf(id)).ifPresent(camp -> {
             String campString = camp.toString();
@@ -34,7 +71,7 @@ public class CampController {
         return "По данному идентификатору записи не обнаружено";
     }
 
-    @GetMapping("/findByName")
+    @GetMapping("/findcampByName")
     public String getCampByName(@RequestParam String name) {
 
         String resCamp = "";
@@ -49,7 +86,7 @@ public class CampController {
         return resCamp;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/allcamp")
     public String getCampAll() {
 
         String resCamp = "";
@@ -65,7 +102,7 @@ public class CampController {
         return resCamp;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/addcamp")
     public String addCamp(@RequestBody String body) {
         Camp newCamp = new Camp();
         for (String param : body.split(",")) {
@@ -76,11 +113,33 @@ public class CampController {
                     newCamp.setName(current[1]);
                     break;
                 case "dateStart":
-                    newCamp.setDateStart(current[1]);
+                    newCamp.setDateStart(LocalDate.parse(current[1]));
                     break;
                 case "dateFinish":
-                    newCamp.setDateFinish(current[1]);
+                    newCamp.setDateFinish(LocalDate.parse(current[1]));
                     break;
+                case "type_id":
+                    ctypeRepository.findById(Long.parseLong(current[1])).ifPresent(newCamp::setType);
+                    break;
+                case "place_id":
+                    placeRepository.findById(Long.parseLong(current[1])).ifPresent(newCamp::setPlace);
+                    break;
+                case "childrenCount":
+                    newCamp.setChildrenCount(Integer.parseInt(current[1]));
+                    break;
+                case "ageMin":
+                    newCamp.setAgeMin(Integer.parseInt(current[1]));
+                    break;
+                case "ageMax":
+                    newCamp.setAgeMax(Integer.parseInt(current[1]));
+                    break;
+                case "info":
+                    newCamp.setInfo(current[1]);
+                    break;
+                case "icon":
+                    newCamp.setIcon(current[1]);
+                    break;
+
 
             }
 
@@ -89,7 +148,125 @@ public class CampController {
         return "Saved";
     }
 
-    @GetMapping("/remove")
+    @PostMapping("/addplacetype")
+    public String addPlaceType(@RequestBody String body) {
+        PlaceType newPtype = new PlaceType();
+        for (String param : body.split(",")) {
+            String[] current = param.split("=");
+
+            switch (current[0].replaceAll(" ", "")) {
+                case "name":
+                    newPtype.setName(current[1]);
+                    break;
+
+
+            }
+
+        }
+        ptypeRepository.save(newPtype);
+        return "Saved";
+    }
+
+    @PostMapping("/addcamptype")
+    public String addCampType(@RequestBody String body) {
+        CampType newCtype = new CampType();
+        for (String param : body.split(",")) {
+            String[] current = param.split("=");
+
+            switch (current[0].replaceAll(" ", "")) {
+                case "name":
+                    newCtype.setName(current[1]);
+                    break;
+
+
+            }
+
+        }
+        ctypeRepository.save(newCtype);
+        return "Saved";
+    }
+
+    @PostMapping("/adduser")
+    public String addUser(@RequestBody String body) {
+        User newUser = new User();
+        for (String param : body.split(",")) {
+            String[] current = param.split("=");
+
+            switch (current[0].replaceAll(" ", "")) {
+                case "name":
+                    newUser.setName(current[1]);
+                    break;
+                case "login":
+                    newUser.setLogin(current[1]);
+                    break;
+                case "password":
+                    newUser.setPassword(current[1]);
+                    break;
+                case "status_id":
+                    ustatusRepository.findById(Long.parseLong(current[1])).ifPresent(newUser::setStatus);
+
+
+                    break;
+
+
+            }
+
+        }
+        userRepository.save(newUser);
+        return "Saved";
+    }
+
+    @PostMapping("/addplace")
+    public String addPlace(@RequestBody String body) {
+        Place newPlace = new Place();
+        for (String param : body.split(",")) {
+            String[] current = param.split("=");
+
+            switch (current[0].replaceAll(" ", "")) {
+                case "name":
+                    newPlace.setName(current[1]);
+                    break;
+                case "info":
+                    newPlace.setInfo(current[1]);
+                    break;
+                case "adress":
+                    newPlace.setAdress(current[1]);
+                    break;
+                case "type_id":
+                    ptypeRepository.findById(Long.parseLong(current[1])).ifPresent(newPlace::setType);
+                    break;
+
+
+            }
+
+        }
+        placeRepository.save(newPlace);
+        return "Saved";
+    }
+
+    @PostMapping("/addorder")
+    public String addOrder(@RequestBody String body) {
+        Order newOrder = new Order();
+        for (String param : body.split(",")) {
+            String[] current = param.split("=");
+
+            switch (current[0].replaceAll(" ", "")) {
+                case "status_id":
+                    ostatusRepository.findById(Long.parseLong(current[1])).ifPresent(newOrder::setStatus);
+                    break;
+                case "user_id":
+                    userRepository.findById(Long.parseLong(current[1])).ifPresent(newOrder::setUser);
+                    break;
+
+
+            }
+
+        }
+        orderRepository.save(newOrder);
+        return "Saved";
+    }
+
+    @GetMapping("/removecamp")
     public String removeCampById(@RequestParam String id) {
         Optional<Camp> camp = campRepository.findById(Long.valueOf(id));
         if (camp.isPresent()) {
