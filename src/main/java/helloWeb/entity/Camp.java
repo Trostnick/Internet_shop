@@ -1,8 +1,7 @@
-package hello_web;
+package helloWeb.entity;
 
 import javax.persistence.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

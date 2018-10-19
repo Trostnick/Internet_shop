@@ -1,8 +1,10 @@
-package hello_web;
+package helloWeb.controller;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+import helloWeb.entity.*;
+import helloWeb.repository.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RestController
-public class CampController {
+public class MainController {
 
     private final CampRepository campRepository;
 
@@ -39,7 +41,7 @@ public class CampController {
     private final CampPhotoRepository campPhotoRepository;
 
     @Autowired
-    public CampController(CampRepository campRepository, PtypeRepository ptypeRepository,
+    public MainController(CampRepository campRepository, PtypeRepository ptypeRepository,
                           CtypeRepository ctypeRepository, UserRepository userRepository,
                           UstatusRepository ustatusRepository, OrderRepository orderRepository,
                           OstatusRepository ostatusRepository, PlaceRepository placeRepository,

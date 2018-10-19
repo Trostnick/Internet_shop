@@ -1,16 +1,16 @@
-package hello_web;
+package helloWeb.entity;
 
 import javax.persistence.*;
 
 @Entity
-public class CampType {
+public class OrderStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
     private String name;
 
-    public CampType() {
+    public OrderStatus() {
     }
 
     public void setId(Long id) {

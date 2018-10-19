@@ -1,4 +1,4 @@
-package hello_web;
+package helloWeb.entity;
 
 import javax.persistence.*;
 

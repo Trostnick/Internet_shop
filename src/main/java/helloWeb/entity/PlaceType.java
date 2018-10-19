@@ -1,16 +1,16 @@
-package hello_web;
+package helloWeb.entity;
 
 import javax.persistence.*;
 
 @Entity
-public class OrderStatus {
+public class PlaceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
     private String name;
 
-    public OrderStatus() {
+    public PlaceType() {
     }
 
     public void setId(Long id) {
@@ -28,4 +28,6 @@ public class OrderStatus {
     public String getName() {
         return name;
     }
+
+
 }
