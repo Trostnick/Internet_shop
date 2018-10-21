@@ -3,27 +3,33 @@ drop database if exists demo;
 create database demo;
 use demo;
 
-create table place_type (
-	id				int 	primary key 	not null 	unique 	auto_increment,
-	name 			varchar(30) 			not null 
-);
+#create table place_type (
+#	id				int 	primary key 	not null 	unique 	auto_increment,
+#	name 			varchar(30) 			not null 
+#);
 
 
 create table place(
 	id				int 	primary key 	not null 	unique 	auto_increment,
 	name 			varchar(30) 			not null,
 	info			text,
-	adress			text,
-	type_id			int
-		references place_type(id)
-		on update cascade
-		on delete set null
+	address			text
+#	type_id			int
+#		references place_type(id)
+#		on update cascade
+#		on delete set null
 );
 
 create table camp_type(
 	id				int 	primary key 	not null 	unique 	auto_increment,
 	name 			varchar(30) 			not null
 );
+
+insert into camp_type values
+(	1, 	'стационарный'),
+(	2,	'палаточный'),
+(	3, 	'дневного пребывания')
+;
 
 create table camp(
 	id				int 	primary key 	not null 	unique 	auto_increment,

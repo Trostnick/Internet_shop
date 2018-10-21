@@ -1,16 +1,16 @@
-package helloWeb.entity;
+package internet.shop.entity;
 
 import javax.persistence.*;
 
-@Entity
-public class CampType {
+/*@Entity
+public class PlaceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
     private String name;
 
-    public CampType() {
+    public PlaceType() {
     }
 
     public void setId(Long id) {
@@ -28,4 +28,6 @@ public class CampType {
     public String getName() {
         return name;
     }
-}
+
+
+}*/

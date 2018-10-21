@@ -1,10 +1,9 @@
-package helloWeb.entity;
+package internet.shop.entity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name="buy_order")
-public class Order {
+public class CampPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,11 +12,9 @@ public class Order {
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String image;
 
-    public Order() {
+    public CampPhoto() {
     }
 
     public Long getId() {
@@ -36,11 +33,11 @@ public class Order {
         this.status = status;
     }
 
-    public User getUser() {
-        return user;
+    public String getImage() {
+        return image;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

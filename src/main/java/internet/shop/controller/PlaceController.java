@@ -1,79 +1,75 @@
-package helloWeb.controller;
+package internet.shop.controller;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
-import helloWeb.entity.*;
-import helloWeb.repository.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import internet.shop.service.PlaceService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-import org.springframework.stereotype.Controller;
-
-
-@Controller
 @RestController
-public class MainController {
+@RequestMapping("/place")
+public class PlaceController {
 
-    private final CampRepository campRepository;
+    private final PlaceService placeService;
 
-    private final PtypeRepository ptypeRepository;
+    @Autowired
+    public PlaceController(PlaceService placeService) {
+        this.placeService = placeService;
+    }
 
-    private final CtypeRepository ctypeRepository;
+    @PostMapping("")
+    public ResponseEntity add(@RequestBody String body) {
+        placeService.add(body);
+        return new ResponseEntity<> ("Successfully saved", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteOne(@PathVariable Long id){
+        placeService.deleteOne(id);
+        return new ResponseEntity<> ("Successfully deleted", HttpStatus.OK);
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity put(@PathVariable Long id, @RequestBody String body){
+        placeService.put(id, body);
+        return new ResponseEntity<> ("Successfully patched", HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getOne(@PathVariable() Long id){
+        String placeString = placeService.getOne(id);
+        return new ResponseEntity<> (placeString, HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity getMany(){
+        String placesString = placeService.getMany();
+        return new ResponseEntity<> (placesString, HttpStatus.OK);
+    }
+
+    /*private final CampRepository campRepository;
+
+    private final PlaceTypeRepository placeTypeRepository;
+
+    private final CampTypeRepository campTypeRepository;
 
     private final UserRepository userRepository;
 
-    private final UstatusRepository ustatusRepository;
+    private final UserStatusRepository userStatusRepository;
 
     private final OrderRepository orderRepository;
 
-    private final OstatusRepository ostatusRepository;
+    private final OrderStatusRepository orderStatusRepository;
 
-    private final PlaceRepository placeRepository;
 
     private final OrderCampIdRepository orderCampIdRepository;
 
-    private final CampPhotoRepository campPhotoRepository;
+    private final CampPhotoRepository campPhotoRepository;*/
 
-    @Autowired
-    public MainController(CampRepository campRepository, PtypeRepository ptypeRepository,
-                          CtypeRepository ctypeRepository, UserRepository userRepository,
-                          UstatusRepository ustatusRepository, OrderRepository orderRepository,
-                          OstatusRepository ostatusRepository, PlaceRepository placeRepository,
-                          OrderCampIdRepository orderCampIdRepository, CampPhotoRepository campPhotoRepository) {
-        this.campRepository = campRepository;
-        this.ptypeRepository = ptypeRepository;
-        this.ctypeRepository = ctypeRepository;
-        this.ustatusRepository = ustatusRepository;
-        this.userRepository = userRepository;
-        this.orderRepository = orderRepository;
-        this.ostatusRepository = ostatusRepository;
-        this.placeRepository = placeRepository;
-        this.orderCampIdRepository = orderCampIdRepository;
-        this.campPhotoRepository = campPhotoRepository;
 
-    }
 
-    @GetMapping("/findcampById")
-    public String getCampByID(@RequestParam String id) {
-        /*campRepository.findById(Long.valueOf(id)).ifPresent(camp -> {
-            String campString = camp.toString();
-            return campString;
-        });
-        return "По данному идентификатору записи не обнаружено";*/
-        Optional<Camp> camp = campRepository.findById(Long.valueOf(id));
-        if (camp.isPresent()) {
-            return camp.get().toString();
-        }
-        return "По данному идентификатору записи не обнаружено";
-    }
-
-    @GetMapping("/findcampByName")
+    /*@GetMapping("/camps")
     public String getCampByName(@RequestParam String name) {
 
         String resCamp = "";
@@ -86,9 +82,23 @@ public class MainController {
             return "Записи не обнаружены";
         }
         return resCamp;
+    }*/
+
+    /*@GetMapping("/camps/{id}")
+    public String getCampByID(@PathVariable String id) {
+        *//*campRepository.findById(Long.valueOf(id)).ifPresent(camp -> {
+            String campString = camp.toString();
+            return campString;
+        });
+        return "По данному идентификатору записи не обнаружено";*//*
+        Optional<Camp> camp = campRepository.findById(Long.valueOf(id));
+        if (camp.isPresent()) {
+            return camp.get().toString();
+        }
+        return "По данному идентификатору записи не обнаружено";
     }
 
-    @GetMapping("/allcamp")
+    @GetMapping("/camps")
     public String getCampAll() {
 
         String resCamp = "";
@@ -104,7 +114,7 @@ public class MainController {
         return resCamp;
     }
 
-    @PostMapping("/addcamp")
+    @PostMapping("/camps")
     public String addCamp(@RequestBody String body) {
         Camp newCamp = new Camp();
         for (String param : body.split(",")) {
@@ -121,7 +131,7 @@ public class MainController {
                     newCamp.setDateFinish(LocalDate.parse(current[1]));
                     break;
                 case "type_id":
-                    ctypeRepository.findById(Long.parseLong(current[1])).ifPresent(newCamp::setType);
+                    campTypeRepository.findById(Long.parseLong(current[1])).ifPresent(newCamp::setType);
                     break;
                 case "place_id":
                     placeRepository.findById(Long.parseLong(current[1])).ifPresent(newCamp::setPlace);
@@ -150,7 +160,7 @@ public class MainController {
         return "Saved";
     }
 
-    @PostMapping("/addplacetype")
+    @PostMapping("/placeTypes")
     public String addPlaceType(@RequestBody String body) {
         PlaceType newPtype = new PlaceType();
         for (String param : body.split(",")) {
@@ -165,11 +175,11 @@ public class MainController {
             }
 
         }
-        ptypeRepository.save(newPtype);
+        placeTypeRepository.save(newPtype);
         return "Saved";
     }
 
-    @PostMapping("/addcamptype")
+    @PostMapping("/campTypes")
     public String addCampType(@RequestBody String body) {
         CampType newCtype = new CampType();
         for (String param : body.split(",")) {
@@ -184,11 +194,11 @@ public class MainController {
             }
 
         }
-        ctypeRepository.save(newCtype);
+        campTypeRepository.save(newCtype);
         return "Saved";
     }
 
-    @PostMapping("/adduser")
+    @PostMapping("/users")
     public String addUser(@RequestBody String body) {
         User newUser = new User();
         for (String param : body.split(",")) {
@@ -205,7 +215,7 @@ public class MainController {
                     newUser.setPassword(current[1]);
                     break;
                 case "status_id":
-                    ustatusRepository.findById(Long.parseLong(current[1])).ifPresent(newUser::setStatus);
+                    userStatusRepository.findById(Long.parseLong(current[1])).ifPresent(newUser::setStatus);
 
 
                     break;
@@ -218,7 +228,7 @@ public class MainController {
         return "Saved";
     }
 
-    @PostMapping("/addplace")
+    @PostMapping("/places")
     public String addPlace(@RequestBody String body) {
         Place newPlace = new Place();
         for (String param : body.split(",")) {
@@ -235,7 +245,7 @@ public class MainController {
                     newPlace.setAdress(current[1]);
                     break;
                 case "type_id":
-                    ptypeRepository.findById(Long.parseLong(current[1])).ifPresent(newPlace::setType);
+                    placeTypeRepository.findById(Long.parseLong(current[1])).ifPresent(newPlace::setType);
                     break;
 
 
@@ -246,7 +256,7 @@ public class MainController {
         return "Saved";
     }
 
-    @PostMapping("/addorder")
+    @PostMapping("/orders")
     public String addOrder(@RequestBody String body) {
         Order newOrder = new Order();
         for (String param : body.split(",")) {
@@ -254,7 +264,7 @@ public class MainController {
 
             switch (current[0].replaceAll(" ", "")) {
                 case "status_id":
-                    ostatusRepository.findById(Long.parseLong(current[1])).ifPresent(newOrder::setStatus);
+                    orderStatusRepository.findById(Long.parseLong(current[1])).ifPresent(newOrder::setStatus);
                     break;
                 case "user_id":
                     userRepository.findById(Long.parseLong(current[1])).ifPresent(newOrder::setUser);
@@ -268,7 +278,7 @@ public class MainController {
         return "Saved";
     }
 
-    @GetMapping("/removecamp")
+    @DeleteMapping("/camps")
     public String removeCampById(@RequestParam String id) {
         Optional<Camp> camp = campRepository.findById(Long.valueOf(id));
         if (camp.isPresent()) {
@@ -278,4 +288,7 @@ public class MainController {
         }
         return "По данному идентификатору записи не обнаружено";
     }
+    */
+
+
 }

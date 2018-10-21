@@ -1,4 +1,4 @@
-package helloWeb.entity;
+package internet.shop.entity;
 
 import javax.persistence.*;
 
@@ -10,11 +10,11 @@ public class Place {
 
     private String name;
     private String info;
-    private String adress;
+    private String address;
 
-    @ManyToOne
+/*    @ManyToOne
     @JoinColumn(name = "type_id")
-    private PlaceType type;
+    private PlaceType type;*/
 
     public Place() {
     }
@@ -43,19 +43,25 @@ public class Place {
         this.info = info;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public PlaceType getType() {
+    @Override
+    public String toString() {
+        return String.format(
+                "Place[id=%d, name='%s', info='%s', address='%s']\r\n",
+                id, name, info, address);
+    }
+/*    public PlaceType getType() {
         return type;
     }
 
     public void setType(PlaceType type) {
         this.type = type;
-    }
+    }*/
 }

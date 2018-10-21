@@ -1,4 +1,4 @@
-package helloWeb.entity;
+package internet.shop.entity;
 
 import javax.persistence.*;
 
@@ -125,8 +125,10 @@ public class Camp {
     public String toString() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-M-yyyy");
         return String.format(
-                "Camp[id=%d, name='%s', Start='%s', Finish='%s']",
-                id, name, format.format(dateStart), format.format(dateFinish));
+                "Camp[id=%d, name='%s', Start='%s', Finish='%s',ageMin='%s', ageMax='%s'," +
+                        "info='%s',childrenCount='%s',]\r\n",
+                id, name, format.format(dateStart), format.format(dateFinish),
+                ageMin, ageMax, info, childrenCount) ;
     }
 
 }
