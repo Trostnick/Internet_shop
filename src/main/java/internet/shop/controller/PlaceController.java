@@ -42,11 +42,11 @@ public class PlaceController {
         return new ResponseEntity<> (placeString, HttpStatus.OK);
     }
 
-    @GetMapping("")
+/*    @GetMapping("")
     public ResponseEntity getMany(){
         String placesString = placeService.getMany();
         return new ResponseEntity<> (placesString, HttpStatus.OK);
-    }
+    }*/
 
     /*private final CampRepository campRepository;
 

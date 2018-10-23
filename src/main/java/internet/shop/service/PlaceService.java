@@ -44,7 +44,11 @@ public class PlaceService {
         if (!place.isPresent()) {
             throw new FindByIdException("Place not found");
         }
-        return place.get();
+        Place curPlace = place.get();
+        if (curPlace.isRemoved()){
+            throw new FindByIdException("Place was removed");
+        }
+        return curPlace;
     }
 
     public void add(String params) {
@@ -54,8 +58,9 @@ public class PlaceService {
     }
 
     public void deleteOne(Long id) {
-        findOne(id);
-        placeRepository.deleteById(id);
+        Place removedPlace = findOne(id);
+        removedPlace.setRemoved(true);
+        placeRepository.save(removedPlace);
     }
 
     public void put(Long id, String params) {
@@ -69,13 +74,13 @@ public class PlaceService {
         return curPlace.toString();
     }
 
-    public String getMany() {
+    /*public String getMany() {
         List<Place> allPlaces = placeRepository.findAll();
         StringBuilder result = new StringBuilder();
         for (Place place : allPlaces) {
             result.append(place.toString());
         }
         return result.toString();
-    }
-    /*public String get*/
+    }*/
+
 }

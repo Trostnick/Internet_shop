@@ -7,6 +7,7 @@ public class OrderCampId {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private boolean removed;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -51,5 +52,13 @@ public class OrderCampId {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 }

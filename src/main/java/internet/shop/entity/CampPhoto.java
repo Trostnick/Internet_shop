@@ -7,6 +7,7 @@ public class CampPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private boolean removed;
 
     @ManyToOne
     @JoinColumn(name = "status_id")
@@ -39,5 +40,13 @@ public class CampPhoto {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 }

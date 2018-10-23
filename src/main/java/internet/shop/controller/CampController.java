@@ -40,13 +40,13 @@ public class CampController {
 
     @GetMapping("/{id}")
     public ResponseEntity getOne(@PathVariable() Long id){
-        String placeString = campService.getOne(id);
-        return new ResponseEntity<> (placeString, HttpStatus.OK);
+        String campString = campService.getOne(id);
+        return new ResponseEntity<> (campString, HttpStatus.OK);
     }
 
-    @GetMapping("")
+    /*@GetMapping("")
     public ResponseEntity getMany(){
         String placesString = campService.getMany();
         return new ResponseEntity<> (placesString, HttpStatus.OK);
-    }
+    }*/
 }

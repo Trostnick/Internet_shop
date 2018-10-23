@@ -1,6 +1,8 @@
 package internet.shop.service;
 
+import internet.shop.constant.*;
 import internet.shop.entity.Camp;
+import internet.shop.entity.CampType;
 import internet.shop.exception.FindByIdException;
 import internet.shop.repository.CampRepository;
 import internet.shop.repository.CampTypeRepository;
@@ -32,9 +34,13 @@ public class CampService {
     private Camp findOne(Long id) throws FindByIdException {
         Optional<Camp> camp = campRepository.findById(id);
         if (!camp.isPresent()) {
-            throw new FindByIdException("Place not found");
+            throw new FindByIdException("Camp not found");
         }
-        return camp.get();
+        Camp curCamp = camp.get();
+        if (curCamp.getType().getId().equals(CAMP_TYPE.REMOVED.getValue())){
+            throw new FindByIdException("Camp was removed");
+        }
+        return  camp.get();
     }
 
     private void addParamsParser(String params, Camp camp) {
@@ -83,8 +89,10 @@ public class CampService {
     }
 
     public void deleteOne(Long id) {
-        findOne(id);
-        campRepository.deleteById(id);
+        Camp campRemoved = findOne(id);
+        CampType removedType = campTypeRepository.findById(CAMP_TYPE.REMOVED.getValue()).get();
+        campRemoved.setType(removedType);
+        campRepository.save(campRemoved);
     }
 
     public void put(Long id, String params){
@@ -98,14 +106,14 @@ public class CampService {
         return curCamp.toString();
     }
 
-    public String getMany (){
+    /*public String getMany (){
         List<Camp> allCamps = campRepository.findAll();
         StringBuilder result = new StringBuilder();
         for(Camp camp: allCamps){
             result.append(camp.toString());
         }
         return result.toString();
-    }
+    }*/
 
 
 }

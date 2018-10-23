@@ -1,6 +1,7 @@
 package internet.shop.entity;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 public class User {
@@ -57,5 +58,13 @@ public class User {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Camp[id=%d, name='%s', login='%s', password='%s']\r\n",
+                id, name, login, password) ;
     }
 }

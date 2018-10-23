@@ -126,7 +126,7 @@ public class Camp {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-M-yyyy");
         return String.format(
                 "Camp[id=%d, name='%s', Start='%s', Finish='%s',ageMin='%s', ageMax='%s'," +
-                        "info='%s',childrenCount='%s',]\r\n",
+                        "info='%s',childrenCount='%s']\r\n",
                 id, name, format.format(dateStart), format.format(dateFinish),
                 ageMin, ageMax, info, childrenCount) ;
     }

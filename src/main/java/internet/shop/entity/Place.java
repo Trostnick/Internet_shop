@@ -11,7 +11,7 @@ public class Place {
     private String name;
     private String info;
     private String address;
-
+    private boolean removed;
 /*    @ManyToOne
     @JoinColumn(name = "type_id")
     private PlaceType type;*/
@@ -49,6 +49,14 @@ public class Place {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 
     @Override
