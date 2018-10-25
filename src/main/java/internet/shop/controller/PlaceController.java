@@ -1,5 +1,6 @@
 package internet.shop.controller;
 
+import internet.shop.entity.Place;
 import internet.shop.service.PlaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,20 +34,20 @@ public class PlaceController {
     @PutMapping("/{id}")
     public ResponseEntity put(@PathVariable Long id, @RequestBody String body){
         placeService.put(id, body);
-        return new ResponseEntity<> ("Successfully patched", HttpStatus.OK);
+        return new ResponseEntity<> ("Successfully putted", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getOne(@PathVariable() Long id){
-        String placeString = placeService.getOne(id);
-        return new ResponseEntity<> (placeString, HttpStatus.OK);
+    public ResponseEntity getOne(@PathVariable Long id){
+        Place place = placeService.getOne(id);
+        return new ResponseEntity<> (place.toString(), HttpStatus.OK);
     }
 
-/*    @GetMapping("")
-    public ResponseEntity getMany(){
-        String placesString = placeService.getMany();
+    @GetMapping("")
+    public ResponseEntity getMany(@RequestParam(required = false, defaultValue = "") String name){
+        String placesString = placeService.getMany(name);
         return new ResponseEntity<> (placesString, HttpStatus.OK);
-    }*/
+    }
 
     /*private final CampRepository campRepository;
 
@@ -63,7 +64,7 @@ public class PlaceController {
     private final OrderStatusRepository orderStatusRepository;
 
 
-    private final OrderCampIdRepository orderCampIdRepository;
+    private final OrderCampRepository orderCampIdRepository;
 
     private final CampPhotoRepository campPhotoRepository;*/
 

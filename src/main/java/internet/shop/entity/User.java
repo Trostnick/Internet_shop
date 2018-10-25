@@ -64,7 +64,7 @@ public class User {
     @Override
     public String toString() {
         return String.format(
-                "Camp[id=%d, name='%s', login='%s', password='%s']\r\n",
+                "User[id=%d, name='%s', login='%s', password='%s']\r\n",
                 id, name, login, password) ;
     }
 }

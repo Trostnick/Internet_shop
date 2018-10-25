@@ -43,4 +43,12 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+
+        return String.format(
+                "Order[id=%d, status='%s', User='%s']\r\n",
+                id, this.getStatus().getName(), this.getUser().getName()) ;
+    }
 }

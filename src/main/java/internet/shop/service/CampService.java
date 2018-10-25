@@ -6,7 +6,6 @@ import internet.shop.entity.CampType;
 import internet.shop.exception.FindByIdException;
 import internet.shop.repository.CampRepository;
 import internet.shop.repository.CampTypeRepository;
-import internet.shop.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,14 @@ public class CampService {
 
     private final CampTypeRepository campTypeRepository;
 
-    private final PlaceRepository placeRepository;
+    private final PlaceService placeService;
 
     @Autowired
     public CampService(CampRepository campRepository, CampTypeRepository campTypeRepository,
-                       PlaceRepository placeRepository) {
+                       PlaceService placeService) {
         this.campRepository = campRepository;
         this.campTypeRepository = campTypeRepository;
-        this.placeRepository = placeRepository;
+        this.placeService = placeService;
     }
 
     private Camp findOne(Long id) throws FindByIdException {
@@ -61,7 +60,7 @@ public class CampService {
                     campTypeRepository.findById(Long.parseLong(current[1])).ifPresent(camp::setType);
                     break;
                 case "place_id":
-                    placeRepository.findById(Long.parseLong(current[1])).ifPresent(camp::setPlace);
+                    camp.setPlace(placeService.getOne(Long.parseLong(current[1])));
                     break;
                 case "childrenCount":
                     camp.setChildrenCount(Integer.parseInt(current[1]));
@@ -101,9 +100,8 @@ public class CampService {
         campRepository.save(curCamp);
     }
 
-    public String getOne(Long id){
-        Camp curCamp = findOne(id);
-        return curCamp.toString();
+    public Camp getOne(Long id){
+        return findOne(id);
     }
 
     /*public String getMany (){

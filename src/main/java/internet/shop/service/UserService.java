@@ -68,7 +68,7 @@ public class UserService {
         User userRemoved = findOne(id);
         UserStatus removedStatus = userStatusRepository.findById(USER_STATUS.REMOVED.getValue()).get();
         userRemoved.setStatus(removedStatus);
-        userRepository.deleteById(id);
+        userRepository.save(userRemoved);
     }
 
     public void put(Long id, String params){
@@ -77,8 +77,7 @@ public class UserService {
         userRepository.save(curUser);
     }
 
-    public String getOne(Long id){
-        User curUser = findOne(id);
-        return curUser.toString();
+    public User getOne(Long id){
+        return findOne(id);
     }
 }

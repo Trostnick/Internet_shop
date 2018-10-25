@@ -6,11 +6,18 @@ import internet.shop.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PlaceService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     private final PlaceRepository placeRepository;
 
@@ -69,18 +76,29 @@ public class PlaceService {
         placeRepository.save(curPlace);
     }
 
-    public String getOne(Long id) {
-        Place curPlace = findOne(id);
-        return curPlace.toString();
+    public Place getOne(Long id) {
+        return findOne(id);
     }
 
-    /*public String getMany() {
-        List<Place> allPlaces = placeRepository.findAll();
+    public String getMany(String name) {
+
+        CriteriaBuilder cb=em.getCriteriaBuilder();
+        CriteriaQuery<Place> query = cb.createQuery(Place.class);
+        Root<Place> root = query.from(Place.class);
+        query.select(root);
+
+        Predicate criteriaName = cb.like(root.get("name"), "%"+name+"%");
+        Predicate criteriaRemoved = cb.equal(root.get("removed"), false);
+
+        query.where(cb.and(criteriaRemoved, criteriaName));
+
+        List<Place> places = em.createQuery(query).getResultList();
+
         StringBuilder result = new StringBuilder();
-        for (Place place : allPlaces) {
+        for (Place place : places) {
             result.append(place.toString());
         }
         return result.toString();
-    }*/
+    }
 
 }

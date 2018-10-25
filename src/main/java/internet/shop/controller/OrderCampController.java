@@ -1,53 +1,46 @@
 package internet.shop.controller;
 
-import internet.shop.entity.Camp;
-import internet.shop.service.CampService;
+
+import internet.shop.entity.OrderCamp;
+import internet.shop.service.OrderCampService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
-@RequestMapping("/camp")
-public class CampController {
+@RequestMapping("/orderCamp")
+public class OrderCampController {
 
-    private final CampService campService;
+    private final OrderCampService orderCampService;
 
     @Autowired
-    public CampController(CampService campService) {
-        this.campService = campService;
+    public OrderCampController(OrderCampService orderCampService) {
+        this.orderCampService = orderCampService;
     }
 
     @PostMapping("")
     public ResponseEntity add(@RequestBody String body) {
-        campService.add(body);
+        orderCampService.add(body);
         return new ResponseEntity<> ("Successfully saved", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteOne(@PathVariable Long id){
-        campService.deleteOne(id);
+        orderCampService.deleteOne(id);
         return new ResponseEntity<> ("Successfully deleted", HttpStatus.OK);
 
     }
 
     @PutMapping("/{id}")
     public ResponseEntity put(@PathVariable Long id, @RequestBody String body){
-        campService.put(id, body);
+        orderCampService.put(id, body);
         return new ResponseEntity<> ("Successfully putted", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getOne(@PathVariable() Long id){
-        Camp camp = campService.getOne(id);
-        return new ResponseEntity<> (camp.toString(), HttpStatus.OK);
+        OrderCamp orderCamp = orderCampService.getOne(id);
+        return new ResponseEntity<> (orderCamp.toString(), HttpStatus.OK);
     }
-
-    /*@GetMapping("")
-    public ResponseEntity getMany(){
-        String placesString = campService.getMany();
-        return new ResponseEntity<> (placesString, HttpStatus.OK);
-    }*/
 }

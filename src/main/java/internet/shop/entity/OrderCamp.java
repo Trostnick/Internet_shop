@@ -3,7 +3,8 @@ package internet.shop.entity;
 import javax.persistence.*;
 
 @Entity
-public class OrderCampId {
+@Table(name="order_camp_id")
+public class OrderCamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +20,7 @@ public class OrderCampId {
 
     private int count;
 
-    public OrderCampId() {
+    public OrderCamp() {
     }
 
     public Long getId() {
@@ -60,5 +61,13 @@ public class OrderCampId {
 
     public void setRemoved(boolean removed) {
         this.removed = removed;
+    }
+
+    @Override
+    public String toString() {
+
+        return String.format(
+                "OrderCamp[id=%d, order=%d, camp='%s', count=%d]\r\n",
+                id, this.getOrder().getId(), this.getCamp().getName(), count) ;
     }
 }
