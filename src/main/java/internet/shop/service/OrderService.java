@@ -1,6 +1,5 @@
 package internet.shop.service;
 
-import internet.shop.constant.ORDER_STATUS;
 import internet.shop.entity.Order;
 import internet.shop.entity.OrderStatus;
 import internet.shop.exception.FindByIdException;
@@ -9,12 +8,23 @@ import internet.shop.repository.OrderStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
 import java.util.Optional;
+
+
 
 @Service
 public class OrderService {
 
-    private final OrderRepository orderRepository;
+
+
+    /*private final OrderRepository orderRepository;
 
     private final UserService userService;
 
@@ -78,7 +88,9 @@ public class OrderService {
 
     public Order getOne(Long id){
         return findOne(id);
-    }
+    }*/
+
+
 
 
 

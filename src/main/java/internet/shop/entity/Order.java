@@ -1,6 +1,7 @@
 package internet.shop.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="buy_order")
@@ -9,12 +10,16 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private boolean removed;
+
     @ManyToOne
     @JoinColumn(name = "status_id")
+    @NotEmpty
     private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotEmpty
     private User user;
 
     public Order() {
@@ -44,11 +49,12 @@ public class Order {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-
-        return String.format(
-                "Order[id=%d, status='%s', User='%s']\r\n",
-                id, this.getStatus().getName(), this.getUser().getName()) ;
+    public boolean isRemoved() {
+        return removed;
     }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
+
 }

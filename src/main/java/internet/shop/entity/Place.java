@@ -1,6 +1,11 @@
 package internet.shop.entity;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.AssertFalse;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Place {
@@ -8,13 +13,17 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Size(min = 3, max=49)
     private String name;
+
     private String info;
+
+
     private String address;
+
+    @AssertFalse
     private boolean removed;
-/*    @ManyToOne
-    @JoinColumn(name = "type_id")
-    private PlaceType type;*/
 
     public Place() {
     }
@@ -59,17 +68,5 @@ public class Place {
         this.removed = removed;
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-                "Place[id=%d, name='%s', info='%s', address='%s']\r\n",
-                id, name, info, address);
-    }
-/*    public PlaceType getType() {
-        return type;
-    }
 
-    public void setType(PlaceType type) {
-        this.type = type;
-    }*/
 }

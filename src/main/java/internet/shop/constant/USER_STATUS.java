@@ -1,10 +1,9 @@
 package internet.shop.constant;
 
 public enum  USER_STATUS{
-    REMOVED(1L),
-    CLIENT(2L),
-    MANAGER(3L),
-    ADMIN(4L);
+    CLIENT(1L),
+    MANAGER(2L),
+    ADMIN(3L);
 
     private Long value;
 

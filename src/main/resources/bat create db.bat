@@ -1,1 +1,2 @@
-mysql --user=prohorov --password=1234 <sql_create.sql
+mysql --user=prohorov --password=1234 <create.sql
+mysql --user=prohorov --password=1234 <insert.sql

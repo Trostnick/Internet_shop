@@ -9,12 +9,20 @@ import internet.shop.repository.CampTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CampService {
+
+/*    @PersistenceContext
+    private EntityManager em;
 
     private final CampRepository campRepository;
 
@@ -30,87 +38,47 @@ public class CampService {
         this.placeService = placeService;
     }
 
-    private Camp findOne(Long id) throws FindByIdException {
-        Optional<Camp> camp = campRepository.findById(id);
-        if (!camp.isPresent()) {
-            throw new FindByIdException("Camp not found");
-        }
-        Camp curCamp = camp.get();
-        if (curCamp.getType().getId().equals(CAMP_TYPE.REMOVED.getValue())){
-            throw new FindByIdException("Camp was removed");
-        }
-        return  camp.get();
-    }
 
-    private void addParamsParser(String params, Camp camp) {
-        for (String param : params.split(",")) {
-            String[] current = param.split("=");
 
-            switch (current[0].replaceAll(" ", "")) {
-                case "name":
-                    camp.setName(current[1]);
-                    break;
-                case "dateStart":
-                    camp.setDateStart(LocalDate.parse(current[1]));
-                    break;
-                case "dateFinish":
-                    camp.setDateFinish(LocalDate.parse(current[1]));
-                    break;
-                case "type_id":
-                    campTypeRepository.findById(Long.parseLong(current[1])).ifPresent(camp::setType);
-                    break;
-                case "place_id":
-                    camp.setPlace(placeService.getOne(Long.parseLong(current[1])));
-                    break;
-                case "childrenCount":
-                    camp.setChildrenCount(Integer.parseInt(current[1]));
-                    break;
-                case "ageMin":
-                    camp.setAgeMin(Integer.parseInt(current[1]));
-                    break;
-                case "ageMax":
-                    camp.setAgeMax(Integer.parseInt(current[1]));
-                    break;
-                case "info":
-                    camp.setInfo(current[1]);
-                    break;
-                case "icon":
-                    camp.setIcon(current[1]);
-                    break;
-            }
-        }
-    }
 
-    public void add(String params) {
+    public void add(Camp camp) {
         Camp newCamp = new Camp();
-        addParamsParser(params, newCamp);
         campRepository.save(newCamp);
     }
 
     public void deleteOne(Long id) {
         Camp campRemoved = findOne(id);
-        CampType removedType = campTypeRepository.findById(CAMP_TYPE.REMOVED.getValue()).get();
         campRemoved.setType(removedType);
         campRepository.save(campRemoved);
     }
 
-    public void put(Long id, String params){
-        Camp curCamp=findOne(id);
+    public void put(Long id, String params) {
+        Camp curCamp = findOne(id);
         addParamsParser(params, curCamp);
         campRepository.save(curCamp);
     }
 
-    public Camp getOne(Long id){
+    public Camp getOne(Long id) {
         return findOne(id);
     }
 
-    /*public String getMany (){
-        List<Camp> allCamps = campRepository.findAll();
-        StringBuilder result = new StringBuilder();
-        for(Camp camp: allCamps){
-            result.append(camp.toString());
-        }
-        return result.toString();
+    public List<Camp> getMany(String name, int ageMin, int ageMax) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Camp> query = cb.createQuery(Camp.class);
+        Root<Camp> root = query.from(Camp.class);
+        query.select(root);
+
+        CampType removedType = campTypeRepository.findById(CAMP_TYPE.REMOVED.getValue()).get();
+
+        Predicate criteriaName = cb.like(root.get("name"), "%" + name + "%");
+        Predicate criteriaAgeMin = cb.ge(root.get("ageMin"), ageMin);
+        Predicate criteriaAgeMax = cb.le(root.get("ageMax"), ageMax);
+        Predicate criteriaRemoved = cb.notEqual(root.get("type"), removedType);
+
+        query.where(cb.and(criteriaRemoved, criteriaName, criteriaAgeMin, criteriaAgeMax));
+
+        return em.createQuery(query).getResultList();
     }*/
 
 

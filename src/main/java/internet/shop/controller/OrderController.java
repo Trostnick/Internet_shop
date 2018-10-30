@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/order")
 public class OrderController {
 
+/*
     private final OrderService orderService;
 
     @Autowired
@@ -21,25 +22,28 @@ public class OrderController {
     @PostMapping("")
     public ResponseEntity add(@RequestBody String body) {
         orderService.add(body);
-        return new ResponseEntity<> ("Successfully saved", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully saved", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteOne(@PathVariable Long id){
+    public ResponseEntity deleteOne(@PathVariable Long id) {
         orderService.deleteOne(id);
-        return new ResponseEntity<> ("Successfully deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully deleted", HttpStatus.OK);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity put(@PathVariable Long id, @RequestBody String body){
+    public ResponseEntity put(@PathVariable Long id, @RequestBody String body) {
         orderService.put(id, body);
-        return new ResponseEntity<> ("Successfully putted", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully putted", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getOne(@PathVariable() Long id){
+    public ResponseEntity getOne(@PathVariable() Long id) {
         Order order = orderService.getOne(id);
-        return new ResponseEntity<> (order.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(order.toString(), HttpStatus.OK);
     }
+*/
+
+
 }

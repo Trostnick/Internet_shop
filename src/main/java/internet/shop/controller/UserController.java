@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -21,9 +26,15 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity add(@RequestBody String body) {
-        userService.add(body);
-        return new ResponseEntity<>("Successfully saved", HttpStatus.OK);
+    public ResponseEntity add(@Valid @RequestBody User newUser, BindingResult bindingResult) {
+        List<ObjectError> validateErrors = bindingResult.getAllErrors();
+
+        if (!validateErrors.isEmpty()) {
+            return new ResponseEntity<>(validateErrors, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        userService.add(newUser);
+
+        return new ResponseEntity<String>("User successfuly created", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -34,15 +45,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity put(@PathVariable Long id, @RequestBody String body) {
-        userService.put(id, body);
-        return new ResponseEntity<>("Successfully putted", HttpStatus.OK);
+    public ResponseEntity put(@PathVariable Long id, @RequestBody User newUser) {
+        userService.put(id,newUser);
+        return new ResponseEntity<String> ("Successfully putted ", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getOne(@PathVariable() Long id) {
-        User curUser = userService.getOne(id);
-        return new ResponseEntity<>(curUser.toString(), HttpStatus.OK);
+        return new ResponseEntity<User>(userService.getOne(id), HttpStatus.OK);
     }
 
     /*@GetMapping("")

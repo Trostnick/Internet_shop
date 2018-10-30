@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/orderCamp")
 public class OrderCampController {
 
-    private final OrderCampService orderCampService;
+/*    private final OrderCampService orderCampService;
 
     @Autowired
     public OrderCampController(OrderCampService orderCampService) {
@@ -43,4 +43,12 @@ public class OrderCampController {
         OrderCamp orderCamp = orderCampService.getOne(id);
         return new ResponseEntity<> (orderCamp.toString(), HttpStatus.OK);
     }
+
+    @GetMapping("")
+    public ResponseEntity getMany(@RequestParam String login,
+                                  @RequestParam(required = false, defaultValue = "all") String statusName,
+                                  @RequestParam(required = false, defaultValue = "all") String campName) {
+        String placesString = orderCampService.getMany(login, statusName, campName );
+        return new ResponseEntity<>(placesString, HttpStatus.OK);
+    }*/
 }

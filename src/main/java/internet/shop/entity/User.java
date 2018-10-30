@@ -1,7 +1,9 @@
 package internet.shop.entity;
 
 import javax.persistence.*;
-import java.util.Optional;
+import javax.validation.constraints.AssertFalse;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -9,12 +11,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
+
+    @NotEmpty
+    @Size(min = 5, max = 19)
+    @Column(unique = true)
     private String login;
+
+    @NotEmpty
     private String password;
+
+    @AssertFalse
+    private boolean removed;
 
     @ManyToOne
     @JoinColumn(name = "status_id")
+    /*@NotEmpty*/
     private UserStatus status;
 
     public User() {
@@ -60,11 +73,12 @@ public class User {
         this.status = status;
     }
 
-
-    @Override
-    public String toString() {
-        return String.format(
-                "User[id=%d, name='%s', login='%s', password='%s']\r\n",
-                id, name, login, password) ;
+    public boolean isRemoved() {
+        return removed;
     }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
+
 }

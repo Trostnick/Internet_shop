@@ -63,11 +63,5 @@ public class OrderCamp {
         this.removed = removed;
     }
 
-    @Override
-    public String toString() {
 
-        return String.format(
-                "OrderCamp[id=%d, order=%d, camp='%s', count=%d]\r\n",
-                id, this.getOrder().getId(), this.getCamp().getName(), count) ;
-    }
 }

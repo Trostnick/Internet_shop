@@ -1,10 +1,10 @@
 package internet.shop.constant;
 
+/*
 public enum CAMP_TYPE {
-    REMOVED(1L),
-    STATIONARY(2L),
-    TENT(3L),
-    DAY_STAY(4L);
+    STATIONARY(1L),
+    TENT(2L),
+    DAY_STAY(3L);
 
     private Long value;
 
@@ -16,3 +16,4 @@ public enum CAMP_TYPE {
         return value;
     }
 }
+*/

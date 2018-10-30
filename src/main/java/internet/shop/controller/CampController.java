@@ -5,15 +5,25 @@ import internet.shop.service.CampService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
 
 
 @RestController
 @RequestMapping("/camp")
 public class CampController {
 
-    private final CampService campService;
+/*    private final CampService campService;
+
+*//*
+        public ModelAndView getHomepage() {
+        ModelAndView modelAndView = new ModelAndView("home");
+        Map<String, Object> model = modelAndView.getModel();
+        model.put("camps")
+        return "home";
+    }*//*
 
     @Autowired
     public CampController(CampService campService) {
@@ -21,8 +31,8 @@ public class CampController {
     }
 
     @PostMapping("")
-    public ResponseEntity add(@RequestBody String body) {
-        campService.add(body);
+    public ResponseEntity add(@RequestBody Camp camp) {
+        campService.add(camp);
         return new ResponseEntity<> ("Successfully saved", HttpStatus.OK);
     }
 
@@ -45,9 +55,11 @@ public class CampController {
         return new ResponseEntity<> (camp.toString(), HttpStatus.OK);
     }
 
-    /*@GetMapping("")
-    public ResponseEntity getMany(){
-        String placesString = campService.getMany();
-        return new ResponseEntity<> (placesString, HttpStatus.OK);
+    @GetMapping("")
+    public ResponseEntity getMany(@RequestParam(required = false, defaultValue = "") String name,
+                                  @RequestParam(required = false) Integer ageMin,
+                                  @RequestParam(required = false, defaultValue = "999") int ageMax) {
+        String placesString = campService.getMany(name, ageMin, ageMax);
+        return new ResponseEntity<>(placesString, HttpStatus.OK);
     }*/
 }

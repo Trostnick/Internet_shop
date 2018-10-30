@@ -1,12 +1,12 @@
+/*
 package internet.shop.constant;
 
 public enum  ORDER_STATUS{
-    REMOVED(1L),
-    IN_BASKET(2L),
-    BOOKED(3L),
-    PAYED(4L),
-    DELIEVERED(5L),
-    FINISHED(6L);
+    IN_BASKET(1L),
+    BOOKED(2L),
+    PAYED(3L),
+    DELIEVERED(4L),
+    FINISHED(5L);
 
     private Long value;
 
@@ -19,3 +19,4 @@ public enum  ORDER_STATUS{
     }
 }
 
+*/

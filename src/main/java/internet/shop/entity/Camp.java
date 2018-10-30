@@ -1,6 +1,7 @@
 package internet.shop.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,15 +13,29 @@ public class Camp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String name;
+    @Future
     private LocalDate dateStart;
+
+    @Future
     private LocalDate dateFinish;
+
+    @Min(0)
     private int ageMin;
+
+    @Max(120)
     private int ageMax;
+
+    @Min(0)
     private int childrenCount;
+
+    @AssertFalse
+    private boolean removed;
     private String info;
+
     //TODO: с иконкой и типом хранения подумать как добавлять её
-    private String icon;
+    private byte[] icon;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -97,11 +112,11 @@ public class Camp {
         this.info = info;
     }
 
-    public String getIcon() {
+    public byte[] getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(byte[] icon) {
         this.icon = icon;
     }
 
@@ -119,6 +134,14 @@ public class Camp {
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 
     @Override
