@@ -27,11 +27,11 @@ public class UserService {
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userStatusRepository = userStatusRepository;
-        this.passwordEncoder=passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
-    public void add(User newUser) throws IllegalArgumentException{
+    public void add(User newUser) throws IllegalArgumentException {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
     }
@@ -43,17 +43,18 @@ public class UserService {
 
     }
 
-    public void put(Long id, User newUser)throws ObjectNotFoundException{
+    public void put(Long id, User newUser) throws ObjectNotFoundException {
 
-        if (!userRepository.existsByIdAndRemovedFalse(id)){
+        if (!userRepository.existsByIdAndRemovedFalse(id)) {
             throw new ObjectNotFoundException(id, "User");
         }
+        newUser.setId(id);
         userRepository.save(newUser);
     }
 
-    public User getOne(Long id)throws ObjectNotFoundException {
+    public User getOne(Long id) throws ObjectNotFoundException {
         User curUser = userRepository.getByIdAndRemovedFalse(id);
-        if (curUser == null){
+        if (curUser == null) {
             throw new ObjectNotFoundException(id, "User");
         }
         return curUser;

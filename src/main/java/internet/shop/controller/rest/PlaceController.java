@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.rest;
 
 import internet.shop.entity.Place;
 import internet.shop.service.PlaceService;
@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/place")
+@RequestMapping("/api/place")
 public class PlaceController {
 
     private final PlaceService placeService;
@@ -33,7 +33,7 @@ public class PlaceController {
             return new ResponseEntity<>(validateErrors, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        return new ResponseEntity<Place>(placeService.add(newPlace), HttpStatus.OK);
+        return new ResponseEntity<>(placeService.add(newPlace), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -57,12 +57,12 @@ public class PlaceController {
 
     @GetMapping("/{id}")
     public ResponseEntity getOne(@PathVariable Long id) {
-        return new ResponseEntity<Place>(placeService.getOne(id), HttpStatus.OK);
+        return new ResponseEntity<>(placeService.getOne(id), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getMany(@RequestParam(required = false) String name) {
-        return new ResponseEntity<List<Place>>(placeService.getMany(name), HttpStatus.OK);
+        return new ResponseEntity<>(placeService.getMany(name), HttpStatus.OK);
     }
 
 

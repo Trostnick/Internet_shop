@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.rest;
 
 import internet.shop.entity.User;
 import internet.shop.service.UserService;
@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -25,7 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity add(@Valid @RequestBody User newUser, BindingResult bindingResult) {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();
 
@@ -34,7 +34,7 @@ public class UserController {
         }
         userService.add(newUser);
 
-        return new ResponseEntity<String>("User successfuly created", HttpStatus.OK);
+        return new ResponseEntity<>("User successfuly created", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -46,13 +46,13 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity put(@PathVariable Long id, @RequestBody User newUser) {
-        userService.put(id,newUser);
-        return new ResponseEntity<String> ("Successfully putted ", HttpStatus.OK);
+        userService.put(id, newUser);
+        return new ResponseEntity<>("Successfully putted ", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getOne(@PathVariable() Long id) {
-        return new ResponseEntity<User>(userService.getOne(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getOne(id), HttpStatus.OK);
     }
 
     /*@GetMapping("")

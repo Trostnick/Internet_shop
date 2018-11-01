@@ -4,8 +4,11 @@ import internet.shop.constant.*;
 import internet.shop.entity.Camp;
 import internet.shop.entity.CampType;
 import internet.shop.exception.FindByIdException;
+import internet.shop.filter.CampFilter;
 import internet.shop.repository.CampRepository;
 import internet.shop.repository.CampTypeRepository;
+import org.hibernate.ObjectDeletedException;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +18,17 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CampService {
 
-/*    @PersistenceContext
+    @PersistenceContext
     private EntityManager em;
 
     private final CampRepository campRepository;
@@ -39,47 +46,73 @@ public class CampService {
     }
 
 
-
-
-    public void add(Camp camp) {
-        Camp newCamp = new Camp();
+    public Camp add(Camp newCamp) {
         campRepository.save(newCamp);
+        return newCamp;
     }
 
-    public void deleteOne(Long id) {
-        Camp campRemoved = findOne(id);
-        campRemoved.setType(removedType);
-        campRepository.save(campRemoved);
+    public void deleteOne(Long id) throws ObjectNotFoundException {
+        Camp removedCamp = campRepository.getByIdAndRemovedFalse(id);
+        if (removedCamp == null) throw new ObjectNotFoundException(id, "Camp");
+        removedCamp.setRemoved(true);
+        campRepository.save(removedCamp);
     }
 
-    public void put(Long id, String params) {
-        Camp curCamp = findOne(id);
-        addParamsParser(params, curCamp);
-        campRepository.save(curCamp);
+    public Camp put(Long id, Camp newCamp) throws ObjectNotFoundException {
+        if (!campRepository.existsByIdAndRemovedFalse(id)) throw new ObjectNotFoundException(id, "Camp");
+        newCamp.setId(id);
+        campRepository.save(newCamp);
+        return newCamp;
     }
 
-    public Camp getOne(Long id) {
-        return findOne(id);
+    public Camp getOne(Long id) throws ObjectNotFoundException {
+        Camp curCamp = campRepository.getByIdAndRemovedFalse(id);
+        if (curCamp == null) throw new ObjectNotFoundException(id, "Camp");
+        return curCamp;
     }
 
-    public List<Camp> getMany(String name, int ageMin, int ageMax) {
+    public List<Camp> getMany(CampFilter campFilter) {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Camp> query = cb.createQuery(Camp.class);
         Root<Camp> root = query.from(Camp.class);
         query.select(root);
 
-        CampType removedType = campTypeRepository.findById(CAMP_TYPE.REMOVED.getValue()).get();
 
-        Predicate criteriaName = cb.like(root.get("name"), "%" + name + "%");
-        Predicate criteriaAgeMin = cb.ge(root.get("ageMin"), ageMin);
-        Predicate criteriaAgeMax = cb.le(root.get("ageMax"), ageMax);
-        Predicate criteriaRemoved = cb.notEqual(root.get("type"), removedType);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.notEqual(root.get("removed"), true));
 
-        query.where(cb.and(criteriaRemoved, criteriaName, criteriaAgeMin, criteriaAgeMax));
+        if (!(campFilter.getName() == null)) {
+            predicates.add(cb.like(root.get("name"), "%" + campFilter.getName() + "%"));
+        }
+        if (!(campFilter.getMinAge() == null)) {
+            predicates.add(cb.ge(root.get("ageMin"), campFilter.getMinAge()));
+        }
+        if (!(campFilter.getMaxAge() == null)) {
+            predicates.add(cb.le(root.get("ageMax"), campFilter.getMaxAge()));
+        }
+        if (!(campFilter.getStartDate() == null)) {
+            predicates.add(cb.between(root.get("dateStart"), campFilter.getStartDate(), LocalDate.MAX));
+        }
+        if (!(campFilter.getFinishDate() == null)) {
+            predicates.add(cb.between(root.get("dateFinish"), LocalDate.MIN, campFilter.getFinishDate()));
+        }
+        if (!(campFilter.getPlace() == null)) {
+            predicates.add(cb.equal(root.get("place").get("name"), campFilter.getPlace()));
+        }
+        if (!(campFilter.getType() == null)) {
+            predicates.add(cb.equal(root.get("type").get("name"), campFilter.getType()));
+        }
+
+        query.where(predicates.toArray(new Predicate[predicates.size()]));
 
         return em.createQuery(query).getResultList();
-    }*/
+    }
 
-
+    public Camp putIcon(Camp curCamp, String iconPath)throws IOException {
+        File icon = new File(iconPath);
+        curCamp.setIcon(Files.readAllBytes(icon.toPath()));
+        campRepository.save(curCamp);
+        return curCamp;
+    }
 }

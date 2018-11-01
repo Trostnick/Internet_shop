@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.rest;
 
 
 import internet.shop.entity.OrderCamp;
@@ -9,42 +9,42 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/orderCamp")
+@RequestMapping("/api/orderCamp")
 public class OrderCampController {
 
-/*    private final OrderCampService orderCampService;
+    private final OrderCampService orderCampService;
 
     @Autowired
     public OrderCampController(OrderCampService orderCampService) {
         this.orderCampService = orderCampService;
     }
 
-    @PostMapping("")
-    public ResponseEntity add(@RequestBody String body) {
-        orderCampService.add(body);
-        return new ResponseEntity<> ("Successfully saved", HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity add(@RequestBody OrderCamp orderCamp) {
+
+        return new ResponseEntity<>(orderCampService.add(orderCamp), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteOne(@PathVariable Long id){
+    public ResponseEntity deleteOne(@PathVariable Long id) {
         orderCampService.deleteOne(id);
-        return new ResponseEntity<> ("Successfully deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully deleted", HttpStatus.OK);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity put(@PathVariable Long id, @RequestBody String body){
-        orderCampService.put(id, body);
-        return new ResponseEntity<> ("Successfully putted", HttpStatus.OK);
+    public ResponseEntity put(@PathVariable Long id, @RequestBody OrderCamp orderCamp) {
+
+        return new ResponseEntity<>(orderCampService.put(id, orderCamp), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getOne(@PathVariable() Long id){
-        OrderCamp orderCamp = orderCampService.getOne(id);
-        return new ResponseEntity<> (orderCamp.toString(), HttpStatus.OK);
+    public ResponseEntity getOne(@PathVariable() Long id) {
+
+        return new ResponseEntity<>(orderCampService.getOne(id), HttpStatus.OK);
     }
 
-    @GetMapping("")
+    /*@GetMapping("")
     public ResponseEntity getMany(@RequestParam String login,
                                   @RequestParam(required = false, defaultValue = "all") String statusName,
                                   @RequestParam(required = false, defaultValue = "all") String campName) {

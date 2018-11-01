@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.exception;
 
 
 import internet.shop.exception.FindByIdException;
@@ -16,9 +16,9 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class GlobalExceptionHandlerController extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value= {ObjectNotFoundException.class, NoSuchElementException.class})
-    public ResponseEntity<String> handleNotFound(RuntimeException ex, WebRequest request){
+    @ExceptionHandler(value = {ObjectNotFoundException.class, NoSuchElementException.class})
+    public ResponseEntity<String> handleNotFound(RuntimeException ex, WebRequest request) {
 
-        return new ResponseEntity<> (ex.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

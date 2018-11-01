@@ -36,8 +36,11 @@ public class PlaceService {
         return newPlace;
     }
 
-    public void deleteOne(Long id) {
+    public void deleteOne(Long id) throws ObjectNotFoundException {
         Place removedPlace = placeRepository.getByIdAndRemovedFalse(id);
+        if (removedPlace == null) {
+            throw new ObjectNotFoundException(id, "Place");
+        }
         removedPlace.setRemoved(true);
         placeRepository.save(removedPlace);
     }
