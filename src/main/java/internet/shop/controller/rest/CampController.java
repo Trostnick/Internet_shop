@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,25 +30,26 @@ public class CampController {
 
     @PostMapping
     public ResponseEntity add(@Valid @RequestBody Camp newCamp,
-                              @RequestParam String iconPath,
-                              @RequestParam
-                                      BindingResult bindingResult) {
+                              BindingResult bindingResult) {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();
+
         if (!validateErrors.isEmpty()) {
-            return new ResponseEntity<>(validateErrors, HttpStatus.UNPROCESSABLE_ENTITY);
+            List<String> validateMessages = new ArrayList<>();
+            validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
+            return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        //Добавление картинки
-        try {
-            File icon = new File(iconPath);
-            newCamp.setIcon(Files.readAllBytes(icon.toPath()));
-        } catch (IOException e) {
-            new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        if (newCamp.getDateStart().isAfter(newCamp.getDateFinish())) {
+            return new ResponseEntity<>("Дата начала не может быть позже даты окончания", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        Camp camp = campService.add(newCamp);
+        if (newCamp.getAgeMin() > newCamp.getAgeMax()) {
+            return new ResponseEntity<>("Минимальный возраст не может быть больше максимлаьного", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
 
-        return new ResponseEntity<>(camp, HttpStatus.OK);
+        return new ResponseEntity<>(campService.add(newCamp), HttpStatus.OK);
+
+
     }
 
     @DeleteMapping("/{id}")
@@ -76,7 +77,7 @@ public class CampController {
         return new ResponseEntity<>(campService.getMany(campFilter), HttpStatus.OK);
     }
 
-    @PutMapping("/icon/{id}")
+    /*@PutMapping("/icon/{id}")
     public ResponseEntity putImage(@PathVariable Long id, @RequestBody String iconPath) {
 
         Camp camp = campService.getOne(id);
@@ -87,7 +88,7 @@ public class CampController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>(camp, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/icon/{id}")
     public byte[] getIcon(@PathVariable Long id) {

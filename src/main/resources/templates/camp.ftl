@@ -6,7 +6,7 @@
 <body>
 
 <form action="/logout">
-    <p>${username}</p>
+    <#--<p>${username}</p>-->
     <button>
         Сменить пользователя
     </button>
@@ -18,7 +18,7 @@
 </div>
 <h1> ${camp.name}</h1>
 <#if camp.icon??>
-    <img src="/api/camp/icon/${camp.id}" alt="icon">
+    <img src="/api/camp/icon/${camp.id}" alt="icon" height="150" width="150">
 <#else>
 <div>Здесь будет картинка</div>
 </#if>

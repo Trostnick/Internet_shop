@@ -13,14 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Map;
 
 @Controller
-public class HomeController {
+public class InfoController {
 
     private final CampRepository campRepository;
 
     private final UserRepository userRepository;
 
     @Autowired
-    public HomeController(CampRepository campRepository, UserRepository userRepository) {
+    public InfoController(CampRepository campRepository, UserRepository userRepository) {
         this.campRepository = campRepository;
         this.userRepository = userRepository;
     }
@@ -51,13 +51,12 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("camp");
         Map<String, Object> model = modelAndView.getModel();
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        /*User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         internet.shop.entity.User curUser = userRepository
-                .getByLoginAndRemovedFalse(user.getUsername());
+                .getByLoginAndRemovedFalse(user.getUsername());*/
 
         model.put("camp", campRepository.getByIdAndRemovedFalse(id));
-        model.put("username", curUser.getName());
-
+        /*model.put("username", curUser.getName());*/
 
 
         return modelAndView;
@@ -73,15 +72,6 @@ public class HomeController {
         return modelAndView;
 
     }
-
-
-    /*@GetMapping("/hello")
-    public ModelAndView getHellopage() {
-        ModelAndView modelAndView = new ModelAndView("hello");
-        Map<String, Object> model = modelAndView.getModel();
-        model.put("secret", "Some secret information");
-        return modelAndView;
-    }*/
 
 
 }

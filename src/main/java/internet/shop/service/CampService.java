@@ -1,17 +1,14 @@
 package internet.shop.service;
 
-import internet.shop.constant.*;
 import internet.shop.entity.Camp;
-import internet.shop.entity.CampType;
-import internet.shop.exception.FindByIdException;
 import internet.shop.filter.CampFilter;
 import internet.shop.repository.CampRepository;
 import internet.shop.repository.CampTypeRepository;
-import org.hibernate.ObjectDeletedException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,7 +18,6 @@ import javax.persistence.criteria.Root;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +42,7 @@ public class CampService {
     }
 
 
+    @RolesAllowed("manager")
     public Camp add(Camp newCamp) {
         campRepository.save(newCamp);
         return newCamp;
@@ -82,25 +79,25 @@ public class CampService {
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.notEqual(root.get("removed"), true));
 
-        if (!(campFilter.getName() == null)) {
+        if (!(campFilter.getName() == null || campFilter.getName().isEmpty())) {
             predicates.add(cb.like(root.get("name"), "%" + campFilter.getName() + "%"));
         }
-        if (!(campFilter.getMinAge() == null)) {
-            predicates.add(cb.ge(root.get("ageMin"), campFilter.getMinAge()));
+        if (!(campFilter.getAgeMin() == null)) {
+            predicates.add(cb.ge(root.get("ageMin"), campFilter.getAgeMin()));
         }
-        if (!(campFilter.getMaxAge() == null)) {
-            predicates.add(cb.le(root.get("ageMax"), campFilter.getMaxAge()));
+        if (!(campFilter.getAgeMax() == null)) {
+            predicates.add(cb.le(root.get("ageMax"), campFilter.getAgeMax()));
         }
-        if (!(campFilter.getStartDate() == null)) {
-            predicates.add(cb.between(root.get("dateStart"), campFilter.getStartDate(), LocalDate.MAX));
+        if (!(campFilter.getDateStart() == null || campFilter.getDateStart().isEmpty())) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get("dateStart"), campFilter.getDateStartAsLocalDate()));
         }
-        if (!(campFilter.getFinishDate() == null)) {
-            predicates.add(cb.between(root.get("dateFinish"), LocalDate.MIN, campFilter.getFinishDate()));
+        if (!(campFilter.getDateFinish() == null || campFilter.getDateFinish().isEmpty())) {
+            predicates.add(cb.lessThanOrEqualTo(root.get("dateFinish"), campFilter.getDateFinishAsLocalDate()));
         }
-        if (!(campFilter.getPlace() == null)) {
+        if (!(campFilter.getPlace() == null || campFilter.getPlace().isEmpty())) {
             predicates.add(cb.equal(root.get("place").get("name"), campFilter.getPlace()));
         }
-        if (!(campFilter.getType() == null)) {
+        if (!(campFilter.getType() == null || campFilter.getType().isEmpty())) {
             predicates.add(cb.equal(root.get("type").get("name"), campFilter.getType()));
         }
 
@@ -109,10 +106,10 @@ public class CampService {
         return em.createQuery(query).getResultList();
     }
 
-    public Camp putIcon(Camp curCamp, String iconPath)throws IOException {
+    /*public Camp putIcon(Camp curCamp, String iconPath)throws IOException {
         File icon = new File(iconPath);
         curCamp.setIcon(Files.readAllBytes(icon.toPath()));
         campRepository.save(curCamp);
         return curCamp;
-    }
+    }*/
 }

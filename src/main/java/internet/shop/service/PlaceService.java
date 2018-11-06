@@ -69,7 +69,7 @@ public class PlaceService {
         query.select(root);
 
         List<Predicate> predicates = new ArrayList<>();
-        if (!(name == null)) {
+        if (!(name == null || name.isEmpty())) {
             predicates.add(cb.like(root.get("name"), "%" + name + "%"));
         }
 

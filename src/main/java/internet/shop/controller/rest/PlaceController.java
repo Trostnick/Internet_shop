@@ -2,15 +2,18 @@ package internet.shop.controller.rest;
 
 import internet.shop.entity.Place;
 import internet.shop.service.PlaceService;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,7 +33,9 @@ public class PlaceController {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();
 
         if (!validateErrors.isEmpty()) {
-            return new ResponseEntity<>(validateErrors, HttpStatus.UNPROCESSABLE_ENTITY);
+            List<String> validateMessages = new ArrayList<>();
+            validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
+            return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         return new ResponseEntity<>(placeService.add(newPlace), HttpStatus.OK);

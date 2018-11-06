@@ -17,30 +17,30 @@
     </form>
 </#if>
 
-<h1> Все доступные лагеря</h1>
-<table border="1">
-    <tr>
-        <td>Иконка
-        <td>Название
-        <td>Место проведения
-        <td>Тип лагеря
-        <td>Возраст
-        <td>Дата проведения
-        <td>Подробнее
-    </tr>
-    <#list camps as camp>
-    <tr>
-        <td> <#if camp.icon??><img src="/api/camp/icon/${camp.id}" alt="icon" height="50" width="50"><#else > icon</#if>
-        <td> ${camp.name}
-        <td> <#if camp.place??>${camp.place.name}</#if>
-        <td> <#if camp.type??>${camp.type.name}</#if>
-        <td> от ${camp.ageMin} до ${camp.ageMax} лет
-        <td> с ${camp.dateStart} до ${camp.dateFinish}
-        <td><a href="/camp/${camp.id}">Перейти
-    </tr>
-    <#else ><h1>На данный момент нет доступных лагерей, обратитесь позднее</h1>
-    </#list>
+<form id="filter">
+    <div><label> Название <input type="text" id="campName"> </label></div>
+    <div><label> Возраст от <input type="number" id="campAgeMin"> </label></div>
+    <div><label> Возраст до <input type="number" id="campAgeMax"> </label></div>
+    <div><label> Дата от <input type="date" id="campDateStart"> </label></div>
+    <div><label> Дата до <input type="date" id="campDateFinish"> </label></div>
+    <div><label> Место <input type="text" id="campPlace"> </label></div>
+    <div><label> Тип лагеря <input type="text" id="campType"> </label></div>
+    <button type="submit">Поиск</button>
+</form>
 
-</table>
+
+
+<div id="feedback"></div>
+
+<div>
+    <form action="/camp">
+        <input type="submit" value="Добавить лагерь">
+</div>
+
+</body>
+
+<script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
+
+<script type="text/javascript" src="js/campFilter.js"></script>
 
 </html>

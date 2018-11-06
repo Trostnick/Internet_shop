@@ -4,10 +4,10 @@ import java.time.LocalDate;
 
 public class CampFilter {
     private String name;
-    private Integer minAge;
-    private Integer maxAge;
-    private LocalDate startDate;
-    private LocalDate finishDate;
+    private Integer ageMin;
+    private Integer ageMax;
+    private String dateStart;
+    private String dateFinish;
     private String type;
     private String place;
 
@@ -19,36 +19,44 @@ public class CampFilter {
         this.name = name;
     }
 
-    public Integer getMinAge() {
-        return minAge;
+    public Integer getAgeMin() {
+        return ageMin;
     }
 
-    public void setMinAge(Integer minAge) {
-        this.minAge = minAge;
+    public void setAgeMin(Integer ageMin) {
+        this.ageMin = ageMin;
     }
 
-    public Integer getMaxAge() {
-        return maxAge;
+    public Integer getAgeMax() {
+        return ageMax;
     }
 
-    public void setMaxAge(Integer maxAge) {
-        this.maxAge = maxAge;
+    public void setAgeMax(Integer ageMax) {
+        this.ageMax = ageMax;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public LocalDate getDateStartAsLocalDate() {
+        return LocalDate.parse(dateStart);
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public String getDateStart() {
+        return dateStart;
     }
 
-    public LocalDate getFinishDate() {
-        return finishDate;
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
     }
 
-    public void setFinishDate(LocalDate finishDate) {
-        this.finishDate = finishDate;
+    public LocalDate getDateFinishAsLocalDate() {
+        return LocalDate.parse(dateFinish);
+    }
+
+    public String getDateFinish() {
+        return dateFinish;
+    }
+
+    public void setDateFinish(String dateFinish) {
+        this.dateFinish = dateFinish;
     }
 
     public String getType() {
