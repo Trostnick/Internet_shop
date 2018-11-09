@@ -2,9 +2,9 @@ use demo;
 
 
 insert into user_status
-values (1, 'client'),
-       (2, 'manager'),
-       (3, 'admin');
+values (1, 'ROLE_client'),
+       (2, 'ROLE_manager'),
+       (3, 'ROLE_admin');
 
 
 insert into order_status
@@ -33,7 +33,7 @@ values (1, 'Place1', 'far far away', 'something', 0),
        (3, 'Not first Place', 'very near', 'something', 0),
        (4, 'Place not 1st', 'this', 'something', 0);
 
-insert into camp (id, name, age_min, age_max, date_start, date_finish, children_count, removed,  type_id, place_id)
-values (1, 'Camp1', 8, 12, '2017-10-10', '2017-10-19', 60, 0, 1, 1);
+/*insert into camp (id, name, age_min, age_max, date_start, date_finish, children_count, removed, price, type_id, place_id)
+values (1, 'Camp1', 8, 12, '2017-10-10', '2017-10-19', 60, 0,10000, 1, 1);*/
 
 commit;

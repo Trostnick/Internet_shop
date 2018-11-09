@@ -2,16 +2,15 @@ package internet.shop.controller.rest;
 
 import internet.shop.entity.Place;
 import internet.shop.service.PlaceService;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ public class PlaceController {
     }
 
     @PostMapping
+    @RolesAllowed({"manager","admin"})
     public ResponseEntity add(@Valid @RequestBody Place newPlace, BindingResult bindingResult) {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();
 
@@ -42,6 +42,7 @@ public class PlaceController {
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed({"admin","manager"})
     public ResponseEntity deleteOne(@PathVariable Long id) {
 
         placeService.deleteOne(id);
@@ -50,6 +51,7 @@ public class PlaceController {
     }
 
     @PutMapping("/{id}")
+    @RolesAllowed({"manager","admin"})
     public ResponseEntity put(@PathVariable Long id, @Valid @RequestBody Place newPlace,
                               BindingResult bindingResult) {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();

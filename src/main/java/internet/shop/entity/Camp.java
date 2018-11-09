@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Entity
-@Table(name="camp")
+@Table(name = "camp")
 public class Camp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,20 +21,25 @@ public class Camp {
     @Future
     private LocalDate dateFinish;
 
-    @Min(0)
+    @PositiveOrZero
     private int ageMin;
 
+    @PositiveOrZero
     @Max(120)
     private int ageMax;
 
-    @Min(0)
+    @PositiveOrZero
+    @NotNull
+    private int price;
+
+    @PositiveOrZero
     private int childrenCount;
+
 
     @AssertFalse
     private boolean removed;
     private String info;
 
-    //TODO: с иконкой и типом хранения подумать как добавлять её
     private byte[] icon;
 
     @ManyToOne
@@ -136,6 +141,14 @@ public class Camp {
         this.place = place;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public boolean isRemoved() {
         return removed;
     }
@@ -151,7 +164,7 @@ public class Camp {
                 "Camp[id=%d, name='%s', Start='%s', Finish='%s',ageMin='%s', ageMax='%s'," +
                         "info='%s',childrenCount='%s']\r\n",
                 id, name, format.format(dateStart), format.format(dateFinish),
-                ageMin, ageMax, info, childrenCount) ;
+                ageMin, ageMax, info, childrenCount);
     }
 
 }

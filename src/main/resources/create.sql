@@ -25,6 +25,7 @@ create table camp (
   date_start     date        not null,
   date_finish    date        not null,
   children_count int         not null,
+  price          int         not null,
   removed        bit         not null,
   icon           blob,
   info           text,
@@ -38,10 +39,10 @@ create table camp (
 );
 
 create table camp_photo (
-  id            int          not null  primary key   unique  auto_increment,
-  image         varchar(100) not null,
-  removed       bit          not null,
-  camp_id       int
+  id      int          not null  primary key   unique  auto_increment,
+  image   varchar(100) not null,
+  removed bit          not null,
+  camp_id int
     references camp (id)
       on update cascade
       on delete cascade

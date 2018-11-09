@@ -6,6 +6,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
@@ -29,6 +30,7 @@ public class PlaceService {
     public PlaceService(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
     }
+
 
     public Place add(Place newPlace) {
 

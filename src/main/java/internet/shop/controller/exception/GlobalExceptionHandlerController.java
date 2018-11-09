@@ -1,7 +1,6 @@
 package internet.shop.controller.exception;
 
 
-import internet.shop.exception.FindByIdException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

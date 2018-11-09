@@ -5,12 +5,12 @@
 </head>
 <body>
 
-<form action="/logout">
-    <#--<p>${username}</p>-->
+<#--<form action="/logout">
+    &lt;#&ndash;<p>${username}</p>&ndash;&gt;
     <button>
         Сменить пользователя
     </button>
-</form>
+</form>-->
 <div>
     <form action="/home">
         <button>На главную</button>
@@ -23,6 +23,7 @@
 <div>Здесь будет картинка</div>
 </#if>
 <ul>
+    <li>Цена - ${camp.price}
         <#if camp.place??>
     <li>Место проведения                - ${camp.place.name}
         </#if>
@@ -32,7 +33,7 @@
     <li>Дата начала - ${camp.dateStart}
     <li>Дата окончания - ${camp.dateFinish}
     <li>Минимальный возраст ребенка - ${camp.ageMin}
-    <li>Максимальный возраст ребенка - ${camp.ageMin}
+    <li>Максимальный возраст ребенка - ${camp.ageMax}
 <li>Примерное количество детей      - ${camp.childrenCount}
         <#if camp.info??>
     <li> Дополнительная информация - ${camp.info}
@@ -54,5 +55,8 @@
 
 </div>
 </#if>
+<form action="/basket/${camp.id}">
+    <input type="submit" value="Добавить в корзину">
+</form>
 </body>
 </html>

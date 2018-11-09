@@ -1,50 +1,35 @@
 package internet.shop.service;
 
 
+import internet.shop.entity.Order;
 import internet.shop.entity.OrderCamp;
-import internet.shop.entity.OrderStatus;
-import internet.shop.exception.FindByIdException;
 import internet.shop.repository.OrderCampRepository;
-import internet.shop.repository.OrderRepository;
-import internet.shop.repository.OrderStatusRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderCampService {
 
-    @PersistenceContext
-    private EntityManager em;
 
     private final OrderCampRepository orderCampRepository;
 
-    private final OrderRepository orderRepository;
-
-    private final CampService campService;
-
-    private final OrderStatusRepository orderStatusRepository;
+    private final OrderService orderService;
 
     @Autowired
-    public OrderCampService(OrderCampRepository orderCampRepository, OrderStatusRepository orderStatusRepository,
-                            OrderRepository orderRepository, CampService campService) {
+    public OrderCampService(OrderCampRepository orderCampRepository,
+                            OrderService orderService) {
         this.orderCampRepository = orderCampRepository;
-        this.orderRepository = orderRepository;
-        this.campService = campService;
-        this.orderStatusRepository = orderStatusRepository;
+        this.orderService = orderService;
     }
 
 
     public OrderCamp add(OrderCamp newOrderCamp) {
+        Order curOrder = orderService.getCurOrderOrCreate();
+        newOrderCamp.setOrder(curOrder);
         orderCampRepository.save(newOrderCamp);
         return newOrderCamp;
     }
@@ -73,44 +58,13 @@ public class OrderCampService {
         return curOrderCamp;
     }
 
-    /*public String getMany(String userLogin, String statusName, String campName) {
-
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<OrderCamp> query = cb.createQuery(OrderCamp.class);
-        Root<OrderCamp> root = query.from(OrderCamp.class);
-        query.select(root);
-
-        Predicate criteriaLogin = cb.equal(root.get("order").get("user").get("login"), userLogin);
-
-        list
-
-        if (statusName.equals("all") && campName.equals("all")) {
-            OrderStatus removedType = orderStatusRepository.findById(ORDER_STATUS.REMOVED.getValue()).get();
-            Predicate criteriaRemoved = cb.notEqual(root.get("order").get("status"), removedType);
-            query.where(cb.and(criteriaLogin, criteriaRemoved));
-        } else if (!statusName.equals("all") && campName.equals("all")) {
-            Predicate criteriaStatus = cb.equal(root.get("order").get("status").get("name"), statusName);
-            query.where(cb.and(criteriaLogin, criteriaStatus));
-        } else if (statusName.equals("all") && !campName.equals("all")) {
-            OrderStatus removedType = orderStatusRepository.findById(ORDER_STATUS.REMOVED.getValue()).get();
-            Predicate criteriaRemoved = cb.notEqual(root.get("order").get("status"), removedType);
-            Predicate criteriaCamp = cb.equal(root.get("camp").get("name"), campName);
-            query.where(cb.and(criteriaLogin, criteriaRemoved, criteriaCamp));
-        } else {
-            Predicate criteriaStatus = cb.equal(root.get("order").get("status").get("name"), statusName);
-            Predicate criteriaCamp = cb.equal(root.get("camp").get("name"), campName);
-            query.where(cb.and(criteriaLogin, criteriaStatus, criteriaCamp));
+    public List<OrderCamp> getAllInBasket() {
+        Order curOrder = orderService.getCurOrder();
+        if (curOrder == null) {
+            return new ArrayList<>();
         }
+        return orderCampRepository.findAllByOrderIdAndRemovedFalse(curOrder.getId());
 
-
-        List<OrderCamp> orders = em.createQuery(query).getResultList();
-
-        StringBuilder result = new StringBuilder();
-        for (OrderCamp order : orders) {
-            result.append(order.toString());
-        }
-        return result.toString();
-    }*/
-
+    }
 
 }

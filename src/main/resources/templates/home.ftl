@@ -4,30 +4,40 @@
     <meta charset="UTF-8">
     <title>My Internet Shop</title>
 </head>
-<body>
 
-<#if notAuthoraized??>
-    <a href="/login">Авторизироваться</a>
+
+<#if user??>
+<h1>Добро пожаловать, ${user.name}</h1>
+    <div>
+        <form action="/orders">
+            <input type="submit" value="Просмотр заказов">
+        </form>
+        <form action="/basket">
+            <input type="submit" value="Просмотр корзины">
+        </form>
+        <form action="/logout">
+            <button>
+                Выйти
+            </button>
+        </form>
+    </div>
 <#else>
-    <h1>Добро пожаловать, ${username}</h1>
-    <form action="/logout">
-        <button>
-            Выйти
-        </button>
+    <form action="/login">
+        <input type="submit" value="Авторизироваться">
     </form>
 </#if>
 
 <form id="filter">
     <div><label> Название <input type="text" id="campName"> </label></div>
-    <div><label> Возраст от <input type="number" id="campAgeMin"> </label></div>
-    <div><label> Возраст до <input type="number" id="campAgeMax"> </label></div>
+    <div><label> Возраст <input type="number" id="campAge" min="0"> </label></div>
     <div><label> Дата от <input type="date" id="campDateStart"> </label></div>
     <div><label> Дата до <input type="date" id="campDateFinish"> </label></div>
-    <div><label> Место <input type="text" id="campPlace"> </label></div>
-    <div><label> Тип лагеря <input type="text" id="campType"> </label></div>
+    <#--<div><label> Место <input type="text" id="campPlace"> </label></div>-->
+    <#--<div><label> Тип лагеря <input type="text" id="campType"> </label></div>-->
+    <div><label> Цена от <input type="number" id="campPriceMin" min="0"> рублей</label></div>
+    <div><label> Цена до <input type="number" id="campPriceMax" min="0"> рублей</label></div>
     <button type="submit">Поиск</button>
 </form>
-
 
 
 <div id="feedback"></div>

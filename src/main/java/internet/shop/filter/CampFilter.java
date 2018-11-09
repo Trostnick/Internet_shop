@@ -4,12 +4,13 @@ import java.time.LocalDate;
 
 public class CampFilter {
     private String name;
-    private Integer ageMin;
-    private Integer ageMax;
+    private Integer age;
     private String dateStart;
     private String dateFinish;
     private String type;
     private String place;
+    private Integer priceMin;
+    private Integer priceMax;
 
     public String getName() {
         return name;
@@ -19,20 +20,12 @@ public class CampFilter {
         this.name = name;
     }
 
-    public Integer getAgeMin() {
-        return ageMin;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setAgeMin(Integer ageMin) {
-        this.ageMin = ageMin;
-    }
-
-    public Integer getAgeMax() {
-        return ageMax;
-    }
-
-    public void setAgeMax(Integer ageMax) {
-        this.ageMax = ageMax;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public LocalDate getDateStartAsLocalDate() {
@@ -73,5 +66,21 @@ public class CampFilter {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public Integer getPriceMin() {
+        return priceMin;
+    }
+
+    public void setPriceMin(Integer priceMin) {
+        this.priceMin = priceMin;
+    }
+
+    public Integer getPriceMax() {
+        return priceMax;
+    }
+
+    public void setPriceMax(Integer priceMax) {
+        this.priceMax = priceMax;
     }
 }

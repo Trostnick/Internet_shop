@@ -1,8 +1,8 @@
 package internet.shop.service;
 
 import internet.shop.entity.Order;
+import internet.shop.entity.User;
 import internet.shop.entity.OrderStatus;
-import internet.shop.exception.FindByIdException;
 import internet.shop.repository.OrderRepository;
 import internet.shop.repository.OrderStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +18,11 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @Service
 public class OrderService {
 
 
-
-    /*private final OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     private final UserService userService;
 
@@ -32,66 +30,49 @@ public class OrderService {
 
     @Autowired
     public OrderService(OrderRepository orderRepository, UserService userService,
-                        OrderStatusRepository orderStatusRepository){
+                        OrderStatusRepository orderStatusRepository) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.orderStatusRepository = orderStatusRepository;
     }
 
-    private Order findOne(Long id) throws FindByIdException {
-        Optional<Order> order = orderRepository.findById(id);
-        if (!order.isPresent()) {
-            throw new FindByIdException("Order not found");
-        }
-        Order curOrder = order.get();
-        if (curOrder.getStatus().getId().equals(ORDER_STATUS.REMOVED.getValue())){
-            throw new FindByIdException("Order was removed");
-        }
-        return curOrder;
-    }
 
-    private void addParamsParser(String params, Order order) {
-        for (String param : params.split(",")) {
-            String[] current = param.split("=");
+    public Order add(Order newOrder) {
 
-            switch (current[0].replaceAll(" ", "")) {
-
-                case "user_id":
-                    order.setUser(userService.getOne(Long.parseLong(current[1])));
-                    break;
-                case "status_id":
-                    order.setStatus(orderStatusRepository.findById(Long.parseLong(current[1])).get());
-                    break;
-
-            }
-        }
-    }
-
-    public void add(String params) {
-        Order newOrder = new Order();
-        addParamsParser(params, newOrder);
         orderRepository.save(newOrder);
+        return newOrder;
     }
 
-    public void deleteOne(Long id) {
-        Order orderRemoved = findOne(id);
-        OrderStatus removedStatus = orderStatusRepository.findById(ORDER_STATUS.REMOVED.getValue()).get();
-        orderRemoved.setStatus(removedStatus);
+    private Order add(User user) {
+        Order newOrder = new Order();
+        newOrder.setUser(user);
+        newOrder.setStatus(orderStatusRepository.getByName("in basket"));
+        orderRepository.save(newOrder);
+        return newOrder;
+    }
+
+    public Order deleteOne(Order orderRemoved) {
+        orderRemoved.setRemoved(true);
         orderRepository.save(orderRemoved);
+        return orderRemoved;
     }
 
-    public void put(Long id, String params){
-        Order curOrder=findOne(id);
-        addParamsParser(params, curOrder);
-        orderRepository.save(curOrder);
+    public Order getCurOrderOrCreate() {
+        User user = userService.getCurrentUser();
+        Optional<Order> curOrder = orderRepository.findByStatusNameAndUserLoginAndRemovedFalse("in basket", user.getLogin());
+        return curOrder.orElseGet(() -> add(user));
     }
 
-    public Order getOne(Long id){
-        return findOne(id);
-    }*/
+    public Order getCurOrder() {
+        User user = userService.getCurrentUser();
+        Optional<Order> curOrder = orderRepository.findByStatusNameAndUserLoginAndRemovedFalse("in basket", user.getLogin());
+        return curOrder.orElseGet(() -> null);
+    }
 
-
-
+    public List<Order> getAll() {
+        User user = userService.getCurrentUser();
+        return orderRepository.findAllByUserIdAndRemovedFalse(user.getId());
+    }
 
 
 }

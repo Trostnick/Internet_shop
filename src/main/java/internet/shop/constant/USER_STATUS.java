@@ -14,4 +14,6 @@ public enum  USER_STATUS{
     public Long getValue() {
         return value;
     }
+
+
 }

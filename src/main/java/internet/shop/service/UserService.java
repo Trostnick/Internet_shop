@@ -1,13 +1,11 @@
 package internet.shop.service;
 
-import internet.shop.constant.USER_STATUS;
 import internet.shop.entity.User;
-import internet.shop.entity.UserStatus;
-import internet.shop.exception.FindByIdException;
 import internet.shop.repository.UserRepository;
 import internet.shop.repository.UserStatusRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +56,18 @@ public class UserService {
             throw new ObjectNotFoundException(id, "User");
         }
         return curUser;
+    }
+
+    public User getCurrentUser() {
+        try {
+            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            return userRepository.getByLoginAndRemovedFalse(user.getUsername());
+        }catch (ClassCastException e){
+            return null;
+        }
+
+
     }
 }

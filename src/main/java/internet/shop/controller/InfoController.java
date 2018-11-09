@@ -1,10 +1,8 @@
 package internet.shop.controller;
 
 import internet.shop.repository.CampRepository;
-import internet.shop.repository.UserRepository;
+import internet.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,12 +15,12 @@ public class InfoController {
 
     private final CampRepository campRepository;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public InfoController(CampRepository campRepository, UserRepository userRepository) {
+    public InfoController(CampRepository campRepository, UserService userService) {
         this.campRepository = campRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @GetMapping(value = {"/home", "/"})
@@ -31,16 +29,17 @@ public class InfoController {
         ModelAndView modelAndView = new ModelAndView("home");
         Map<String, Object> model = modelAndView.getModel();
 
-        try {
+
+        /*try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             internet.shop.entity.User curUser = userRepository
                     .getByLoginAndRemovedFalse(user.getUsername());
             model.put("username", curUser.getName());
         } catch (ClassCastException e) {
             model.put("notAuthoraized", e);
-        }
+        }*/
 
-
+        model.put("user", userService.getCurrentUser());
         model.put("camps", campRepository.getAllByRemovedFalse());
 
         return modelAndView;
@@ -71,6 +70,11 @@ public class InfoController {
         model.put("logout", logout);
         return modelAndView;
 
+    }
+
+    @GetMapping("/accessDenied")
+    public String getAccessDeniedPage() {
+        return "accessDenied";
     }
 
 

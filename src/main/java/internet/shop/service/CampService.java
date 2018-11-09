@@ -8,16 +8,12 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +38,7 @@ public class CampService {
     }
 
 
-    @RolesAllowed("manager")
+
     public Camp add(Camp newCamp) {
         campRepository.save(newCamp);
         return newCamp;
@@ -82,11 +78,9 @@ public class CampService {
         if (!(campFilter.getName() == null || campFilter.getName().isEmpty())) {
             predicates.add(cb.like(root.get("name"), "%" + campFilter.getName() + "%"));
         }
-        if (!(campFilter.getAgeMin() == null)) {
-            predicates.add(cb.ge(root.get("ageMin"), campFilter.getAgeMin()));
-        }
-        if (!(campFilter.getAgeMax() == null)) {
-            predicates.add(cb.le(root.get("ageMax"), campFilter.getAgeMax()));
+        if (!(campFilter.getAge() == null)) {
+            predicates.add(cb.le(root.get("ageMin"), campFilter.getAge()));
+            predicates.add(cb.ge(root.get("ageMax"), campFilter.getAge()));
         }
         if (!(campFilter.getDateStart() == null || campFilter.getDateStart().isEmpty())) {
             predicates.add(cb.greaterThanOrEqualTo(root.get("dateStart"), campFilter.getDateStartAsLocalDate()));
@@ -100,16 +94,17 @@ public class CampService {
         if (!(campFilter.getType() == null || campFilter.getType().isEmpty())) {
             predicates.add(cb.equal(root.get("type").get("name"), campFilter.getType()));
         }
+        if (!(campFilter.getPriceMin()==null )){
+            predicates.add(cb.ge(root.get("price"), campFilter.getPriceMin()));
+        }
+        if (!(campFilter.getPriceMax()==null )){
+            predicates.add(cb.le(root.get("price"), campFilter.getPriceMax()));
+        }
 
         query.where(predicates.toArray(new Predicate[predicates.size()]));
 
         return em.createQuery(query).getResultList();
     }
 
-    /*public Camp putIcon(Camp curCamp, String iconPath)throws IOException {
-        File icon = new File(iconPath);
-        curCamp.setIcon(Files.readAllBytes(icon.toPath()));
-        campRepository.save(curCamp);
-        return curCamp;
-    }*/
+
 }

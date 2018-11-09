@@ -3,6 +3,7 @@ package internet.shop.entity;
 import javax.persistence.*;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -15,7 +16,7 @@ public class User {
     private String name;
 
     @NotEmpty
-    @Size(min = 5, max = 19)
+    @Size(min = 3, max = 19)
     @Column(unique = true)
     private String login;
 
@@ -27,7 +28,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    /*@NotEmpty*/
+    @NotNull
     private UserStatus status;
 
     public User() {

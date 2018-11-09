@@ -10,12 +10,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/api/user")
+@RolesAllowed("admin")
 public class UserController {
 
     private final UserService userService;

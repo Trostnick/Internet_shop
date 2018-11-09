@@ -1,6 +1,5 @@
 package internet.shop.controller;
 
-import internet.shop.entity.Camp;
 import internet.shop.repository.CampTypeRepository;
 import internet.shop.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Map;
 
+
+@RolesAllowed({"manager", "admin"})
 @Controller
 public class AddController {
 
@@ -23,6 +25,7 @@ public class AddController {
         this.campTypeRepository = campTypeRepository;
     }
 
+
     @GetMapping("/camp")
     public ModelAndView addCamp() {
         ModelAndView modelAndView = new ModelAndView("addCamp");
@@ -31,6 +34,7 @@ public class AddController {
         model.put("types", campTypeRepository.getAllByNameNotNull());
         return modelAndView;
     }
+
 
     @GetMapping("/place")
     public ModelAndView addPlace() {

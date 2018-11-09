@@ -14,12 +14,10 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    @NotEmpty
     private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotEmpty
     private User user;
 
     public Order() {

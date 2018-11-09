@@ -11,11 +11,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/camp")
@@ -29,6 +29,7 @@ public class CampController {
     }
 
     @PostMapping
+    @RolesAllowed({"manager","admin"})
     public ResponseEntity add(@Valid @RequestBody Camp newCamp,
                               BindingResult bindingResult) {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();
@@ -53,6 +54,7 @@ public class CampController {
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed({"admin","manager"})
     public ResponseEntity deleteOne(@PathVariable Long id) {
         campService.deleteOne(id);
         return new ResponseEntity<>("Successfully deleted", HttpStatus.OK);
@@ -60,6 +62,7 @@ public class CampController {
     }
 
     @PutMapping("/{id}")
+    @RolesAllowed({"manager","admin"})
     public ResponseEntity put(@PathVariable Long id, @RequestBody Camp newCamp) {
 
         return new ResponseEntity<>(campService.put(id, newCamp), HttpStatus.OK);
@@ -77,7 +80,16 @@ public class CampController {
         return new ResponseEntity<>(campService.getMany(campFilter), HttpStatus.OK);
     }
 
-    /*@PutMapping("/icon/{id}")
+
+    @GetMapping("/icon/{id}")
+    public byte[] getIcon(@PathVariable Long id) {
+        return campService.getOne(id).getIcon();
+    }
+
+}
+
+
+ /*@PutMapping("/icon/{id}")
     public ResponseEntity putImage(@PathVariable Long id, @RequestBody String iconPath) {
 
         Camp camp = campService.getOne(id);
@@ -89,10 +101,3 @@ public class CampController {
         }
         return new ResponseEntity<>(camp, HttpStatus.OK);
     }*/
-
-    @GetMapping("/icon/{id}")
-    public byte[] getIcon(@PathVariable Long id) {
-        return campService.getOne(id).getIcon();
-    }
-
-}

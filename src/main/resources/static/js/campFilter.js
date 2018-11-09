@@ -10,14 +10,14 @@ $(document).ready(function () {
 function fire_ajax_submit() {
 
     var params = {};
-    params.ageMin = $("#campAgeMin").val() || "";
-    params.ageMax = $("#campAgeMax").val() || "";
+    params.age = $("#campAge").val() || "";
     params.name = $("#campName").val() || "";
     params.dateStart = $("#campDateStart").val() || "";
     params.dateFinish = $("#campDateFinish").val() || "";
     params.place = $("#campPlace").val() || "";
     params.type = $("#campType").val() || "";
-
+    params.priceMin = $("#campPriceMin").val() || "";
+    params.priceMax = $("#campPriceMax").val() || "";
 
 
     $.ajax({
@@ -26,10 +26,10 @@ function fire_ajax_submit() {
         timeout: 600000,
         success: function (data) {
             $("#feedback").html(data);
-        }/*,
+        },
         error: function (e) {
             $("#feedback").html("<p>" + e.responseText)
 
-        }*/
+        }
     })
 }

@@ -11,7 +11,7 @@
 
 <p>Если место проведения вашего лагеря отсутствует, не забудьте сначала добавить его</p>
 <form action="/place">
-    <input type="submit" value="Добавить">
+    <input type="submit" value="Добавить место проведения">
 </form>
 
 <form  id="newCamp">
@@ -32,6 +32,9 @@
     </label></div>
     <div><label> Количество детей
         <input type="number" id="childrenCount" min="0" max="1000" required size="4">
+    </label></div>
+    <div><label> Цена в рублях
+        <input type="number" id="price" min="0" required size="10">
     </label></div>
     <div><label> Место
         <select id="place">
