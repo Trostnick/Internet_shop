@@ -10,7 +10,7 @@ function fire_ajax_submit() {
     var params = {};
     params.password = $("#password").val();
     if (!(params.password === $("#passwordConfirm").val())) {
-        $("#error").html('<p class="text-danger">Значение пароля не совпадает с его подтверждением');
+        $("#result").html('<p class="text-danger">Значение пароля не совпадает с его подтверждением');
     }
     else {
         params.name = $("#username").val();
@@ -21,10 +21,10 @@ function fire_ajax_submit() {
             contentType: 'application/json',
             data: JSON.stringify(params),
             success: function (res) {
-                $("#success").html('<p class="text-success">' + res);
+                $("#result").html('<p class="text-success">' + res);
             },
             error: function (e) {
-                $("#error").html('<p class="text-danger">' + e.responseText);
+                $("#result").html('<p class="text-danger">' + e.responseText);
             }
 
         })

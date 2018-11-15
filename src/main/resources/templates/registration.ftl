@@ -11,9 +11,7 @@
 <div class="container">
     <br>
 
-    <div id="error">
-    </div>
-    <div id="success">
+    <div id="result">
     </div>
     <br>
     <form id="newUser">
