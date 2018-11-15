@@ -1,6 +1,7 @@
 package internet.shop.controller.exception;
 
 
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,10 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
     public ResponseEntity<String> handleNotFound(RuntimeException ex, WebRequest request) {
 
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {NonUniqueObjectException.class})
+    public ResponseEntity<String> handleNotUnique(RuntimeException ex, WebRequest request) {
+        return new ResponseEntity<>("This login has already used", HttpStatus.NOT_ACCEPTABLE);
     }
 }

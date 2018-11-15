@@ -13,6 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getByIdAndRemovedFalse(Long id);
 
-    Optional<User> findByLoginAndRemovedFalse(String login);
+    Optional<User> findByLogin(String login);
+
 
 }

@@ -3,6 +3,7 @@ package internet.shop.service;
 import internet.shop.entity.User;
 import internet.shop.repository.UserRepository;
 import internet.shop.repository.UserStatusRepository;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,8 +30,16 @@ public class UserService {
     }
 
 
-    public void add(User newUser) throws IllegalArgumentException {
+    public void addClient(User newUser) {
+        Optional<User> user = userRepository.findByLogin(newUser.getLogin());
+        if (user.isPresent()){
+             User userInBase = user.get();
+            throw new NonUniqueObjectException("This login is already used",userInBase.getId(), userInBase.getClass().getName());
+        }
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        if (newUser.getStatus()==null){
+            newUser.setStatus(userStatusRepository.getOne(1L));
+        }
         userRepository.save(newUser);
     }
 

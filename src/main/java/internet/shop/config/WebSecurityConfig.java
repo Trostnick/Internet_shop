@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/camp/{id}", "/filter/**", "/api/**").permitAll()
+                .antMatchers("/", "/home", "/registration", "/camp/{id}", "/filter/**", "/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/js/**", "/webjars/**");
     }
 

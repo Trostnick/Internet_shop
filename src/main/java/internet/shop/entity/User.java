@@ -21,6 +21,7 @@ public class User {
     private String login;
 
     @NotEmpty
+    @Size(min = 6)
     private String password;
 
     @AssertFalse
@@ -28,7 +29,6 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    @NotNull
     private UserStatus status;
 
     public User() {

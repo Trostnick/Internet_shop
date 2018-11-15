@@ -5,19 +5,19 @@ import internet.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/api/user")
-@RolesAllowed("admin")
 public class UserController {
 
     private final UserService userService;
@@ -28,18 +28,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity add(@Valid @RequestBody User newUser, BindingResult bindingResult) {
+    public ResponseEntity addClient(@Valid @RequestBody User newUser, BindingResult bindingResult) {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();
 
+
         if (!validateErrors.isEmpty()) {
-            return new ResponseEntity<>(validateErrors, HttpStatus.UNPROCESSABLE_ENTITY);
+            List<String> validateMessages = new ArrayList<>();
+            validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
+            return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        userService.add(newUser);
+        userService.addClient(newUser);
 
         return new ResponseEntity<>("User successfuly created", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed("admin")
     public ResponseEntity deleteOne(@PathVariable Long id) {
         userService.deleteOne(id);
         return new ResponseEntity<>("Successfully deleted", HttpStatus.OK);
@@ -47,12 +51,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @RolesAllowed("admin")
     public ResponseEntity put(@PathVariable Long id, @RequestBody User newUser) {
         userService.put(id, newUser);
         return new ResponseEntity<>("Successfully putted ", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @RolesAllowed("admin")
     public ResponseEntity getOne(@PathVariable() Long id) {
         return new ResponseEntity<>(userService.getOne(id), HttpStatus.OK);
     }

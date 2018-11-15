@@ -20,8 +20,8 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public ResponseEntity add(@RequestBody String body) {
-        orderService.add(body);
+    public ResponseEntity addClient(@RequestBody String body) {
+        orderService.addClient(body);
         return new ResponseEntity<>("Successfully saved", HttpStatus.OK);
     }
 
