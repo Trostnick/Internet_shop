@@ -1,5 +1,6 @@
 package internet.shop.controller;
 
+import internet.shop.entity.Order;
 import internet.shop.entity.OrderCamp;
 import internet.shop.repository.UserRepository;
 import internet.shop.service.CampService;
@@ -34,10 +35,12 @@ public class BasketController {
     public ModelAndView getAllOrdersPage() {
         ModelAndView modelAndView = new ModelAndView("allUserOrders");
         Map<String, Object> model = modelAndView.getModel();
-
-
-        model.put("orders", orderService.getAll());
-
+        List<Order> orderList = orderService.getAll();
+        if (orderList.isEmpty()){
+            model.put("orders", null);
+        }else {
+            model.put("orders", orderList);
+        }
         return modelAndView;
 
     }

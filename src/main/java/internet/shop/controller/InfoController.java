@@ -49,33 +49,25 @@ public class InfoController {
     public ModelAndView getCamppage(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("camp");
         Map<String, Object> model = modelAndView.getModel();
-
-        /*User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        internet.shop.entity.User curUser = userRepository
-                .getByLoginAndRemovedFalse(user.getUsername());*/
-
         model.put("camp", campRepository.getByIdAndRemovedFalse(id));
-        /*model.put("username", curUser.getName());*/
-
-
         return modelAndView;
     }
 
     @GetMapping("/login")
     public ModelAndView autorization(@RequestParam(required = false) String error,
                                      @RequestParam(required = false) String logout) {
+        if (!(userService.getCurrentUser()==null)){
+            return new ModelAndView("redirect:/home");
+        }
         ModelAndView modelAndView = new ModelAndView("login");
         Map<String, Object> model = modelAndView.getModel();
         model.put("error", error);
         model.put("logout", logout);
         return modelAndView;
-
     }
 
     @GetMapping("/accessDenied")
     public String getAccessDeniedPage() {
         return "accessDenied";
     }
-
-
 }
