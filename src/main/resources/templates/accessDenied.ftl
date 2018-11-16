@@ -13,6 +13,7 @@
     <form action="/home">
         <button type="submit" class="btn btn-primary">На главную</button>
     </form>
+    <br>
 </div>
 </body>
 </html>

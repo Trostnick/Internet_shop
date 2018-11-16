@@ -1,19 +1,26 @@
 package internet.shop.controller.rest;
 
 import internet.shop.entity.Camp;
+import internet.shop.entity.CampType;
+import internet.shop.entity.Place;
 import internet.shop.filter.CampFilter;
+import internet.shop.form.CampForm;
 import internet.shop.service.CampService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +35,9 @@ public class CampController {
         this.campService = campService;
     }
 
-    @PostMapping
-    @RolesAllowed({"manager","admin"})
-    public ResponseEntity add(@Valid @RequestBody Camp newCamp,
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RolesAllowed({"manager", "admin"})
+    public ResponseEntity add(@Valid @ModelAttribute CampForm campForm,
                               BindingResult bindingResult) {
         List<ObjectError> validateErrors = bindingResult.getAllErrors();
 
@@ -39,6 +46,7 @@ public class CampController {
             validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
             return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        Camp newCamp = campService.convertToCamp(campForm);
 
         if (newCamp.getDateStart().isAfter(newCamp.getDateFinish())) {
             return new ResponseEntity<>("Дата начала не может быть позже даты окончания", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -49,12 +57,10 @@ public class CampController {
         }
 
         return new ResponseEntity<>(campService.add(newCamp), HttpStatus.OK);
-
-
     }
 
     @DeleteMapping("/{id}")
-    @RolesAllowed({"admin","manager"})
+    @RolesAllowed({"admin", "manager"})
     public ResponseEntity deleteOne(@PathVariable Long id) {
         campService.deleteOne(id);
         return new ResponseEntity<>("Successfully deleted", HttpStatus.OK);
@@ -62,7 +68,7 @@ public class CampController {
     }
 
     @PutMapping("/{id}")
-    @RolesAllowed({"manager","admin"})
+    @RolesAllowed({"manager", "admin"})
     public ResponseEntity put(@PathVariable Long id, @RequestBody Camp newCamp) {
 
         return new ResponseEntity<>(campService.put(id, newCamp), HttpStatus.OK);
@@ -88,16 +94,3 @@ public class CampController {
 
 }
 
-
- /*@PutMapping("/icon/{id}")
-    public ResponseEntity putImage(@PathVariable Long id, @RequestBody String iconPath) {
-
-        Camp camp = campService.getOne(id);
-
-        try {
-            camp = campService.putIcon(camp, iconPath);
-        } catch (IOException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        return new ResponseEntity<>(camp, HttpStatus.OK);
-    }*/

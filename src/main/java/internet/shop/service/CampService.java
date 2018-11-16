@@ -1,7 +1,10 @@
 package internet.shop.service;
 
 import internet.shop.entity.Camp;
+import internet.shop.entity.CampType;
+import internet.shop.entity.Place;
 import internet.shop.filter.CampFilter;
+import internet.shop.form.CampForm;
 import internet.shop.repository.CampRepository;
 import internet.shop.repository.CampTypeRepository;
 import org.hibernate.ObjectNotFoundException;
@@ -14,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +44,36 @@ public class CampService {
 
 
     public Camp add(Camp newCamp) {
+        campRepository.save(newCamp);
+        return newCamp;
+    }
+
+    public Camp convertToCamp(CampForm form){
+        Camp newCamp = new Camp();
+        newCamp.setRemoved(false);
+        newCamp.setInfo(form.getInfo());
+        newCamp.setName(form.getName());
+        newCamp.setAgeMin(form.getAgeMin());
+        newCamp.setAgeMax(form.getAgeMax());
+        newCamp.setChildrenCount(form.getChildrenCount());
+        newCamp.setPrice(form.getPrice());
+        newCamp.setDateStart(form.getDateStart());
+        newCamp.setDateFinish(form.getDateFinish());
+
+        try {
+            newCamp.setIcon(form.getIcon().getBytes());
+        } catch (IOException e) {
+            newCamp.setIcon(null);
+        }
+
+        Place curPlace = new Place();
+        curPlace.setId(form.getPlaceId());
+        newCamp.setPlace(curPlace);
+
+        CampType curCampType = new CampType();
+        curCampType.setId(form.getTypeId());
+        newCamp.setType(curCampType);
+
         campRepository.save(newCamp);
         return newCamp;
     }

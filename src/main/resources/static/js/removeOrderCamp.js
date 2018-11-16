@@ -2,7 +2,8 @@ $(document).ready(function () {
 
     $(".removeOrderCamp").submit(function (event) {
         event.preventDefault();
-        ajaxRemove($(this).data("id"));
+        var campId = $(this).data("id");
+        ajaxRemove(campId);
     })
 });
 
@@ -27,7 +28,7 @@ function ajaxRemove(campId){
                 curOrderPrice.html(orderPrice);
                 curOrderCamp.remove();
             }else{
-
+                location.reload(true);
             }
         }
     })

@@ -43,6 +43,14 @@ public class OrderCampService {
         orderCampRepository.save(orderCampRemoved);
     }
 
+    public void deleteAllByOrderId(Long id) {
+        List<OrderCamp> orderCampList = orderCampRepository.findAllByOrderIdAndRemovedFalse(id);
+        orderCampList.forEach(orderCamp -> {
+            orderCamp.setRemoved(false);
+        });
+        orderCampRepository.saveAll(orderCampList);
+    }
+
     public OrderCamp put(Long id, OrderCamp newOrderCamp) {
         if (!orderCampRepository.existsByIdAndRemovedFalse(id)) {
             throw new ObjectNotFoundException(id, "OrderCamp");

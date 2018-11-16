@@ -53,6 +53,21 @@ public class Camp {
     public Camp() {
     }
 
+    public Camp(@NotNull String name, @Future LocalDate dateStart, @Future LocalDate dateFinish, @PositiveOrZero int ageMin, @PositiveOrZero @Max(120) int ageMax, @PositiveOrZero @NotNull int price, @PositiveOrZero int childrenCount, @AssertFalse boolean removed, String info, byte[] icon, CampType type, Place place) {
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateFinish = dateFinish;
+        this.ageMin = ageMin;
+        this.ageMax = ageMax;
+        this.price = price;
+        this.childrenCount = childrenCount;
+        this.removed = removed;
+        this.info = info;
+        this.icon = icon;
+        this.type = type;
+        this.place = place;
+    }
+
     public Long getId() {
         return id;
     }
@@ -77,12 +92,20 @@ public class Camp {
         this.dateStart = dateStart;
     }
 
+    public void setDateStart(String dateStart){
+        this.dateStart=LocalDate.parse(dateStart);
+    }
+
     public LocalDate getDateFinish() {
         return dateFinish;
     }
 
     public void setDateFinish(LocalDate dateFinish) {
         this.dateFinish = dateFinish;
+    }
+
+    public void setDateFinish(String dateFinish){
+        this.dateFinish = LocalDate.parse(dateFinish);
     }
 
     public int getAgeMin() {

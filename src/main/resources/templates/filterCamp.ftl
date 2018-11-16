@@ -21,8 +21,14 @@
         <td> ${camp.price}
         <td> от ${camp.ageMin} до ${camp.ageMax} лет
         <td> с ${camp.dateStart} до ${camp.dateFinish}
-        <td><a href="/camp/${camp.id}">Перейти
-        <td><a href="/basket/${camp.id}"> Добавить
+        <td>
+        <form action="/camp/${camp.id}">
+            <button type="submit" class="btn btn-info">Перейти</button>
+        </form>
+        <td>
+        <form action="/basket/${camp.id}">
+            <button type="submit" class="btn btn-success">Добавить</button>
+        </form>
     </tr>
 
 </#list>

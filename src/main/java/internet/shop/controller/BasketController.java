@@ -37,9 +37,9 @@ public class BasketController {
         Map<String, Object> model = modelAndView.getModel();
         List<Order> orderList = orderService.getAll();
         if (orderList.isEmpty()){
-            model.put("orders", null);
+            model.put("orderList", null);
         }else {
-            model.put("orders", orderList);
+            model.put("orderList", orderList);
         }
         return modelAndView;
 
@@ -77,8 +77,10 @@ public class BasketController {
 
     @GetMapping("/basket/remove")
     public ModelAndView removeBasket(){
-        orderService.deleteOne(orderService.getCurOrder());
-        return new ModelAndView("redirect:/home");
+        Order curOrder = orderService.getCurOrder();
+        orderCampService.deleteAllByOrderId(curOrder.getId());
+        orderService.deleteOne(curOrder);
+        return new ModelAndView("redirect:/basket");
     }
 
 }

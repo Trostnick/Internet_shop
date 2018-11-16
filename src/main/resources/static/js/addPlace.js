@@ -23,10 +23,10 @@ function fire_ajax_submit() {
         data: params,
         dataType: 'json',
         success: function () {
-            $("#result").html('<p>Успешно добавлено')
+            $("#result").html('<p class="text-success">Успешно добавлено')
         },
-        error:function (result) {
-            $("#result").html('<p>' + result.responseText)
+        error:function (e) {
+            $("#result").html('<p class="text-danger">' + e.responseText)
         }
     })
 }

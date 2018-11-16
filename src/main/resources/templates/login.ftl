@@ -3,9 +3,8 @@
 <head>
     <title>Авторизация</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="webjars/popper.js/1.14.3/popper.min.js"></script>
-    <script type="text/javascript" src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -35,6 +34,7 @@
     <form action="/home">
         <button type="submit" class="btn btn-info"> На главную</button>
     </form>
+    <br>
 </div>
 </body>
 </html>

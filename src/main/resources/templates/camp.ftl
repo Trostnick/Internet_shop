@@ -4,42 +4,40 @@
     <meta charset="UTF-8">
     <title>${camp.name}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="webjars/popper.js/1.14.3/popper.min.js"></script>
-    <script type="text/javascript" src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <div>
-        <form action="/home">
-            <button>На главную</button>
-        </form>
-    </div>
+    <br>
     <h1> ${camp.name}</h1>
+    <br>
+    <div class="row">
+        <div class="col-3">
 <#if camp.icon??>
-    <img src="/api/camp/icon/${camp.id}" alt="icon" height="150" width="150">
-<#else>
-<div>Здесь будет картинка</div>
+    <img src="/api/camp/icon/${camp.id}" alt="i" height="150" width="150">
 </#if>
-    <ul>
-    <li>Цена - ${camp.price}
-            <#if camp.place??>
-        <li>Место проведения                - ${camp.place.name}
-            </#if>
-            <#if camp.type??>
-        <li>Форма проведения - ${camp.type.name}
-            </#if>
-        <li>Дата начала - ${camp.dateStart}
-        <li>Дата окончания - ${camp.dateFinish}
-        <li>Минимальный возраст ребенка - ${camp.ageMin}
-        <li>Максимальный возраст ребенка - ${camp.ageMax}
-    <li>Количество детей - ${camp.childrenCount}
-            <#if camp.info??>
-        <li> Дополнительная информация - ${camp.info}
-            </#if>
-
-    </ul>
-
+        </div>
+        <div class="col-6">
+            <ul>
+            <li>Цена - ${camp.price}
+                <#if camp.place??>
+            <li>Место проведения                - ${camp.place.name}
+                </#if>
+                <#if camp.type??>
+            <li>Форма проведения - ${camp.type.name}
+                </#if>
+            <li>Дата начала - ${camp.dateStart}
+            <li>Дата окончания - ${camp.dateFinish}
+            <li>Минимальный возраст ребенка - ${camp.ageMin}
+            <li>Максимальный возраст ребенка - ${camp.ageMax}
+            <li>Количество детей - ${camp.childrenCount}
+                <#if camp.info??>
+            <li> Дополнительная информация - ${camp.info}
+                </#if>
+            </ul>
+        </div>
+    </div>
     <#if camp.place??>
         <h2>О месте проведения</h2>
         <div>
@@ -55,8 +53,13 @@
         </div>
     </#if>
     <form action="/basket/${camp.id}">
-        <input type="submit" value="Добавить в корзину">
+        <button class="btn-success"> Добавить в корзину</button>
     </form>
+    <br>
+    <form action="/home">
+        <button class="btn btn-info">На главную</button>
+    </form>
+    <br>
 </div>
 </body>
 </html>

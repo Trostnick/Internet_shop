@@ -28,7 +28,7 @@ function fire_ajax_submit() {
             $("#feedback").html(data);
         },
         error: function (e) {
-            $("#feedback").html("<p>" + e.responseText)
+            $("#feedback").html("<p class='text-danger'>" + e.responseText)
 
         }
     })

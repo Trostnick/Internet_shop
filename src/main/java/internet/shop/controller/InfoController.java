@@ -1,5 +1,6 @@
 package internet.shop.controller;
 
+import internet.shop.entity.Camp;
 import internet.shop.repository.CampRepository;
 import internet.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +26,11 @@ public class InfoController {
 
     @GetMapping(value = {"/home", "/"})
     public ModelAndView getHomepage() {
-
         ModelAndView modelAndView = new ModelAndView("home");
         Map<String, Object> model = modelAndView.getModel();
 
-
-        /*try {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            internet.shop.entity.User curUser = userRepository
-                    .getByLoginAndRemovedFalse(user.getUsername());
-            model.put("username", curUser.getName());
-        } catch (ClassCastException e) {
-            model.put("notAuthoraized", e);
-        }*/
-
         model.put("user", userService.getCurrentUser());
         model.put("camps", campRepository.getAllByRemovedFalse());
-
         return modelAndView;
     }
 
@@ -49,14 +38,18 @@ public class InfoController {
     public ModelAndView getCamppage(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("camp");
         Map<String, Object> model = modelAndView.getModel();
-        model.put("camp", campRepository.getByIdAndRemovedFalse(id));
+        Camp curCamp = campRepository.getByIdAndRemovedFalse(id);
+        if (curCamp.getInfo().isEmpty()) {
+            curCamp.setInfo(null);
+        }
+        model.put("camp", curCamp);
         return modelAndView;
     }
 
     @GetMapping("/login")
     public ModelAndView autorization(@RequestParam(required = false) String error,
                                      @RequestParam(required = false) String logout) {
-        if (!(userService.getCurrentUser()==null)){
+        if (!(userService.getCurrentUser() == null)) {
             return new ModelAndView("redirect:/home");
         }
         ModelAndView modelAndView = new ModelAndView("login");

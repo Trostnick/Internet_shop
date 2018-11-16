@@ -1,69 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Лагерь</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
 <body>
-<div>
-    <form action="/home">
-        <button>На главную</button>
+<div class="container">
+    <br>
+    <div id="result"></div>
+    <p>Если место проведения вашего лагеря отсутствует, не забудьте сначала добавить его</p>
+    <form action="/place">
+        <button type="submit" class="btn btn-success"> Добавить место проведения</button>
     </form>
+    <br>
+    <form id="newCamp">
+        <div class="form-group">
+            <label for="name">Название </label>
+            <input type="text" class="form-control" id="name" minlength="2" required>
+        </div>
+        <div class="form-group">
+            <label for="ageMin"> Возраст от</label>
+            <input type="number" class="form-control" id="ageMin" min="0" max="120" required size="3">
+        </div>
+        <div class="form-group">
+            <label for="ageMax"> Возраст до</label>
+            <input type="number" class="form-control" id="ageMax" min="0" max="120" required size="3">
+        </div>
+        <div class="form-group">
+            <label for="dateStart"> Дата от</label>
+            <input type="date" class="form-control" id="dateStart" required>
+        </div>
+        <div class="form-group">
+            <label for="dateFinish"> Дата до</label>
+            <input type="date" class="form-control" id="dateFinish" required>
+        </div>
+        <div class="form-group">
+            <label for="childrenCount"> Количество детей</label>
+            <input type="number" class="form-control" id="childrenCount" min="0" max="1000" required size="4">
+        </div>
+        <div class="form-group">
+            <label for="price"> Цена в рублях</label>
+            <input type="number" class="form-control" id="price" min="0" required size="10">
+        </div>
+        <div class="form-group">
+            <label for="place"> Место проведения</label>
+            <select class="form-control" id="place">
+                <#if places??>
+                    <#list places as place>
+                        <option value="${place.id}">${place.name}</option>
+                    </#list>
+                </#if>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="type"> Тип лагеря</label>
+            <select class="form-control" id="type">
+                <#if types??>
+                    <#list types as type>
+                        <option value="${type.id}">${type.name}</option>
+                    </#list>
+                </#if>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="info"> Дополнительная информация </label>
+            <textarea rows="5" class="form-control" id="info"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="icon"> Иконка</label>
+            <input type="file" id="icon">
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+    <br>
+    <form action="/home">
+        <button type="submit" class="btn btn-info">На главную</button>
+    </form>
+    <br>
 </div>
-
-<div id="result"></div>
-
-<p>Если место проведения вашего лагеря отсутствует, не забудьте сначала добавить его</p>
-<form action="/place">
-    <input type="submit" value="Добавить место проведения">
-</form>
-
-<form  id="newCamp">
-    <div><label>Название :
-        <input type="text" id="name"  minlength="2" required>
-    </label></div>
-    <div><label> Возраст от
-        <input type="number" id="ageMin" min="0" max="120" required size="3">
-    </label></div>
-    <div><label> Возраст до
-        <input type="number" id="ageMax" min="0" max="120" required size="3">
-    </label></div>
-    <div><label> Дата от
-        <input type="date" id="dateStart" required>
-    </label></div>
-    <div><label> Дата до
-        <input type="date" id="dateFinish" required>
-    </label></div>
-    <div><label> Количество детей
-        <input type="number" id="childrenCount" min="0" max="1000" required size="4">
-    </label></div>
-    <div><label> Цена в рублях
-        <input type="number" id="price" min="0" required size="10">
-    </label></div>
-    <div><label> Место
-        <select id="place">
-                <#list places as place>
-                    <option value="${place.id}">${place.name}</option>
-                </#list>
-        </select>
-    </label></div>
-    <div><label> Место
-        <select id="type">
-                <#list types as type>
-                    <option value="${type.id}">${type.name}</option>
-                </#list>
-        </select>
-    </label></div>
-    <div><label> Информация
-        <textarea rows="5" id="info"></textarea>
-    </label>
-    </div>
-    <div><label> Иконка
-        <input type="file" id="icon">
-    </label></div>
-    <input type="submit" value="Отправить">
-</form>
-
+<script type="text/javascript" src="js/addCamp.js"></script>
 </body>
 
-<script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
 
-<script type="text/javascript" src="js/addCamp.js"></script>
 </html>
 

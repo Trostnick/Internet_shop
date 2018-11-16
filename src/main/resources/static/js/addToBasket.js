@@ -19,10 +19,10 @@ function fire_ajax_submit(){
         contentType:"application/json",
         dataType:"json",
         success:function () {
-            $("#result").html('<p>Добавлено в корзину')
+            $("#result").html('<p class="text-success">Добавлено в корзину')
         },
         error:function(e){
-            $("#result").html('<p>'+e.responseText)
+            $("#result").html('<p class="text-danger">'+e.responseText)
         }
 
     })
