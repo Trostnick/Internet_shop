@@ -1,6 +1,7 @@
 package internet.shop.service;
 
 import internet.shop.entity.Order;
+import internet.shop.entity.OrderStatus;
 import internet.shop.entity.User;
 import internet.shop.repository.OrderRepository;
 import internet.shop.repository.OrderStatusRepository;
@@ -61,6 +62,15 @@ public class OrderService {
         User user = userService.getCurrentUser();
         Optional<Order> curOrder = orderRepository.findByStatusNameAndUserLoginAndRemovedFalse("in basket", user.getLogin());
         return curOrder.orElseGet(() -> null);
+    }
+
+
+    public void confirm(){
+        Order curOrder = getCurOrder();
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setId(2L);
+        curOrder.setStatus(orderStatus);
+        orderRepository.save(curOrder);
     }
 
     public List<Order> getAll() {

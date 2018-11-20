@@ -48,7 +48,7 @@
     </div>
     </div>
         <br>
-    <form>
+    <form action="/basket/confirm">
         <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
     <#else>

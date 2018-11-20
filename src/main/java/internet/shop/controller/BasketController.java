@@ -8,6 +8,7 @@ import internet.shop.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -81,6 +82,32 @@ public class BasketController {
         orderCampService.deleteAllByOrderId(curOrder.getId());
         orderService.deleteOne(curOrder);
         return new ModelAndView("redirect:/basket");
+    }
+
+    @GetMapping("/basket/confirm")
+    public ModelAndView confirmOrderPage(){
+        ModelAndView modelAndView = new ModelAndView("confirmOrder");
+        Map<String, Object> model = modelAndView.getModel();
+
+        List<OrderCamp> orderCampList = orderCampService.getAllInBasket();
+
+        model.put("orderCampList", orderCampList);
+        int orderPrice = 0;
+
+        for (OrderCamp orderCamp : orderCampList) {
+            orderPrice += orderCamp.getCamp().getPrice() * orderCamp.getCount();
+        }
+        model.put("orderPrice", orderPrice);
+
+
+        return modelAndView;
+    }
+
+    @PostMapping("/basket/confirm")
+    public ModelAndView confirm(){
+
+        orderService.confirm();
+        return new ModelAndView("redirect:/home");
     }
 
 }
