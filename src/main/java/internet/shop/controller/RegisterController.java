@@ -10,9 +10,7 @@ import java.util.Map;
 public class RegisterController {
 
     @GetMapping("/registration")
-    public ModelAndView getRegistrationPage(){
-        ModelAndView modelAndView = new ModelAndView("registration");
-
-        return modelAndView;
+    public String getRegistrationPage() {
+        return "registration";
     }
 }

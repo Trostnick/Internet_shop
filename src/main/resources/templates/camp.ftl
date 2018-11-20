@@ -53,7 +53,7 @@
         </div>
     </#if>
     <form action="/basket/${camp.id}">
-        <button class="btn-success"> Добавить в корзину</button>
+        <button class="btn btn-success"> Добавить в корзину</button>
     </form>
     <br>
     <form action="/home">

@@ -10,7 +10,7 @@
 <body>
 <div class="container">
     <br>
-    <div id="result"></div>
+    <div class="result"></div>
     <p>Если место проведения вашего лагеря отсутствует, не забудьте сначала добавить его</p>
     <form action="/place">
         <button type="submit" class="btn btn-success"> Добавить место проведения</button>
@@ -75,6 +75,8 @@
         </div>
         <button type="submit" class="btn btn-primary">Добавить</button>
     </form>
+    <br>
+    <div class="result"></div>
     <br>
     <form action="/home">
         <button type="submit" class="btn btn-info">На главную</button>

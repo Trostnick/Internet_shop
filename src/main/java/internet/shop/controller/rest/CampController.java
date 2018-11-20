@@ -1,8 +1,6 @@
 package internet.shop.controller.rest;
 
 import internet.shop.entity.Camp;
-import internet.shop.entity.CampType;
-import internet.shop.entity.Place;
 import internet.shop.filter.CampFilter;
 import internet.shop.form.CampForm;
 import internet.shop.service.CampService;
@@ -14,13 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,15 +41,8 @@ public class CampController {
             validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
             return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
+
         Camp newCamp = campService.convertToCamp(campForm);
-
-        if (newCamp.getDateStart().isAfter(newCamp.getDateFinish())) {
-            return new ResponseEntity<>("Дата начала не может быть позже даты окончания", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        if (newCamp.getAgeMin() > newCamp.getAgeMax()) {
-            return new ResponseEntity<>("Минимальный возраст не может быть больше максимлаьного", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
 
         return new ResponseEntity<>(campService.add(newCamp), HttpStatus.OK);
     }

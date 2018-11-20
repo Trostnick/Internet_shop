@@ -1,22 +1,18 @@
 package internet.shop.service;
 
 import internet.shop.entity.Place;
+import internet.shop.exception.NonUniqueFieldException;
 import internet.shop.repository.PlaceRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import javax.validation.ConstraintViolation;
-import javax.xml.transform.Transformer;
-import javax.xml.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class PlaceService {
@@ -32,7 +28,11 @@ public class PlaceService {
     }
 
 
-    public Place add(Place newPlace) {
+    public Place add(Place newPlace) throws NonUniqueFieldException {
+        Optional<Place> placeInBase = placeRepository.findByNameAndRemovedFalse(newPlace.getName());
+        if (placeInBase.isPresent()) {
+            throw new NonUniqueFieldException("Место с таким именем уже добавлено");
+        }
 
         placeRepository.save(newPlace);
         return newPlace;

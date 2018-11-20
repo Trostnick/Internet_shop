@@ -1,21 +1,12 @@
 package internet.shop.service;
 
 import internet.shop.entity.Order;
-import internet.shop.entity.OrderCamp;
 import internet.shop.entity.User;
-import internet.shop.entity.OrderStatus;
-import internet.shop.repository.OrderCampRepository;
 import internet.shop.repository.OrderRepository;
 import internet.shop.repository.OrderStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 

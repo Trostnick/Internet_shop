@@ -18,6 +18,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,26 +30,32 @@ public class CampService {
 
     private final CampRepository campRepository;
 
-    private final CampTypeRepository campTypeRepository;
-
-    private final PlaceService placeService;
-
     @Autowired
     public CampService(CampRepository campRepository, CampTypeRepository campTypeRepository,
                        PlaceService placeService) {
         this.campRepository = campRepository;
-        this.campTypeRepository = campTypeRepository;
-        this.placeService = placeService;
     }
 
 
+    public Camp add(Camp newCamp) throws RuntimeException {
 
-    public Camp add(Camp newCamp) {
+        if (LocalDate.now().isAfter(newCamp.getDateStart())) {
+            throw new IllegalArgumentException("Даты лагеря должны находиться в будущем");
+        }
+
+        if (newCamp.getDateStart().isAfter(newCamp.getDateFinish())) {
+            throw new IllegalArgumentException("Дата начала не может быть позже даты окончания");
+        }
+
+        if (newCamp.getAgeMin() > newCamp.getAgeMax()) {
+            throw new IllegalArgumentException("Минимальный возраст не может быть больше максимлаьного");
+        }
+
         campRepository.save(newCamp);
         return newCamp;
     }
 
-    public Camp convertToCamp(CampForm form){
+    public Camp convertToCamp(CampForm form) {
         Camp newCamp = new Camp();
         newCamp.setRemoved(false);
         newCamp.setInfo(form.getInfo());
@@ -128,10 +135,10 @@ public class CampService {
         if (!(campFilter.getType() == null || campFilter.getType().isEmpty())) {
             predicates.add(cb.equal(root.get("type").get("name"), campFilter.getType()));
         }
-        if (!(campFilter.getPriceMin()==null )){
+        if (!(campFilter.getPriceMin() == null)) {
             predicates.add(cb.ge(root.get("price"), campFilter.getPriceMin()));
         }
-        if (!(campFilter.getPriceMax()==null )){
+        if (!(campFilter.getPriceMax() == null)) {
             predicates.add(cb.le(root.get("price"), campFilter.getPriceMax()));
         }
 

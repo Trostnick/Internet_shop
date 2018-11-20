@@ -2,7 +2,6 @@ package internet.shop.controller;
 
 import internet.shop.entity.Order;
 import internet.shop.entity.OrderCamp;
-import internet.shop.repository.UserRepository;
 import internet.shop.service.CampService;
 import internet.shop.service.OrderCampService;
 import internet.shop.service.OrderService;
@@ -36,9 +35,9 @@ public class BasketController {
         ModelAndView modelAndView = new ModelAndView("allUserOrders");
         Map<String, Object> model = modelAndView.getModel();
         List<Order> orderList = orderService.getAll();
-        if (orderList.isEmpty()){
+        if (orderList.isEmpty()) {
             model.put("orderList", null);
-        }else {
+        } else {
             model.put("orderList", orderList);
         }
         return modelAndView;
@@ -52,16 +51,17 @@ public class BasketController {
 
         List<OrderCamp> orderCampList = orderCampService.getAllInBasket();
 
-        if (orderCampList.isEmpty()) {
-            model.put("orderCampList", null);
-        } else {
+        model.put("orderCampList", orderCampList);
+        if (!(orderCampList == null)) {
+
             int orderPrice = 0;
-            model.put("orderCampList", orderCampList);
 
             for (OrderCamp orderCamp : orderCampList) {
                 orderPrice += orderCamp.getCamp().getPrice() * orderCamp.getCount();
             }
             model.put("orderPrice", orderPrice);
+        } else {
+            model.put("orderPrice", null);
         }
 
         return modelAndView;
@@ -76,7 +76,7 @@ public class BasketController {
     }
 
     @GetMapping("/basket/remove")
-    public ModelAndView removeBasket(){
+    public ModelAndView removeBasket() {
         Order curOrder = orderService.getCurOrder();
         orderCampService.deleteAllByOrderId(curOrder.getId());
         orderService.deleteOne(curOrder);

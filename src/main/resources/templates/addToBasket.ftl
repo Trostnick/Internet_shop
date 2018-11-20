@@ -19,7 +19,7 @@
             <li>Цена за 1 путевку - ${camp.price}
             <li><label>Количество - <input type="number" id="count" value="1" min="1" required></label>
         </ul>
-        <button type="submit" class="btn btn-primary">Добвить</button>
+        <button type="submit" class="btn btn-primary">Добавить</button>
     </form>
     <br>
     <form action="/home">

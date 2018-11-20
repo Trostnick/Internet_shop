@@ -4,6 +4,7 @@ import internet.shop.entity.Camp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CampRepository extends JpaRepository<Camp, Long> {
 
@@ -12,5 +13,7 @@ public interface CampRepository extends JpaRepository<Camp, Long> {
     Camp getByIdAndRemovedFalse(Long id);
 
     List<Camp> getAllByRemovedFalse();
+
+    Optional<Camp> findByNameAndRemovedFalse(String name);
 
 }

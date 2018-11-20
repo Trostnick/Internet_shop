@@ -16,16 +16,16 @@ public class FilterController {
     private final CampService campService;
 
     @Autowired
-    public FilterController(CampService campService){
-        this.campService=campService;
+    public FilterController(CampService campService) {
+        this.campService = campService;
     }
 
     @GetMapping("/filter/camp")
-    public ModelAndView getFilterCamp(CampFilter campFilter){
+    public ModelAndView getFilterCamp(CampFilter campFilter) {
         ModelAndView modelAndView = new ModelAndView("filterCamp");
-        Map<String, Object> model= modelAndView.getModel();
-        if (campFilter==null){
-            model.put("filterCamp",campService.getMany(new CampFilter()));
+        Map<String, Object> model = modelAndView.getModel();
+        if (campFilter == null) {
+            model.put("filterCamp", campService.getMany(new CampFilter()));
             return modelAndView;
         }
         model.put("filterCamp", campService.getMany(campFilter));

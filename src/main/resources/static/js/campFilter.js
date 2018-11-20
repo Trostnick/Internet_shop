@@ -8,7 +8,7 @@ $(document).ready(function () {
 });
 
 function fire_ajax_submit() {
-
+    var result_div = $("#result");
     var params = {};
     params.age = $("#campAge").val() || "";
     params.name = $("#campName").val() || "";
@@ -25,10 +25,11 @@ function fire_ajax_submit() {
         data: params,
         timeout: 600000,
         success: function (data) {
-            $("#feedback").html(data);
+            result_div.html(data);
         },
         error: function (e) {
-            $("#feedback").html("<p class='text-danger'>" + e.responseText)
+            result_div.attr("class", "alert alert-danger");
+            result_div.html(e.responseText)
 
         }
     })

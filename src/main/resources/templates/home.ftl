@@ -57,7 +57,7 @@
     </div>
     <br>
 
-    <div id="feedback"></div>
+    <div id="result"></div>
 
     <#if user?? && (user.status.id>1)>
         <div>

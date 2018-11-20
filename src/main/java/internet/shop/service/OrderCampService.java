@@ -62,16 +62,23 @@ public class OrderCampService {
 
     public OrderCamp getOne(Long id) {
         OrderCamp curOrderCamp = orderCampRepository.getByIdAndRemovedFalse(id);
-        if (curOrderCamp == null) throw new ObjectNotFoundException(id, "OrderCamp");
+        if (curOrderCamp == null) {
+            throw new ObjectNotFoundException(id, "OrderCamp");
+        }
         return curOrderCamp;
     }
 
     public List<OrderCamp> getAllInBasket() {
         Order curOrder = orderService.getCurOrder();
         if (curOrder == null) {
-            return new ArrayList<>();
+            return null;
         }
-        return orderCampRepository.findAllByOrderIdAndRemovedFalse(curOrder.getId());
+        List<OrderCamp> orderCampList = orderCampRepository.findAllByOrderIdAndRemovedFalse(curOrder.getId());
+        if (orderCampList.isEmpty()){
+            orderService.deleteOne(curOrder);
+            return null;
+        }
+        return orderCampList;
 
     }
 

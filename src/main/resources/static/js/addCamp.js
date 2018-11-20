@@ -6,7 +6,7 @@ $(document).ready(function () {
 });
 
 function fire_ajax_submit() {
-
+    var result_div = $(".result");
     var formData = new FormData();
     formData.append("price", $("#price").val());
     formData.append("name", $("#name").val());
@@ -31,10 +31,12 @@ function fire_ajax_submit() {
         processData: false,
         contentType: false,
         success: function () {
-            $("#result").html('<p class="text-success">Успешно добавлено')
+            result_div.attr("class", "alert alert-success");
+            result_div.html('Успешно добавлено')
         },
         error: function (e) {
-            $("#result").html('<p class="text-danger">' + e.responseText)
+            result_div.attr("class", "alert alert-danger");
+            result_div.html(e.responseText)
         }
 
 

@@ -12,10 +12,8 @@ public class CampForm {
     @NotNull
     private String name;
 
-    @Future
     private String dateStart;
 
-    @Future
     private String dateFinish;
 
     @PositiveOrZero

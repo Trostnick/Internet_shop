@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="container">
+
     <p>У вас нет доступа к этой странице</p>
     <br>
     <form action="/home">

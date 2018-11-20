@@ -1,9 +1,9 @@
 package internet.shop.service;
 
 import internet.shop.entity.User;
+import internet.shop.exception.NonUniqueFieldException;
 import internet.shop.repository.UserRepository;
 import internet.shop.repository.UserStatusRepository;
-import org.hibernate.NonUniqueObjectException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,12 +32,11 @@ public class UserService {
 
     public void addClient(User newUser) {
         Optional<User> user = userRepository.findByLogin(newUser.getLogin());
-        if (user.isPresent()){
-             User userInBase = user.get();
-            throw new NonUniqueObjectException("This login is already used",userInBase.getId(), userInBase.getClass().getName());
+        if (user.isPresent()) {
+            throw new NonUniqueFieldException("This login is already used");
         }
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        if (newUser.getStatus()==null){
+        if (newUser.getStatus() == null) {
             newUser.setStatus(userStatusRepository.getOne(1L));
         }
         userRepository.save(newUser);
@@ -73,7 +72,7 @@ public class UserService {
                     SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             return userRepository.getByLoginAndRemovedFalse(user.getUsername());
-        }catch (ClassCastException e){
+        } catch (ClassCastException e) {
             return null;
         }
 

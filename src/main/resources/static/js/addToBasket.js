@@ -7,6 +7,7 @@ $(document).ready(function () {
 });
 
 function fire_ajax_submit(){
+    var result_div = $("#result");
     params = {};
     params["camp"]={};
     params["camp"]["id"]=campId;
@@ -19,10 +20,12 @@ function fire_ajax_submit(){
         contentType:"application/json",
         dataType:"json",
         success:function () {
-            $("#result").html('<p class="text-success">Добавлено в корзину')
+            result_div.attr("class", "alert alert-success");
+            result_div.html('<p class="text-success">Добавлено в корзину')
         },
         error:function(e){
-            $("#result").html('<p class="text-danger">'+e.responseText)
+            result_div.attr("class", "alert alert-danger");
+            result_div.html('<p class="text-danger">'+e.responseText)
         }
 
     })
