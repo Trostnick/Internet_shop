@@ -21,9 +21,10 @@
                 <td>Удалить
             </tr>
             <#list orderCampList as orderCamp>
-            <tr id="orderCamp-${orderCamp.id}">
+            <tr id="orderCamp-${orderCamp.id}" class="orderCamp">
                 <td>${orderCamp.camp.name}
-                <td class="count">${orderCamp.count}
+                <td> <input class="count" type="number" min="1" required data-count=${orderCamp.count} data-id=${orderCamp.id}
+                     value=${orderCamp.count} >
                 <td class="price">${orderCamp.camp.price}
                 <td>
                     <form onclick="return (confirm('Подтердите удаление?'))" class="removeOrderCamp"
@@ -60,6 +61,6 @@
     <br>
 </div>
 
-<script src="/js/removeOrderCamp.js"></script>
+<script src="/js/basket.js"></script>
 </body>
 </html>

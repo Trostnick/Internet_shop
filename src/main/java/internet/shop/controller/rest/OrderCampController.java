@@ -2,6 +2,7 @@ package internet.shop.controller.rest;
 
 
 import internet.shop.entity.OrderCamp;
+import internet.shop.form.OrderCampCount;
 import internet.shop.service.OrderCampService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,16 +41,13 @@ public class OrderCampController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getOne(@PathVariable() Long id) {
+    public ResponseEntity getOne(@PathVariable Long id) {
 
         return new ResponseEntity<>(orderCampService.getOne(id), HttpStatus.OK);
     }
 
-    /*@GetMapping("")
-    public ResponseEntity getMany(@RequestParam String login,
-                                  @RequestParam(required = false, defaultValue = "all") String statusName,
-                                  @RequestParam(required = false, defaultValue = "all") String campName) {
-        String placesString = orderCampService.getMany(login, statusName, campName );
-        return new ResponseEntity<>(placesString, HttpStatus.OK);
-    }*/
+    @PatchMapping("/{id}")
+    public ResponseEntity changeCount(@PathVariable Long id, @RequestBody OrderCampCount orderCampCount) {
+        return new ResponseEntity<>(orderCampService.changeCount(id, orderCampCount.getNewCount()), HttpStatus.OK);
+    }
 }

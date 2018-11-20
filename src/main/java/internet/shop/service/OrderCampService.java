@@ -60,6 +60,13 @@ public class OrderCampService {
         return newOrderCamp;
     }
 
+    public OrderCamp changeCount(Long id, int newCount){
+        OrderCamp curOrderCamp = orderCampRepository.getByIdAndRemovedFalse(id);
+        curOrderCamp.setCount(newCount);
+        orderCampRepository.save(curOrderCamp);
+        return curOrderCamp;
+    }
+
     public OrderCamp getOne(Long id) {
         OrderCamp curOrderCamp = orderCampRepository.getByIdAndRemovedFalse(id);
         if (curOrderCamp == null) {
