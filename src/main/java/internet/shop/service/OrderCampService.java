@@ -47,7 +47,7 @@ public class OrderCampService {
     public void deleteAllByOrderId(Long id) {
         List<OrderCamp> orderCampList = orderCampRepository.findAllByOrderIdAndRemovedFalse(id);
         orderCampList.forEach(orderCamp -> {
-            orderCamp.setRemoved(false);
+            orderCamp.setRemoved(true);
         });
         orderCampRepository.saveAll(orderCampList);
     }
