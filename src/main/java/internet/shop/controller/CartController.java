@@ -1,7 +1,7 @@
 package internet.shop.controller;
 
-import internet.shop.entity.Order;
-import internet.shop.entity.OrderCamp;
+import internet.shop.model.entity.Order;
+import internet.shop.model.entity.OrderCamp;
 import internet.shop.service.CampService;
 import internet.shop.service.OrderCampService;
 import internet.shop.service.OrderService;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Controller
 
-public class BasketController {
+public class CartController {
 
     private final OrderService orderService;
 
@@ -24,7 +24,7 @@ public class BasketController {
 
     private final CampService campService;
 
-    public BasketController(OrderService orderService, OrderCampService orderCampService,
+    public CartController(OrderService orderService, OrderCampService orderCampService,
                             CampService campService) {
         this.orderCampService = orderCampService;
         this.orderService = orderService;
@@ -45,12 +45,12 @@ public class BasketController {
 
     }
 
-    @GetMapping("/basket")
-    public ModelAndView getBasketPage() {
-        ModelAndView modelAndView = new ModelAndView("basket");
+    @GetMapping("/cart")
+    public ModelAndView getCartPage() {
+        ModelAndView modelAndView = new ModelAndView("cart");
         Map<String, Object> model = modelAndView.getModel();
 
-        List<OrderCamp> orderCampList = orderCampService.getAllInBasket();
+        List<OrderCamp> orderCampList = orderCampService.getAllInCart();
 
         model.put("orderCampList", orderCampList);
         if (!(orderCampList == null)) {
@@ -68,28 +68,28 @@ public class BasketController {
         return modelAndView;
     }
 
-    @GetMapping("/basket/{id}")
-    public ModelAndView getAddToBasketPage(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("addToBasket");
+    @GetMapping("/cart/{id}")
+    public ModelAndView getAddToCartPage(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView("addToCart");
         Map<String, Object> model = modelAndView.getModel();
         model.put("camp", campService.getOne(id));
         return modelAndView;
     }
 
-    @GetMapping("/basket/remove")
-    public ModelAndView removeBasket() {
+    @GetMapping("/cart/remove")
+    public ModelAndView removeCart() {
         Order curOrder = orderService.getCurOrder();
         orderCampService.deleteAllByOrderId(curOrder.getId());
         orderService.deleteOne(curOrder);
-        return new ModelAndView("redirect:/basket");
+        return new ModelAndView("redirect:/cart");
     }
 
-    @GetMapping("/basket/confirm")
+    @GetMapping("/cart/confirm")
     public ModelAndView confirmOrderPage(){
         ModelAndView modelAndView = new ModelAndView("confirmOrder");
         Map<String, Object> model = modelAndView.getModel();
 
-        List<OrderCamp> orderCampList = orderCampService.getAllInBasket();
+        List<OrderCamp> orderCampList = orderCampService.getAllInCart();
 
         model.put("orderCampList", orderCampList);
         int orderPrice = 0;
@@ -103,7 +103,7 @@ public class BasketController {
         return modelAndView;
     }
 
-    @PostMapping("/basket/confirm")
+    @PostMapping("/cart/confirm")
     public ModelAndView confirm(){
 
         orderService.confirm();

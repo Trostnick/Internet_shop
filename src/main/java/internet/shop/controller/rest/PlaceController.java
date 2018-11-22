@@ -1,6 +1,6 @@
 package internet.shop.controller.rest;
 
-import internet.shop.entity.Place;
+import internet.shop.model.entity.Place;
 import internet.shop.service.PlaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,15 +30,9 @@ public class PlaceController {
     @PostMapping
     @RolesAllowed({"manager","admin"})
     public ResponseEntity add(@Valid @RequestBody Place newPlace, BindingResult bindingResult) {
-        List<ObjectError> validateErrors = bindingResult.getAllErrors();
 
-        if (!validateErrors.isEmpty()) {
-            List<String> validateMessages = new ArrayList<>();
-            validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
-            return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
 
-        return new ResponseEntity<>(placeService.add(newPlace), HttpStatus.OK);
+        return new ResponseEntity<>(placeService.add(newPlace, bindingResult), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

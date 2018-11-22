@@ -20,7 +20,7 @@
                     <a class="nav-link" href="/orders">Заказы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/basket">Корзина</a>
+                    <a class="nav-link" href="/cart">Корзина</a>
                 </li>
 
                 <li class="nav-item">
@@ -42,7 +42,7 @@
 
         </#if>
     </nav>
-
+    <h1>Интернет магазин </h1>
     <br>
     <div>
         <form id="filter">

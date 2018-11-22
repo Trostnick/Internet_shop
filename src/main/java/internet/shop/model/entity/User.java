@@ -1,9 +1,7 @@
-package internet.shop.entity;
+package internet.shop.model.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -13,18 +11,17 @@ public class User {
     private Long id;
 
     @NotEmpty
+    @Size(max=49)
     private String name;
 
     @NotEmpty
     @Size(min = 3, max = 19)
-    @Column(unique = true)
     private String login;
 
     @NotEmpty
-    @Size(min = 6)
+    @Size(min=6)
     private String password;
 
-    @AssertFalse
     private boolean removed;
 
     @ManyToOne

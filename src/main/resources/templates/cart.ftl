@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="container">
+    <h1>Корзина</h1>
     <br>
     <#if orderCampList??>
         <h6> Номер заказа - ${orderCampList[0].order.id}</h6>
@@ -35,8 +36,8 @@
             </tr>
             </#list>
         </table>
-    <form onclick="return (confirm('Вы точно хотите очистить корзину?'))" action="/basket/remove">
-        <button class="btn btn-danger" id="removeBasket">Очистить корзину</button>
+    <form onclick="return (confirm('Вы точно хотите очистить корзину?'))" action="/cart/remove">
+        <button class="btn btn-danger" id="removeCart">Очистить корзину</button>
     </form>
     <br>
     <div class="row">
@@ -48,7 +49,7 @@
     </div>
     </div>
         <br>
-    <form action="/basket/confirm">
+    <form action="/cart/confirm">
         <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
     <#else>
@@ -61,6 +62,6 @@
     <br>
 </div>
 
-<script src="/js/basket.js"></script>
+<script src="/js/cart.js"></script>
 </body>
 </html>

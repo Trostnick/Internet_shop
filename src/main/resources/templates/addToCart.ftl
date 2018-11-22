@@ -10,10 +10,11 @@
 <body>
 
 <div class="container">
+    <h1>Добавление в корзину</h1>
     <br>
     <div id="result">
     </div>
-    <form id="addToBasket">
+    <form id="addTocart">
         <ul>
             <li>Наименовние лагеря - ${camp.name}
             <li>Цена за 1 путевку - ${camp.price}
@@ -31,7 +32,7 @@
     var campId =${camp.id}
 </script>
 
-<script src="/js/addToBasket.js"></script>
+<script src="/js/addTocart.js"></script>
 
 </body>
 </html>

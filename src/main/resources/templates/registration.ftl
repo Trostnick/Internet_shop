@@ -9,23 +9,27 @@
 <body>
 <div class="container">
     <br>
-
+    <h1>Регистрация</h1>
     <div id="result">
     </div>
     <br>
     <form id="newUser">
+        <div id="nameError" class="errorDiv"></div>
         <div class="form-group">
-            <label for="username">Имя</label>
-            <input type="text" class="form-control" id="username" required>
+            <label for="name">Имя</label>
+            <input type="text" class="form-control" id="name" required>
         </div>
+        <div id="loginError" class="errorDiv"></div>
         <div class="form-group">
             <label for="login">Логин(используется для входа)</label>
             <input type="text" class="form-control" id="login">
         </div>
+        <div id="passwordError" class="errorDiv"></div>
         <div class="form-group">
             <label for="password">Пароль</label>
             <input type="password" class="form-control" id="password" required minlength="6">
         </div>
+        <div id="passwordConfirmError" class="errorDiv"></div>
         <div class="form-group">
             <label for="passwordConfirm">Повторите пароль</label>
             <input type="password" class="form-control" id="passwordConfirm" required>

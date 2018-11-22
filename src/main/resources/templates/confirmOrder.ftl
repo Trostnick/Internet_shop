@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="container">
+    <h1>Подтверждение</h1>
     <h6> Номер заказа - ${orderCampList[0].order.id}</h6>
     <br>
     <table border="1">
@@ -35,7 +36,7 @@
         </div>
     </div>
     <br>
-    <form action="/basket/confirm" method="post">
+    <form action="/cart/confirm" method="post">
         <div class="form-group">
             <label for="address">Адрес доставки</label>
             <input class="form-control" type="text" id="address" required>

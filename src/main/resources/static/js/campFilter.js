@@ -28,7 +28,7 @@ function fire_ajax_submit() {
             result_div.html(data);
         },
         error: function (e) {
-            result_div.attr("class", "alert alert-danger");
+            result_div.attr("class", "result alert alert-danger");
             result_div.html(e.responseText)
 
         }

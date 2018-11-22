@@ -1,7 +1,9 @@
 package internet.shop.service;
 
-import internet.shop.entity.User;
-import internet.shop.exception.NonUniqueFieldException;
+import internet.shop.exception.ValidationException;
+import internet.shop.model.entity.User;
+import internet.shop.model.entity.UserStatus;
+import internet.shop.model.form.UserForm;
 import internet.shop.repository.UserRepository;
 import internet.shop.repository.UserStatusRepository;
 import org.hibernate.ObjectNotFoundException;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.Optional;
 
@@ -30,17 +33,59 @@ public class UserService {
     }
 
 
-    public void addClient(User newUser) {
+    private User convertToUser(UserForm userForm){
+        User newUser = new User();
+        newUser.setName(userForm.getName());
+        newUser.setLogin(userForm.getLogin());
+        newUser.setPassword(userForm.getPassword());
+        return newUser;
+    }
+
+    public void addClient(User newUser, BindingResult bindingResult) throws ValidationException {
+        ValidationException validationException = new ValidationException();
+
+        validationException.add(bindingResult);
+
         Optional<User> user = userRepository.findByLogin(newUser.getLogin());
         if (user.isPresent()) {
-            throw new NonUniqueFieldException("This login is already used");
+            validationException.add("login", "Этот логин уже используется");
         }
+
+        validationException.throwIf();
+
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         if (newUser.getStatus() == null) {
             newUser.setStatus(userStatusRepository.getOne(1L));
         }
         userRepository.save(newUser);
     }
+
+    public void addClient(UserForm userForm, BindingResult bindingResult) throws ValidationException {
+        ValidationException validationException = new ValidationException();
+
+        validationException.add(bindingResult);
+
+        if(!(userForm.getPassword().equals(userForm.getPasswordConfirm()))){
+            validationException.add("passwordConfirm", "Введенные пароли не совпадает");
+        }
+
+        Optional<User> user = userRepository.findByLogin(userForm.getLogin());
+        if (user.isPresent()) {
+            validationException.add("login", "Этот логин уже используется");
+        }
+
+        validationException.throwIf();
+
+        User newUser = convertToUser(userForm);
+        UserStatus clientStatus = new UserStatus();
+        clientStatus.setId(1L);
+        newUser.setStatus(clientStatus);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+        userRepository.save(newUser);
+    }
+
+
 
     public void deleteOne(Long id) {
         User userRemoved = userRepository.getByIdAndRemovedFalse(id);

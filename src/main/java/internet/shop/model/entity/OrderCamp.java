@@ -1,4 +1,4 @@
-package internet.shop.entity;
+package internet.shop.model.entity;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package internet.shop.entity;
+package internet.shop.model.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -13,7 +13,8 @@ public class Camp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotEmpty
+    @Size(max = 49)
     private String name;
 
     private LocalDate dateStart;
@@ -21,10 +22,13 @@ public class Camp {
     private LocalDate dateFinish;
 
     @PositiveOrZero
+    @Max(120)
+    @NotNull
     private int ageMin;
 
     @PositiveOrZero
     @Max(120)
+    @NotNull
     private int ageMax;
 
     @PositiveOrZero
@@ -32,10 +36,9 @@ public class Camp {
     private int price;
 
     @PositiveOrZero
+    @NotNull
     private int childrenCount;
 
-
-    @AssertFalse
     private boolean removed;
     private String info;
 

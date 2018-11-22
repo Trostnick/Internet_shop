@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $("#addToBasket").submit(function (event) {
+    $("#addTocart").submit(function (event) {
         event.preventDefault();
         fire_ajax_submit()
     })
@@ -21,11 +21,11 @@ function fire_ajax_submit(){
         dataType:"json",
         success:function () {
             result_div.attr("class", "alert alert-success");
-            result_div.html('<p class="text-success">Добавлено в корзину')
+            result_div.html('<p class="result text-success">Добавлено в корзину')
         },
         error:function(e){
             result_div.attr("class", "alert alert-danger");
-            result_div.html('<p class="text-danger">'+e.responseText)
+            result_div.html('<p class="result text-danger">'+e.responseText)
         }
 
     })

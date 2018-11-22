@@ -1,7 +1,7 @@
-package internet.shop.controller.exception;
+package internet.shop.controller;
 
 
-import internet.shop.exception.NonUniqueFieldException;
+import internet.shop.exception.ValidationException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
@@ -23,8 +24,8 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
     }
 
 
-    @ExceptionHandler(value = {IllegalArgumentException.class, NonUniqueFieldException.class})
-    public ResponseEntity<String> handleUnprocessableEntity(RuntimeException ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    @ExceptionHandler(value = {ValidationException.class})
+    public ResponseEntity<Map> handleValidationException(ValidationException ex, WebRequest request) {
+        return new ResponseEntity<> (ex.getMessageMap(), HttpStatus.BAD_REQUEST);
     }
 }

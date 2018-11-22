@@ -1,15 +1,13 @@
-package internet.shop.form;
+package internet.shop.model.form;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 
 public class CampForm {
 
-    @NotNull
+    @NotEmpty
+    @Size(max = 49)
     private String name;
 
     private String dateStart;
@@ -17,10 +15,13 @@ public class CampForm {
     private String dateFinish;
 
     @PositiveOrZero
+    @Max(120)
+    @NotNull
     private int ageMin;
 
     @PositiveOrZero
     @Max(120)
+    @NotNull
     private int ageMax;
 
     @PositiveOrZero
@@ -28,6 +29,7 @@ public class CampForm {
     private int price;
 
     @PositiveOrZero
+    @NotNull
     private int childrenCount;
 
     private String info;

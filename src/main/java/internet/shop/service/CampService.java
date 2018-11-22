@@ -1,15 +1,17 @@
 package internet.shop.service;
 
-import internet.shop.entity.Camp;
-import internet.shop.entity.CampType;
-import internet.shop.entity.Place;
-import internet.shop.filter.CampFilter;
-import internet.shop.form.CampForm;
+import internet.shop.exception.ValidationException;
+import internet.shop.model.entity.Camp;
+import internet.shop.model.entity.CampType;
+import internet.shop.model.entity.Place;
+import internet.shop.model.filter.CampFilter;
+import internet.shop.model.form.CampForm;
 import internet.shop.repository.CampRepository;
-import internet.shop.repository.CampTypeRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,31 +33,11 @@ public class CampService {
     private final CampRepository campRepository;
 
     @Autowired
-    public CampService(CampRepository campRepository, CampTypeRepository campTypeRepository,
-                       PlaceService placeService) {
+    public CampService(CampRepository campRepository) {
         this.campRepository = campRepository;
     }
 
-
-    public Camp add(Camp newCamp) throws RuntimeException {
-
-        if (LocalDate.now().isAfter(newCamp.getDateStart())) {
-            throw new IllegalArgumentException("Даты лагеря должны находиться в будущем");
-        }
-
-        if (newCamp.getDateStart().isAfter(newCamp.getDateFinish())) {
-            throw new IllegalArgumentException("Дата начала не может быть позже даты окончания");
-        }
-
-        if (newCamp.getAgeMin() > newCamp.getAgeMax()) {
-            throw new IllegalArgumentException("Минимальный возраст не может быть больше максимлаьного");
-        }
-
-        campRepository.save(newCamp);
-        return newCamp;
-    }
-
-    public Camp convertToCamp(CampForm form) {
+    private Camp convertToCamp(CampForm form) {
         Camp newCamp = new Camp();
         newCamp.setRemoved(false);
         newCamp.setInfo(form.getInfo());
@@ -67,9 +49,15 @@ public class CampService {
         newCamp.setDateStart(form.getDateStart());
         newCamp.setDateFinish(form.getDateFinish());
 
-        try {
-            newCamp.setIcon(form.getIcon().getBytes());
-        } catch (IOException e) {
+        MultipartFile icon = form.getIcon();
+
+        if(!(icon == null)) {
+            try {
+                newCamp.setIcon(icon.getBytes());
+            } catch (IOException e){
+                newCamp.setIcon(null);
+            }
+        } else{
             newCamp.setIcon(null);
         }
 
@@ -81,8 +69,65 @@ public class CampService {
         curCampType.setId(form.getTypeId());
         newCamp.setType(curCampType);
 
+        return newCamp;
+    }
+
+    public Camp add(Camp newCamp, BindingResult bindingResult) throws ValidationException {
+        ValidationException validationException = new ValidationException();
+
+        validationException.add(bindingResult);
+
+        if (newCamp.getDateStart().isBefore(LocalDate.now())) {
+            validationException.add("dateStart", "Дата начала лагеря должна быть позднее текущей");
+        }
+
+        if (newCamp.getDateFinish().isBefore(LocalDate.now())) {
+            validationException.add("dateFinish", "Дата окончания лагеря должна быть позднее текущей");
+        }
+
+        if (newCamp.getDateFinish().isBefore(newCamp.getDateStart())) {
+            validationException.add("dateFinish", "Дата окончания не может быть раньше даты начала");
+        }
+
+        if (newCamp.getAgeMin() > newCamp.getAgeMax()) {
+            validationException.add("ageMax", "Максимальный возраст не может быть меньше минимального");
+        }
+
+
+        validationException.throwIf();
         campRepository.save(newCamp);
         return newCamp;
+
+    }
+
+    public Camp add(CampForm campForm, BindingResult bindingResult) throws ValidationException {
+        ValidationException validationException = new ValidationException();
+
+        Camp newCamp = convertToCamp(campForm);
+
+        validationException.add(bindingResult);
+
+        if (newCamp.getDateStart().isBefore(LocalDate.now())) {
+            validationException.add("dateStart", "Дата начала лагеря должна быть позднее текущей");
+        }
+
+        if (newCamp.getDateFinish().isBefore(LocalDate.now())) {
+            validationException.add("dateFinish", "Дата окончания лагеря должна быть позднее текущей");
+        }
+
+        if (newCamp.getDateFinish().isBefore(newCamp.getDateStart())) {
+            validationException.add("dateFinish", "Дата окончания не может быть раньше даты начала");
+        }
+
+        if (newCamp.getAgeMin() > newCamp.getAgeMax()) {
+            validationException.add("ageMax", "Максимальный возраст не может быть меньше минимального");
+        }
+
+
+        validationException.throwIf();
+        campRepository.save(newCamp);
+        return newCamp;
+
     }
 
     public void deleteOne(Long id) throws ObjectNotFoundException {

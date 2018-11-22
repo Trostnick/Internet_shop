@@ -1,6 +1,7 @@
 package internet.shop.controller.rest;
 
-import internet.shop.entity.User;
+import internet.shop.model.entity.User;
+import internet.shop.model.form.UserForm;
 import internet.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,16 +29,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity addClient(@Valid @RequestBody User newUser, BindingResult bindingResult) {
-        List<ObjectError> validateErrors = bindingResult.getAllErrors();
+    public ResponseEntity addClient(@Valid @RequestBody UserForm userForm, BindingResult bindingResult) {
 
 
-        if (!validateErrors.isEmpty()) {
-            List<String> validateMessages = new ArrayList<>();
-            validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
-            return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        userService.addClient(newUser);
+        userService.addClient(userForm, bindingResult);
 
         return new ResponseEntity<>("User successfuly created", HttpStatus.OK);
     }

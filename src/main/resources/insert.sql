@@ -8,7 +8,7 @@ values (1, 'ROLE_client'),
 
 
 insert into order_status
-values (1, 'in basket'),
+values (1, 'in cart'),
        (2, 'booked'),
        (3, 'payed'),
        (4, 'delivered'),
@@ -20,7 +20,7 @@ values (1, 'stationary'),
        (2, 'tent'),
        (3, 'day stay');
 
-#пользователь с логино first и паролем qwerty123
+#пользователь(администратор) с логином first и паролем qwerty123
 
 insert into user
 values (1, 'Main', 'first', '$2a$10$/1j4vr//s8o4ovCN64rMXesDIKhTs80jZs0KtufvmRzABT5BLTBZm', 0, 3);
@@ -33,7 +33,6 @@ values (1, 'Place1', 'far far away', 'something', 0),
        (3, 'Not first Place', 'very near', 'something', 0),
        (4, 'Place not 1st', 'this', 'something', 0);
 
-/*insert into camp (id, name, age_min, age_max, date_start, date_finish, children_count, removed, price, type_id, place_id)
-values (1, 'Camp1', 8, 12, '2017-10-10', '2017-10-19', 60, 0,10000, 1, 1);*/
+
 
 commit;

@@ -1,23 +1,19 @@
 package internet.shop.controller.rest;
 
-import internet.shop.entity.Camp;
-import internet.shop.filter.CampFilter;
-import internet.shop.form.CampForm;
+import internet.shop.model.entity.Camp;
+import internet.shop.model.filter.CampFilter;
+import internet.shop.model.form.CampForm;
 import internet.shop.service.CampService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/camp")
@@ -32,19 +28,9 @@ public class CampController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @RolesAllowed({"manager", "admin"})
-    public ResponseEntity add(@Valid @ModelAttribute CampForm campForm,
-                              BindingResult bindingResult) {
-        List<ObjectError> validateErrors = bindingResult.getAllErrors();
+    public ResponseEntity add(@Valid @ModelAttribute CampForm campForm, BindingResult bindingResult) {
 
-        if (!validateErrors.isEmpty()) {
-            List<String> validateMessages = new ArrayList<>();
-            validateErrors.forEach(f -> validateMessages.add(((FieldError) f).getField() + " - " + f.getDefaultMessage()));
-            return new ResponseEntity<>(validateMessages, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        Camp newCamp = campService.convertToCamp(campForm);
-
-        return new ResponseEntity<>(campService.add(newCamp), HttpStatus.OK);
+        return new ResponseEntity<>(campService.add(campForm, bindingResult), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

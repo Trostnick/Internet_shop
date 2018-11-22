@@ -9,7 +9,7 @@
 <body>
 <div class="container">
 
-    <p>У вас нет доступа к этой странице</p>
+    <h1>У вас нет доступа к этой странице</h1>
     <br>
     <form action="/home">
         <button type="submit" class="btn btn-primary">На главную</button>

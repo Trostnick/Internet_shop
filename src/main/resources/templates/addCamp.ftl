@@ -9,38 +9,46 @@
 </head>
 <body>
 <div class="container">
+    <h1> Добавление лагеря</h1>
     <br>
-    <div class="result"></div>
+
     <p>Если место проведения вашего лагеря отсутствует, не забудьте сначала добавить его</p>
     <form action="/place">
         <button type="submit" class="btn btn-success"> Добавить место проведения</button>
     </form>
     <br>
     <form id="newCamp">
+        <div id="nameError" class="errorDiv"></div>
         <div class="form-group">
             <label for="name">Название </label>
-            <input type="text" class="form-control" id="name" minlength="2" required>
+            <input type="text" class="form-control" id="name" required>
         </div>
+        <div id="ageMinError" class="errorDiv"></div>
         <div class="form-group">
             <label for="ageMin"> Возраст от</label>
             <input type="number" class="form-control" id="ageMin" min="0" max="120" required size="3">
         </div>
+        <div id="ageMaxError" class="errorDiv"></div>
         <div class="form-group">
             <label for="ageMax"> Возраст до</label>
             <input type="number" class="form-control" id="ageMax" min="0" max="120" required size="3">
         </div>
+        <div id="dateStartError" class="errorDiv"></div>
         <div class="form-group">
             <label for="dateStart"> Дата от</label>
             <input type="date" class="form-control" id="dateStart" required>
         </div>
+        <div id="dateFinishError" class="errorDiv"></div>
         <div class="form-group">
             <label for="dateFinish"> Дата до</label>
             <input type="date" class="form-control" id="dateFinish" required>
         </div>
+        <div id="childrenCountError" class="errorDiv"></div>
         <div class="form-group">
             <label for="childrenCount"> Количество детей</label>
             <input type="number" class="form-control" id="childrenCount" min="0" max="1000" required size="4">
         </div>
+        <div id="priceError" class="errorDiv"></div>
         <div class="form-group">
             <label for="price"> Цена в рублях</label>
             <input type="number" class="form-control" id="price" min="0" required size="10">

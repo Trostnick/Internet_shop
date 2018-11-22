@@ -1,8 +1,8 @@
 package internet.shop.controller.rest;
 
 
-import internet.shop.entity.OrderCamp;
-import internet.shop.form.OrderCampCount;
+import internet.shop.model.entity.OrderCamp;
+import internet.shop.model.form.OrderCampCount;
 import internet.shop.service.OrderCampService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

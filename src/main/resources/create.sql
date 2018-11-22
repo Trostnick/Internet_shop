@@ -56,7 +56,7 @@ create table user_status (
 
 create table user (
   id        int         not null  primary key   unique  auto_increment,
-  name      varchar(30),
+  name      varchar(50),
   login     varchar(20) not null                unique,
   password  varchar(100),
   removed   bit         not null,

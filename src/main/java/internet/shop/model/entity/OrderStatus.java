@@ -1,16 +1,16 @@
-package internet.shop.entity;
+package internet.shop.model.entity;
 
 import javax.persistence.*;
 
 @Entity
-public class CampType {
+public class OrderStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
     private String name;
 
-    public CampType() {
+    public OrderStatus() {
     }
 
     public void setId(Long id) {

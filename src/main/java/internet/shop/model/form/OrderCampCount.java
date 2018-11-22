@@ -1,4 +1,4 @@
-package internet.shop.form;
+package internet.shop.model.form;
 
 public class OrderCampCount {
     private int newCount;

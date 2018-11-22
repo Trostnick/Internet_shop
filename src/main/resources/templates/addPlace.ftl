@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="container">
+    <h1>Добавление нового места</h1>
     <br>
 
 
@@ -16,6 +17,7 @@
 
     <div>
         <form id="newPlace">
+            <div id="nameError" class="errorDiv"></div>
             <div class="form-group">
                 <label for="name"> Наименование</label>
                 <input type="text" class="form-control" id="name" min="" required>

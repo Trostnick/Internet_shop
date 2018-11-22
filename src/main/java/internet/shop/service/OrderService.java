@@ -1,8 +1,8 @@
 package internet.shop.service;
 
-import internet.shop.entity.Order;
-import internet.shop.entity.OrderStatus;
-import internet.shop.entity.User;
+import internet.shop.model.entity.Order;
+import internet.shop.model.entity.OrderStatus;
+import internet.shop.model.entity.User;
 import internet.shop.repository.OrderRepository;
 import internet.shop.repository.OrderStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class OrderService {
     private Order add(User user) {
         Order newOrder = new Order();
         newOrder.setUser(user);
-        newOrder.setStatus(orderStatusRepository.getByName("in basket"));
+        newOrder.setStatus(orderStatusRepository.getByName("in cart"));
         orderRepository.save(newOrder);
         return newOrder;
     }
@@ -54,13 +54,13 @@ public class OrderService {
 
     public Order getCurOrderOrCreate() {
         User user = userService.getCurrentUser();
-        Optional<Order> curOrder = orderRepository.findByStatusNameAndUserLoginAndRemovedFalse("in basket", user.getLogin());
+        Optional<Order> curOrder = orderRepository.findByStatusNameAndUserLoginAndRemovedFalse("in cart", user.getLogin());
         return curOrder.orElseGet(() -> add(user));
     }
 
     public Order getCurOrder() {
         User user = userService.getCurrentUser();
-        Optional<Order> curOrder = orderRepository.findByStatusNameAndUserLoginAndRemovedFalse("in basket", user.getLogin());
+        Optional<Order> curOrder = orderRepository.findByStatusNameAndUserLoginAndRemovedFalse("in cart", user.getLogin());
         return curOrder.orElseGet(() -> null);
     }
 

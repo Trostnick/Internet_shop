@@ -1,6 +1,6 @@
 package internet.shop.controller;
 
-import internet.shop.entity.Camp;
+import internet.shop.model.entity.Camp;
 import internet.shop.repository.CampRepository;
 import internet.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Map;
 
 @Controller
+
 public class InfoController {
 
     private final CampRepository campRepository;
@@ -50,7 +51,7 @@ public class InfoController {
     public ModelAndView autorization(@RequestParam(required = false) String error,
                                      @RequestParam(required = false) String logout) {
         if (!(userService.getCurrentUser() == null)) {
-            return new ModelAndView("redirect:/home");
+            return new ModelAndView("forward:/home");
         }
         ModelAndView modelAndView = new ModelAndView("login");
         Map<String, Object> model = modelAndView.getModel();

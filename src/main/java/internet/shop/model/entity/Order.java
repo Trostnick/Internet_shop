@@ -1,21 +1,25 @@
-package internet.shop.entity;
+package internet.shop.model.entity;
 
 import javax.persistence.*;
 
 @Entity
-public class CampPhoto {
+@Table(name="buy_order")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private boolean removed;
 
     @ManyToOne
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 
-    private String image;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public CampPhoto() {
+    public Order() {
     }
 
     public Long getId() {
@@ -34,12 +38,12 @@ public class CampPhoto {
         this.status = status;
     }
 
-    public String getImage() {
-        return image;
+    public User getUser() {
+        return user;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public boolean isRemoved() {
@@ -49,4 +53,5 @@ public class CampPhoto {
     public void setRemoved(boolean removed) {
         this.removed = removed;
     }
+
 }

@@ -1,26 +1,21 @@
-package internet.shop.entity;
+package internet.shop.model.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name="buy_order")
-public class Order {
+public class CampPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private boolean removed;
 
     @ManyToOne
     @JoinColumn(name = "status_id")
     private OrderStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String image;
 
-    public Order() {
+    public CampPhoto() {
     }
 
     public Long getId() {
@@ -39,12 +34,12 @@ public class Order {
         this.status = status;
     }
 
-    public User getUser() {
-        return user;
+    public String getImage() {
+        return image;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public boolean isRemoved() {
@@ -54,5 +49,4 @@ public class Order {
     public void setRemoved(boolean removed) {
         this.removed = removed;
     }
-
 }

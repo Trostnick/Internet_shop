@@ -1,10 +1,8 @@
-package internet.shop.entity;
+package internet.shop.model.entity;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -14,7 +12,7 @@ public class Place {
     private Long id;
 
     @NotEmpty
-    @Size(min = 3, max=49)
+    @Size(min = 3, max = 49)
     private String name;
 
     private String info;
@@ -22,7 +20,6 @@ public class Place {
 
     private String address;
 
-    @AssertFalse
     private boolean removed;
 
     public Place() {

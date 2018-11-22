@@ -26,7 +26,7 @@
             <button type="submit" class="btn btn-info">Перейти</button>
         </form>
         <td>
-        <form action="/basket/${camp.id}">
+        <form action="/cart/${camp.id}">
             <button type="submit" class="btn btn-success">Добавить</button>
         </form>
     </tr>

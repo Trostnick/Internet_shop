@@ -11,12 +11,13 @@
 <br>
 <div class="container">
 <#if error??>
-<div><p class="text-danger"> Неверный логин или пароль</div>
+<div><p class="alert alert-danger"> Неверный логин или пароль</div>
 </#if>
 
 <#if logout??>
-<div> <p class="text-warning">Вы вышли из своего профиля</div>
+<div> <p class="alert alert-warning">Вы вышли из своего профиля</div>
 </#if>
+    <h1>Вход</h1>
     <br>
     <form action="/login" method="post">
         <div class="form-group">

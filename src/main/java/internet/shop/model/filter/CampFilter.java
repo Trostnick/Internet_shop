@@ -1,4 +1,4 @@
-package internet.shop.filter;
+package internet.shop.model.filter;
 
 import java.time.LocalDate;
 

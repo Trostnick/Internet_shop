@@ -1,15 +1,13 @@
 package internet.shop.service;
 
 
-import internet.shop.entity.Order;
-import internet.shop.entity.OrderCamp;
-import internet.shop.entity.OrderStatus;
+import internet.shop.model.entity.Order;
+import internet.shop.model.entity.OrderCamp;
 import internet.shop.repository.OrderCampRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,7 +75,7 @@ public class OrderCampService {
         return curOrderCamp;
     }
 
-    public List<OrderCamp> getAllInBasket() {
+    public List<OrderCamp> getAllInCart() {
         Order curOrder = orderService.getCurOrder();
         if (curOrder == null) {
             return null;

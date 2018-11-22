@@ -1,6 +1,6 @@
 package internet.shop.repository;
 
-import internet.shop.entity.Camp;
+import internet.shop.model.entity.Camp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

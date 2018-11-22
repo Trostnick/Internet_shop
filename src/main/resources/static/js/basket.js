@@ -53,9 +53,6 @@ function ajaxRemove(campId) {
     })
 }
 
-function onChangeCount() {
-
-}
 
 function ajaxChangeCount(campId, newCount) {
     var params = {};

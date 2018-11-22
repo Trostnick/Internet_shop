@@ -1,7 +1,7 @@
 package internet.shop.service;
 
 
-import internet.shop.entity.User;
+import internet.shop.model.entity.User;
 import internet.shop.repository.UserRepository;
 import internet.shop.service.authority.UserAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
