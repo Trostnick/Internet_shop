@@ -9,11 +9,7 @@ public class CampPhoto {
     private Long id;
     private boolean removed;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private OrderStatus status;
-
-    private String image;
+    private String relativePath;
 
     public CampPhoto() {
     }
@@ -26,20 +22,12 @@ public class CampPhoto {
         this.id = id;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public String getRelativePath() {
+        return relativePath;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+    public void setRelativePath(String relativePath) {
+        this.relativePath = relativePath;
     }
 
     public boolean isRemoved() {
@@ -49,4 +37,6 @@ public class CampPhoto {
     public void setRemoved(boolean removed) {
         this.removed = removed;
     }
+
+
 }

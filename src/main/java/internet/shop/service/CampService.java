@@ -32,9 +32,12 @@ public class CampService {
 
     private final CampRepository campRepository;
 
+    private final CampPhotoService campPhotoService;
+
     @Autowired
-    public CampService(CampRepository campRepository) {
+    public CampService(CampRepository campRepository, CampPhotoService campPhotoService) {
         this.campRepository = campRepository;
+        this.campPhotoService = campPhotoService;
     }
 
     private Camp convertToCamp(CampForm form) {
@@ -125,6 +128,7 @@ public class CampService {
 
 
         validationException.throwIf();
+        campPhotoService.add(campForm.getPhoto(), newCamp.getName());
         campRepository.save(newCamp);
         return newCamp;
 

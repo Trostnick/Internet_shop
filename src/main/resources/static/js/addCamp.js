@@ -21,9 +21,15 @@ function fire_ajax_submit() {
     formData.append("info", $("#info").val() || "");
     formData.append("placeId", $("#place").val());
     formData.append("typeId", $("#type").val());
-    var icons = $("#icon").prop('files');
-    if (!(icons.length === 0)) {
-        formData.append("icon", icons[0]);
+    var icon = $("#icon").prop('files');
+    if (!(icon.length === 0)) {
+        formData.append("icon", icon[0]);
+    }
+    var photo_array = $("#photo").prop('files');
+    if(!(photo_array.length === 0)){
+        for (i in photo_array) {
+            formData.append("photo", photo_array[i]);
+        }
     }
 
 

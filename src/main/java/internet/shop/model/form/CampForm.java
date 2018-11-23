@@ -36,6 +36,8 @@ public class CampForm {
 
     private MultipartFile icon;
 
+    private MultipartFile[] photo;
+
     private Long typeId;
 
     private Long placeId;
@@ -129,5 +131,13 @@ public class CampForm {
 
     public void setPlaceId(Long placeId) {
         this.placeId = placeId;
+    }
+
+    public MultipartFile[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(MultipartFile[] photo) {
+        this.photo = photo;
     }
 }

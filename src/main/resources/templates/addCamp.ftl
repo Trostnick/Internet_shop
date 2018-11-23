@@ -81,6 +81,11 @@
             <label for="icon"> Иконка</label>
             <input type="file" id="icon">
         </div>
+        <div id="photoError" class="errorDiv"></div>
+        <div class="form-group">
+            <label for="photo"> Фотографии</label>
+            <input type="file" id="photo" multiple>
+        </div>
         <button type="submit" class="btn btn-primary">Добавить</button>
     </form>
     <br>

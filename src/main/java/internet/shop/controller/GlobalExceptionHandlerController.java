@@ -1,6 +1,7 @@
 package internet.shop.controller;
 
 
+import internet.shop.exception.FileUploadException;
 import internet.shop.exception.ValidationException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
     }
 
 
-    @ExceptionHandler(value = {ValidationException.class})
+    @ExceptionHandler(value = {ValidationException.class, FileUploadException.class})
     public ResponseEntity<Map> handleValidationException(ValidationException ex, WebRequest request) {
         return new ResponseEntity<> (ex.getMessageMap(), HttpStatus.BAD_REQUEST);
     }

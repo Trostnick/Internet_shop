@@ -47,21 +47,5 @@ public class InfoController {
         return modelAndView;
     }
 
-    @GetMapping("/login")
-    public ModelAndView autorization(@RequestParam(required = false) String error,
-                                     @RequestParam(required = false) String logout) {
-        if (!(userService.getCurrentUser() == null)) {
-            return new ModelAndView("forward:/home");
-        }
-        ModelAndView modelAndView = new ModelAndView("login");
-        Map<String, Object> model = modelAndView.getModel();
-        model.put("error", error);
-        model.put("logout", logout);
-        return modelAndView;
-    }
 
-    @GetMapping("/accessDenied")
-    public String getAccessDeniedPage() {
-        return "accessDenied";
-    }
 }

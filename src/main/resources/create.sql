@@ -39,10 +39,10 @@ create table camp (
 );
 
 create table camp_photo (
-  id      int          not null  primary key   unique  auto_increment,
-  image   varchar(100) not null,
-  removed bit          not null,
-  camp_id int
+  id            int         not null  primary key   unique  auto_increment,
+  relative_path varchar(255) not null,
+  removed       bit         not null,
+  camp_id       int
     references camp (id)
       on update cascade
       on delete cascade
