@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @SpringBootApplication
-@PropertySource(value = "application.properties", encoding="UTF-8")
 public class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);

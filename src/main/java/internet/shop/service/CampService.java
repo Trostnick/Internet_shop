@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -54,13 +55,13 @@ public class CampService {
 
         MultipartFile icon = form.getIcon();
 
-        if(!(icon == null)) {
+        if (!(icon == null)) {
             try {
                 newCamp.setIcon(icon.getBytes());
-            } catch (IOException e){
+            } catch (IOException e) {
                 newCamp.setIcon(null);
             }
-        } else{
+        } else {
             newCamp.setIcon(null);
         }
 
@@ -103,6 +104,7 @@ public class CampService {
 
     }
 
+    @Transactional()
     public Camp add(CampForm campForm, BindingResult bindingResult) throws ValidationException {
         ValidationException validationException = new ValidationException();
 
@@ -128,8 +130,8 @@ public class CampService {
 
 
         validationException.throwIf();
-        campPhotoService.add(campForm.getPhoto(), newCamp.getName());
         campRepository.save(newCamp);
+        campPhotoService.add(campForm.getPhoto(), newCamp);
         return newCamp;
 
     }

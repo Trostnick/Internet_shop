@@ -10,6 +10,12 @@ public class CampPhoto {
     private boolean removed;
 
     private String relativePath;
+    private String filename;
+    private String extension;
+
+    @ManyToOne
+    @JoinColumn(name = "camp_id")
+    private Camp camp;
 
     public CampPhoto() {
     }
@@ -30,6 +36,22 @@ public class CampPhoto {
         this.relativePath = relativePath;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
     public boolean isRemoved() {
         return removed;
     }
@@ -38,5 +60,11 @@ public class CampPhoto {
         this.removed = removed;
     }
 
+    public Camp getCamp() {
+        return camp;
+    }
 
+    public void setCamp(Camp camp) {
+        this.camp = camp;
+    }
 }
