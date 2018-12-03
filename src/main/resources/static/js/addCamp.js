@@ -23,12 +23,16 @@ function fire_ajax_submit() {
     formData.append("typeId", $("#type").val());
     var icon = $("#icon").prop('files');
     if (!(icon.length === 0)) {
-        formData.append("icon", icon[0]);
+        if (!(icon[0].length === 0)) {
+            formData.append("icon", icon[0]);
+        }
     }
     var photo_array = $("#photo").prop('files');
-    if(!(photo_array.length === 0)){
+    if (!(photo_array.length === 0)) {
         for (i in photo_array) {
-            formData.append("photo", photo_array[i]);
+            if (!(photo_array[i] === 0)) {
+                formData.append("photo", photo_array[i]);
+            }
         }
     }
 

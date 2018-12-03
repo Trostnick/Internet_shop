@@ -1,5 +1,6 @@
 package internet.shop.controller;
 
+import internet.shop.model.entity.Camp;
 import internet.shop.model.filter.CampFilter;
 import internet.shop.service.CampService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,7 +29,10 @@ public class FilterController {
             model.put("filterCamp", campService.getMany(new CampFilter()));
             return modelAndView;
         }
-        model.put("filterCamp", campService.getMany(campFilter));
+        List<Camp> campList = campService.getMany(campFilter);
+        if (!(campList.isEmpty())) {
+            model.put("filterCamp", campList);
+        }
         return modelAndView;
     }
 }

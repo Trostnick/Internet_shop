@@ -54,17 +54,14 @@ public class CampService {
         newCamp.setDateFinish(form.getDateFinish());
 
         MultipartFile icon = form.getIcon();
-
-        if (!(icon == null)) {
-            try {
-                newCamp.setIcon(icon.getBytes());
-            } catch (IOException e) {
-                newCamp.setIcon(null);
-            }
-        } else {
+        try {
+            List<byte[]> iconList = campPhotoService.resizeToIconAndSmallIcon(icon.getInputStream(), icon.getOriginalFilename());
+            newCamp.setIcon(iconList.get(0));
+            newCamp.setSmallIcon(iconList.get(1));
+        } catch (IOException e) {
             newCamp.setIcon(null);
+            newCamp.setSmallIcon(null);
         }
-
         Place curPlace = new Place();
         curPlace.setId(form.getPlaceId());
         newCamp.setPlace(curPlace);
@@ -76,35 +73,8 @@ public class CampService {
         return newCamp;
     }
 
-    public Camp add(Camp newCamp, BindingResult bindingResult) throws ValidationException {
-        ValidationException validationException = new ValidationException();
 
-        validationException.add(bindingResult);
-
-        if (newCamp.getDateStart().isBefore(LocalDate.now())) {
-            validationException.add("dateStart", "Дата начала лагеря должна быть позднее текущей");
-        }
-
-        if (newCamp.getDateFinish().isBefore(LocalDate.now())) {
-            validationException.add("dateFinish", "Дата окончания лагеря должна быть позднее текущей");
-        }
-
-        if (newCamp.getDateFinish().isBefore(newCamp.getDateStart())) {
-            validationException.add("dateFinish", "Дата окончания не может быть раньше даты начала");
-        }
-
-        if (newCamp.getAgeMin() > newCamp.getAgeMax()) {
-            validationException.add("ageMax", "Максимальный возраст не может быть меньше минимального");
-        }
-
-
-        validationException.throwIf();
-        campRepository.save(newCamp);
-        return newCamp;
-
-    }
-
-    @Transactional()
+    @Transactional
     public Camp add(CampForm campForm, BindingResult bindingResult) throws ValidationException {
         ValidationException validationException = new ValidationException();
 

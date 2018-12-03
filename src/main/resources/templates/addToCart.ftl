@@ -29,10 +29,10 @@
     <br>
 </div>
 <script>
-    var campId =${camp.id}
+    var campId =${camp.id};
 </script>
 
-<script src="/js/addTocart.js"></script>
+<script src="/js/addToCart.js"></script>
 
 </body>
 </html>

@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.time.LocalDate;
@@ -20,6 +23,24 @@ public class CampPhotoService {
 
     @Value("${upload-file.path}")
     private String uploadDirPath;
+
+    @Value("${icon.small.height}")
+    private int smallIconHeight;
+
+    @Value("${icon.small.width}")
+    private int smallIconWidth;
+
+    @Value("${icon.height}")
+    private int iconHeight;
+
+    @Value("${icon.width}")
+    private int iconWidth;
+
+    @Value("${photo.height}")
+    private int photoHeight;
+
+    @Value("${photo.width}")
+    private int photoWidth;
 
     private final CampPhotoRepository campPhotoRepository;
 
@@ -35,7 +56,7 @@ public class CampPhotoService {
         }
     }
 
-    private String createRelativePath(Long campId){
+    private String createRelativePath(Long campId) {
         LocalDate dateNow = LocalDate.now();
         String relativePath = "//" + dateNow.getYear() + "-" + dateNow.getMonthValue();
         createIntermediateDir(uploadDirPath + relativePath);
@@ -53,19 +74,15 @@ public class CampPhotoService {
 
         String relativePath = createRelativePath(curCamp.getId());
         String filename = photo.getOriginalFilename();
+        String extension = filename.substring(filename.lastIndexOf(".") + 1);
 
         relativePath += "//" + filename;
         File curPhotoFile = new File(uploadDirPath + relativePath);
         try {
             BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(curPhotoFile));
             BufferedInputStream inputStream = new BufferedInputStream(photo.getInputStream());
-            try {
-                inputStream.transferTo(outputStream);
-            } catch (IOException e){
-                outputStream.close();
-                inputStream.close();
-                throw new FileUploadException("photo", "В процессе загрузки файла " + filename + " произошла ошибка");
-            }
+            resizePhotoAndSave(inputStream, outputStream, filename, extension);
+
             outputStream.close();
             inputStream.close();
 
@@ -77,8 +94,8 @@ public class CampPhotoService {
         newCampPhoto.setRelativePath(relativePath);
         newCampPhoto.setRemoved(false);
         newCampPhoto.setFilename(filename);
-        String[] pathList = filename.split("\\.");
-        newCampPhoto.setExtension(pathList[(pathList.length-1)]);
+
+        newCampPhoto.setExtension(extension);
         newCampPhoto.setCamp(curCamp);
         campPhotoRepository.save(newCampPhoto);
 
@@ -86,8 +103,10 @@ public class CampPhotoService {
     }
 
     public void add(MultipartFile[] photoArray, Camp curCamp) {
-        for (MultipartFile photo : photoArray) {
-            add(photo, curCamp);
+        if (!(photoArray == null)) {
+            for (MultipartFile photo : photoArray) {
+                add(photo, curCamp);
+            }
         }
     }
 
@@ -107,8 +126,90 @@ public class CampPhotoService {
         }
     }
 
-    public CampPhoto getOne(Long id){
+    public CampPhoto getOne(Long id) {
         return campPhotoRepository.getByIdAndRemovedFalse(id);
+    }
+
+    public void resizePhotoAndSave(BufferedInputStream inputStream, BufferedOutputStream outputStream,
+                                   String filename, String extension) throws FileUploadException {
+        BufferedImage inputPhoto;
+        try {
+            inputPhoto = ImageIO.read(inputStream);
+
+            BufferedImage resizedPhoto = resize(inputPhoto, photoWidth, photoHeight);
+            ImageIO.write(resizedPhoto, extension, outputStream);
+        } catch (IOException e) {
+            throw new FileUploadException("photo", "В процессе загрузки файла " + filename + " произошла ошибка");
+        }
+    }
+
+    public List<byte[]> resizeToIconAndSmallIcon(InputStream inputStream, String filename) {
+        BufferedImage inputImage;
+        String iconExtension = filename.substring(filename.lastIndexOf(".") + 1);
+        List<byte[]> iconList = new ArrayList<>();
+        try {
+            inputImage = ImageIO.read(inputStream);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BufferedImage outputImage = resize(inputImage, iconWidth, iconHeight);
+
+            ImageIO.write(outputImage, iconExtension, outputStream);
+            outputStream.flush();
+            iconList.add(outputStream.toByteArray());
+            outputStream.close();
+
+            outputStream = new ByteArrayOutputStream();
+            outputImage = resize(inputImage, smallIconWidth, smallIconHeight);
+            ImageIO.write(outputImage, iconExtension, outputStream);
+            outputStream.flush();
+            iconList.add(outputStream.toByteArray());
+            outputStream.close();
+
+            return iconList;
+        } catch (IOException e) {
+            throw new FileUploadException("icon", "В процессе загрузки иконки " + filename + " произошла ошибка");
+        }
+    }
+
+
+    public BufferedImage resize(BufferedImage inputImage, int newWidth, int newHeight) {
+        //create output image
+
+        BufferedImage outputImage = new BufferedImage(newWidth, newHeight, inputImage.getType());
+
+        // get new size
+        double curHeight = inputImage.getHeight();
+        double curWidth = inputImage.getWidth();
+        double curRatio = curWidth / curHeight;
+        double newRatio = (double) newWidth / newHeight;
+        int intermediateHeight = newHeight;
+        int intermediateWidth = newWidth;
+        int startX = 0;
+        int startY = 0;
+        if (curRatio > newRatio) {
+            double percent = newWidth / curWidth;
+            intermediateHeight = (int) (curHeight * percent);
+            double deltaY = (newHeight - intermediateHeight) / 2;
+            startY += deltaY;
+        } else if(curRatio < newRatio) {
+            double percent = newHeight / curHeight;
+            intermediateWidth = (int) (curWidth * percent);
+            double deltaX = (newWidth - intermediateWidth) / 2.0;
+            startX += deltaX;
+        }
+
+
+        // resize image and put new image to output image
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.drawImage(inputImage, startX, startY, intermediateWidth, intermediateHeight, null);
+        g2d.dispose();
+
+        return outputImage;
+
+
     }
 
 

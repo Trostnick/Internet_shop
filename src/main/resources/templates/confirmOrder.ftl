@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Подтверждение заказа</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -36,7 +36,7 @@
         </div>
     </div>
     <br>
-    <form action="/cart/confirm" method="post">
+    <form action="${springMacroRequestContext.contextPath}/cart/confirm" method="post">
         <div class="form-group">
             <label for="address">Адрес доставки</label>
             <input class="form-control" type="text" id="address" required>
@@ -49,7 +49,7 @@
         <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
     <br>
-    <form action="/home">
+    <form action="${springMacroRequestContext.contextPath}/home">
         <button type="submit" class="btn btn-info"> На главную</button>
     </form>
 </div>

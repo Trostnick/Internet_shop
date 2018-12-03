@@ -28,6 +28,7 @@ create table camp (
   price          int         not null,
   removed        bit         not null,
   icon           blob,
+  small_icon     blob,
   info           text,
   type_id        int
     references camp_type (id)

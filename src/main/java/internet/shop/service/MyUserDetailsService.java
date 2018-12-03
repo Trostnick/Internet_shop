@@ -3,7 +3,7 @@ package internet.shop.service;
 
 import internet.shop.model.entity.User;
 import internet.shop.repository.UserRepository;
-import internet.shop.service.authority.UserAuthority;
+import internet.shop.utility.UserAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;

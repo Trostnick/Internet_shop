@@ -1,4 +1,4 @@
-package internet.shop.service.authority;
+package internet.shop.utility;
 
 import org.springframework.security.core.GrantedAuthority;
 

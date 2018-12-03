@@ -35,9 +35,7 @@ public class InfoController {
     public ModelAndView getHomepage() {
         ModelAndView modelAndView = new ModelAndView("home");
         Map<String, Object> model = modelAndView.getModel();
-
         model.put("user", userService.getCurrentUser());
-        model.put("camps", campRepository.getAllByRemovedFalse());
         return modelAndView;
     }
 
@@ -51,11 +49,11 @@ public class InfoController {
         }
         model.put("camp", curCamp);
         List<Long> photoIdList = campPhotoService.getAllIdByCampId(id);
-        if (!(photoIdList.isEmpty())){
+        if (!(photoIdList.isEmpty())) {
             model.put("firstPhotoId", photoIdList.get(0));
-            if (photoIdList.size()>1){
+            if (photoIdList.size() > 1) {
                 List<Integer> idList = new ArrayList<>();
-                for (int i=1; i<photoIdList.size(); i++){
+                for (int i = 1; i < photoIdList.size(); i++) {
                     idList.add(i);
                 }
                 model.put("idList", idList);

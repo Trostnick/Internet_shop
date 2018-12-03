@@ -3,8 +3,8 @@
 <head>
     <title>Авторизация</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
 </#if>
     <h1>Вход</h1>
     <br>
-    <form action="/login" method="post">
+    <form action="${springMacroRequestContext.contextPath}/login" method="post">
         <div class="form-group">
             <label for="username"> Login : </label>
             <input type="text" class="form-control" name="username" id="username" required/>
@@ -32,7 +32,7 @@
     </form>
     <br>
 
-    <form action="/home">
+    <form action="${springMacroRequestContext.contextPath}/home">
         <button type="submit" class="btn btn-info"> На главную</button>
     </form>
     <br>

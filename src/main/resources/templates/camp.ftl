@@ -5,7 +5,6 @@
     <title>${camp.name}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/popper.js/1.14.3/popper.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <style>
         /* Make the image fully responsive */
@@ -21,9 +20,9 @@
     <h1> ${camp.name}</h1>
     <br>
     <div class="row">
-        <div class="col-3">
+        <div class="col-3 text-center">
 <#if camp.icon??>
-    <img src="/api/camp/icon/${camp.id}" alt="i" height="150" width="150">
+    <img src="/api/camp/icon/${camp.id}" width="150" height="150" alt="i">
 </#if>
         </div>
         <div class="col-6">
@@ -77,13 +76,13 @@
         <!-- The slideshow -->
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/api/photo/${firstPhotoId}" width="1100" height="500">
+                <img src="/photo/${firstPhotoId}" width="1100" height="500">
             </div>
 
         <#if photoList??>
             <#list photoList as photoId>
                 <div class="carousel-item">
-                    <img src="/api/photo/${photoId}" width="1100" height="500">
+                    <img src="/photo/${photoId}" width="1100" height="500">
                 </div>
             </#list>
         </#if>

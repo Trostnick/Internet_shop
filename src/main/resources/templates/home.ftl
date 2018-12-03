@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>My Internet Shop</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -17,14 +17,14 @@
                     <p class="navbar-text">Добро пожаловать, <strong>${user.name}</strong></p>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/orders">Заказы</a>
+                    <a class="nav-link" href="${springMacroRequestContext.contextPath}/orders">Заказы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cart">Корзина</a>
+                    <a class="nav-link" href="${springMacroRequestContext.contextPath}/cart">Корзина</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout">Выйти</a>
+                    <a class="nav-link" href="${springMacroRequestContext.contextPath}/logout">Выйти</a>
                 </li>
             </ul>
 
@@ -32,12 +32,13 @@
         <#else>
             <ul class="navbar-nav ">
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login"> Авторизироваться </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/registration"> Зарегистрироваться </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${springMacroRequestContext.contextPath}/login"> Авторизироваться </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${springMacroRequestContext.contextPath}/registration">
+                        Зарегистрироваться </a>
+                </li>
             </ul>
 
         </#if>
@@ -61,15 +62,17 @@
 
     <#if user?? && (user.status.id>1)>
         <div>
-            <form action="/camp">
+            <form action="${springMacroRequestContext.contextPath}/camp">
                 <input type="submit" class="btn btn-primary" value="Добавить лагерь">
             </form>
         </div>
     </#if>
     <br>
 </div>
+<script>
+    var contextPath = "${springMacroRequestContext.contextPath}"
+</script>
 <script type="text/javascript" src="js/campFilter.js"></script>
 
 </body>
-
 </html>

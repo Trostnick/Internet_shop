@@ -3,8 +3,8 @@
 <head>
     <title>Регистрация</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="${springMacroRequestContext.contextPath}/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -39,12 +39,14 @@
 
     <br>
 
-    <form action="/home">
-        <button type="submit" class="btn btn-info"> На главную </button>
+    <form action="${springMacroRequestContext.contextPath}/home">
+        <button type="submit" class="btn btn-info"> На главную</button>
     </form>
     <br>
 </div>
-
+<script>
+    var contextPath = "${springMacroRequestContext.contextPath}"
+</script>
 <script type="text/javascript" src="/js/addClient.js"></script>
 
 </body>

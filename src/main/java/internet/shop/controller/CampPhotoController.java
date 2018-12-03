@@ -1,19 +1,17 @@
-package internet.shop.controller.rest;
+package internet.shop.controller;
 
 import internet.shop.model.entity.CampPhoto;
 import internet.shop.service.CampPhotoService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 
-@RestController
-@RequestMapping("/api")
+@Controller
 public class CampPhotoController {
 
     private final CampPhotoService campPhotoService;

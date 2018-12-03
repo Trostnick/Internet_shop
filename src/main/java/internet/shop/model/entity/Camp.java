@@ -43,6 +43,7 @@ public class Camp {
     private String info;
 
     private byte[] icon;
+    private byte[] smallIcon;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -135,6 +136,14 @@ public class Camp {
         this.icon = icon;
     }
 
+    public byte[] getSmallIcon() {
+        return smallIcon;
+    }
+
+    public void setSmallIcon(byte[] smallIcon) {
+        this.smallIcon = smallIcon;
+    }
+
     public CampType getType() {
         return type;
     }
@@ -167,14 +176,5 @@ public class Camp {
         this.removed = removed;
     }
 
-    @Override
-    public String toString() {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-M-yyyy");
-        return String.format(
-                "Camp[id=%d, name='%s', Start='%s', Finish='%s',ageMin='%s', ageMax='%s'," +
-                        "info='%s',childrenCount='%s']\r\n",
-                id, name, format.format(dateStart), format.format(dateFinish),
-                ageMin, ageMax, info, childrenCount);
-    }
 
 }
