@@ -10,7 +10,7 @@
 <body>
 <div class="container">
     <h1>Подтверждение</h1>
-    <h6> Номер заказа - ${orderCampList[0].order.id}</h6>
+    <h6> Номер заказа - ${orderPartList[0].order.id}</h6>
     <br>
     <table border="1">
         <tr>
@@ -18,11 +18,11 @@
             <td>Количество
             <td>Цена за 1 единицу в рублях
         </tr>
-            <#list orderCampList as orderCamp>
+            <#list orderPartList as orderPart>
             <tr>
-                <td>${orderCamp.camp.name}
-                <td>${orderCamp.count}
-                <td>${orderCamp.camp.price}
+                <td>${orderPart.camp.name}
+                <td>${orderPart.count}
+                <td>${orderPart.camp.price}
             </tr>
             </#list>
     </table>

@@ -1,16 +1,15 @@
 $(document).ready(function () {
 
-    fireAjaxSubmit();
-    $("#filter").submit(function (event) {
+    $(".pageButton").click(function (event) {
         event.preventDefault();
-        fireAjaxSubmit();
-    });
-
+        var page = $(this).data("page");
+        pagination(page);
+    })
 
 
 });
 
-function fireAjaxSubmit() {
+function pagination(page) {
     var resultDiv = $("#result");
     var params = {};
     params.age = $("#campAge").val() || "";
@@ -21,10 +20,10 @@ function fireAjaxSubmit() {
     params.type = $("#campType").val() || "";
     params.priceMin = $("#campPriceMin").val() || "";
     params.priceMax = $("#campPriceMax").val() || "";
-    params.page = 1;
+
 
     $.ajax({
-        url: "/filter/camp",
+        url: "/filter/camp?page=" + page,
         data: params,
         timeout: 600000,
         success: function (data) {

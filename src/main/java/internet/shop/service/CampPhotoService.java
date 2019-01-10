@@ -72,33 +72,41 @@ public class CampPhotoService {
 
     public void add(MultipartFile photo, Camp curCamp) {
 
-        String relativePath = createRelativePath(curCamp.getId());
-        String filename = photo.getOriginalFilename();
-        String extension = filename.substring(filename.lastIndexOf(".") + 1);
+        if (!(photo == null)) {
 
-        relativePath += "//" + filename;
-        File curPhotoFile = new File(uploadDirPath + relativePath);
-        try {
-            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(curPhotoFile));
-            BufferedInputStream inputStream = new BufferedInputStream(photo.getInputStream());
-            resizePhotoAndSave(inputStream, outputStream, filename, extension);
 
-            outputStream.close();
-            inputStream.close();
+            String relativePath = createRelativePath(curCamp.getId());
+            String filename = photo.getOriginalFilename();
+            String extension;
+            try {
+                extension = filename.substring(filename.lastIndexOf(".") + 1);
+            } catch (NullPointerException e){
+                throw new FileUploadException("photo", "Файл " + filename + " не имеет формат. " +
+                        "Проверьте расширение файла");
+            }
+            relativePath += "//" + filename;
+            File curPhotoFile = new File(uploadDirPath + relativePath);
+            try {
+                BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(curPhotoFile));
+                BufferedInputStream inputStream = new BufferedInputStream(photo.getInputStream());
+                resizePhotoAndSave(inputStream, outputStream, filename, extension);
 
-        } catch (IOException e) {
+                outputStream.close();
+                inputStream.close();
 
-            throw new FileUploadException("photo", "В процессе загрузки файла " + filename + " произошла ошибка");
+            } catch (IOException e) {
+
+                throw new FileUploadException("photo", "В процессе загрузки файла " + filename + " произошла ошибка");
+            }
+            CampPhoto newCampPhoto = new CampPhoto();
+            newCampPhoto.setRelativePath(relativePath);
+            newCampPhoto.setRemoved(false);
+            newCampPhoto.setFilename(filename);
+
+            newCampPhoto.setExtension(extension);
+            newCampPhoto.setCamp(curCamp);
+            campPhotoRepository.save(newCampPhoto);
         }
-        CampPhoto newCampPhoto = new CampPhoto();
-        newCampPhoto.setRelativePath(relativePath);
-        newCampPhoto.setRemoved(false);
-        newCampPhoto.setFilename(filename);
-
-        newCampPhoto.setExtension(extension);
-        newCampPhoto.setCamp(curCamp);
-        campPhotoRepository.save(newCampPhoto);
-
 
     }
 
@@ -188,9 +196,9 @@ public class CampPhotoService {
         if (curRatio > newRatio) {
             double percent = newWidth / curWidth;
             intermediateHeight = (int) (curHeight * percent);
-            double deltaY = (newHeight - intermediateHeight) / 2;
+            double deltaY = (newHeight - intermediateHeight) / 2.0;
             startY += deltaY;
-        } else if(curRatio < newRatio) {
+        } else if (curRatio < newRatio) {
             double percent = newHeight / curHeight;
             intermediateWidth = (int) (curWidth * percent);
             double deltaX = (newWidth - intermediateWidth) / 2.0;

@@ -11,8 +11,8 @@
 <div class="container">
     <h1>Корзина</h1>
     <br>
-    <#if orderCampList??>
-        <h6> Номер заказа - ${orderCampList[0].order.id}</h6>
+    <#if orderPartList??>
+        <h6> Номер заказа - ${orderPartList[0].order.id?c}</h6>
         <br>
         <table border="1">
             <tr>
@@ -21,32 +21,36 @@
                 <td>Цена за 1 единицу в рублях
                 <td>Удалить
             </tr>
-            <#list orderCampList as orderCamp>
-            <tr id="orderCamp-${orderCamp.id}" class="orderCamp">
-                <td>${orderCamp.camp.name}
-                <td> <input class="count" type="number" min="1" required data-count=${orderCamp.count} data-id=${orderCamp.id}
-                     value=${orderCamp.count} >
-                <td class="price">${orderCamp.camp.price}
+            <#list orderPartList as orderPart>
+            <tr id="orderPart-${orderPart.id?c}" class="orderPart">
+                <td>${orderPart.camp.name}
+                <td><input class="count" type="number" min="1" max="1000" required
+                           data-count="${orderPart.count?c}" data-id="${orderPart.id?c}"
+                           value=${orderPart.count?c}>
+                <td class="price">${orderPart.camp.price}
                 <td>
-                    <form onclick="return (confirm('Подтердите удаление?'))" class="removeOrderCamp"
-                          data-id=${orderCamp.id} >
-                        <button type="submit" class="btn btn-danger"  >Удалить</button>
+                    <form class="removeOrderPart" data-id=${orderPart.id}>
+                        <button onclick="return (confirm('Подтердите удаление?'))"
+                                type="submit" class="btn btn-danger">Удалить
+                        </button>
                     </form>
                 </td>
             </tr>
             </#list>
         </table>
-    <form onclick="return (confirm('Вы точно хотите очистить корзину?'))" action="/cart/remove">
-        <button class="btn btn-danger" id="removeCart">Очистить корзину</button>
+    <form action="/cart/remove">
+        <button onclick="return (confirm('Вы точно хотите очистить корзину?'))"
+                class="btn btn-danger" id="removeCart">Очистить корзину
+        </button>
     </form>
     <br>
     <div class="row">
-    <div class="col-3">
-    <p> Суммарная цена заказа -</p>
-    </div>
-    <div class="col-1">
-        <p id="orderPrice">${orderPrice}</p>
-    </div>
+        <div class="col-3">
+            <p> Суммарная цена заказа -</p>
+        </div>
+        <div class="col-1">
+            <p id="orderPrice">${orderPrice?c}</p>
+        </div>
     </div>
         <br>
     <form action="/cart/confirm">
@@ -57,7 +61,7 @@
     </#if>
     <br>
     <form action="/home">
-        <button type="submit" class="btn btn-info" > На главную</button>
+        <button type="submit" class="btn btn-info"> На главную</button>
     </form>
     <br>
 </div>

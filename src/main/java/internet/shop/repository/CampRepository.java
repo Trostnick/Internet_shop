@@ -15,5 +15,4 @@ public interface CampRepository extends JpaRepository<Camp, Long> {
     List<Camp> getAllByRemovedFalse();
 
     Optional<Camp> findByNameAndRemovedFalse(String name);
-
 }

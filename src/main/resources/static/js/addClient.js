@@ -1,16 +1,16 @@
 $(document).ready(function () {
     $("#newUser").submit(function (event) {
         event.preventDefault();
-        fire_ajax_submit();
+        fireAjaxSubmit();
     })
 
 });
 
-function fire_ajax_submit() {
-    var result_div = $("#result");
-    var error_div = $(".errorDiv");
-    error_div.attr("class", "errorDiv");
-    error_div.html('');
+function fireAjaxSubmit() {
+    var resultDiv = $("#result");
+    var errorDiv = $(".errorDiv");
+    errorDiv.attr("class", "errorDiv");
+    errorDiv.html('');
     var params = {};
     params.password = $("#password").val();
     params.name = $("#name").val();
@@ -23,19 +23,24 @@ function fire_ajax_submit() {
         contentType: 'application/json',
         data: JSON.stringify(params),
         success: function () {
-            result_div.attr("class", "alert alert-success").html("Пользователь создан!");
+            resultDiv.attr("class", "alert alert-success").html("Пользователь создан!");
         },
         error: function (e) {
-            var jsonMessage = JSON.parse(e.responseText);
-            for (fieldName in jsonMessage) {
-                var messages = jsonMessage[fieldName];
-                var resultMessage = "";
-                for (i in messages) {
-                    resultMessage += '<p>' + messages[i] + '</p>';
-                }
-                $("#" + fieldName + "Error").attr("class", "errorDiv alert alert-danger").html(resultMessage);
+            if (e.status !== 400) {
+                resultDiv.attr("class", "result alert alert-danger").html(e.statusText);
             }
-            result_div.attr("class", "alert alert-danger").html("Данные введены неверно");
+            else {
+                var jsonMessage = JSON.parse(e.responseText);
+                for (fieldName in jsonMessage) {
+                    var messages = jsonMessage[fieldName];
+                    var resultMessage = "";
+                    for (i in messages) {
+                        resultMessage += '<p>' + messages[i] + '</p>';
+                    }
+                    $("#" + fieldName + "Error").attr("class", "errorDiv alert alert-danger").html(resultMessage);
+                }
+                resultDiv.attr("class", "alert alert-danger").html("Данные введены неверно");
+            }
         }
 
     })

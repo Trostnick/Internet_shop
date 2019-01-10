@@ -35,20 +35,15 @@
     </div>
 
     <br>
-    <div class="row">
-        <div class="col-2">
-            <form action="/camp">
-                <button type="submit" class="btn btn-warning">К добавлению лагеря</button>
+    <div class="btn-group">
+            <form action="/camp/add">
+                <button type="submit" class="btn btn-info">К добавлению лагеря</button>
             </form>
-        </div>
-        <div class="col-2">
             <form action="/home">
                 <button type="submit" class="btn btn-info">На главную</button>
             </form>
-        </div>
-        <br>
     </div>
 </div>
-<script type="text/javascript" src="js/addPlace.js"></script>
+<script type="text/javascript" src="/js/addPlace.js"></script>
 </body>
 

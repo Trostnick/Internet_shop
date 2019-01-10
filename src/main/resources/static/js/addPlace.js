@@ -1,15 +1,15 @@
 $(document).ready(function () {
     $("#newPlace").submit(function (event) {
         event.preventDefault();
-        fire_ajax_submit();
+        fireAjaxSubmit();
     })
 });
 
-function fire_ajax_submit() {
-    var result_div = $("#result");
-    var error_div = $(".errorDiv");
-    error_div.attr("class", "errorDiv");
-    error_div.html('');
+function fireAjaxSubmit() {
+    var resultDiv = $("#result");
+    var errorDiv = $(".errorDiv");
+    errorDiv.attr("class", "errorDiv");
+    errorDiv.html('');
     var params = {};
     params.name = $("#name").val();
     params.address = $("#address").val() || "";
@@ -27,7 +27,7 @@ function fire_ajax_submit() {
         data: params,
         dataType: 'json',
         success: function () {
-            result_div.attr("class", "result alert alert-success").html('Успешно добавлено');
+            resultDiv.attr("class", "result alert alert-success").html('Успешно добавлено');
         },
         error: function (e) {
             var jsonMessage = JSON.parse(e.responseText);
@@ -40,7 +40,7 @@ function fire_ajax_submit() {
                 $("#" + fieldName + "Error").attr("class", "errorDiv alert alert-danger").html(resultMessage);
             }
 
-            result_div.attr("class", "result alert alert-danger").html("Данные введены неверно");
+            resultDiv.attr("class", "result alert alert-danger").html("Данные введены неверно");
         }
     })
 }

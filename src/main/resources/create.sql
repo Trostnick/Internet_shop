@@ -3,6 +3,22 @@ drop database if exists demo;
 create database demo;
 use demo;
 
+create table user_status (
+  id   int not null  primary key   unique  auto_increment,
+  name varchar(20)
+);
+
+create table user (
+  id        int         not null  primary key   unique  auto_increment,
+  name      varchar(50),
+  login     varchar(20) not null                unique,
+  password  varchar(100),
+  removed   bit         not null,
+  status_id int         not null
+    references user_status (id)
+      on update cascade
+);
+
 create table place (
   id      int         not null  primary key   unique  auto_increment,
   name    varchar(50) not null,
@@ -36,7 +52,11 @@ create table camp (
       on delete set null,
   place_id       int
     references place (id)
+      on update cascade,
+  user_id        int
+    references user (id)
       on update cascade
+
 );
 
 create table camp_photo (
@@ -49,23 +69,6 @@ create table camp_photo (
     references camp (id)
       on update cascade
       on delete cascade
-);
-
-
-create table user_status (
-  id   int not null  primary key   unique  auto_increment,
-  name varchar(20)
-);
-
-create table user (
-  id        int         not null  primary key   unique  auto_increment,
-  name      varchar(50),
-  login     varchar(20) not null                unique,
-  password  varchar(100),
-  removed   bit         not null,
-  status_id int         not null
-    references user_status (id)
-      on update cascade
 );
 
 

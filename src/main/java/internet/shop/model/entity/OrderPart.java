@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="order_camp_id")
-public class OrderCamp {
+public class OrderPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +20,7 @@ public class OrderCamp {
 
     private int count;
 
-    public OrderCamp() {
+    public OrderPart() {
     }
 
     public Long getId() {

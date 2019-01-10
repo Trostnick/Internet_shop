@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.simple;
 
 import internet.shop.repository.CampTypeRepository;
 import internet.shop.service.PlaceService;
@@ -26,17 +26,17 @@ public class AddController {
     }
 
 
-    @GetMapping("/camp")
+    @GetMapping("/camp/add")
     public ModelAndView addCamp() {
         ModelAndView modelAndView = new ModelAndView("addCamp");
         Map<String, Object> model = modelAndView.getModel();
-        model.put("places", placeService.getMany(""));
-        model.put("types", campTypeRepository.getAllByNameNotNull());
+        model.put("placeList", placeService.getMany(""));
+        model.put("typeList", campTypeRepository.getAllByNameNotNull());
         return modelAndView;
     }
 
 
-    @GetMapping("/place")
+    @GetMapping("/place/add")
     public ModelAndView addPlace() {
         ModelAndView modelAndView = new ModelAndView("addPlace");
         Map<String, Object> model = modelAndView.getModel();

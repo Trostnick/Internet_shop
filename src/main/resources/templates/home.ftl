@@ -11,7 +11,7 @@
 <div class="container">
     <nav class="navbar navbar-expand-sm bg-light justify-content-end">
         <#if user??>
-            <ul class="navbar-nav ">
+            <ul class="navbar-nav">
 
                 <li class="nav-item">
                     <p class="navbar-text">Добро пожаловать, <strong>${user.name}</strong></p>
@@ -62,17 +62,14 @@
 
     <#if user?? && (user.status.id>1)>
         <div>
-            <form action="${springMacroRequestContext.contextPath}/camp">
+            <form action="/camp/add">
                 <input type="submit" class="btn btn-primary" value="Добавить лагерь">
             </form>
         </div>
     </#if>
     <br>
 </div>
-<script>
-    var contextPath = "${springMacroRequestContext.contextPath}"
-</script>
-<script type="text/javascript" src="js/campFilter.js"></script>
+<script type="text/javascript" src="/js/campFilter.js"></script>
 
 </body>
 </html>

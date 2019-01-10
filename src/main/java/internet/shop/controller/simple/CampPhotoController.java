@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.simple;
 
 import internet.shop.model.entity.CampPhoto;
 import internet.shop.service.CampPhotoService;

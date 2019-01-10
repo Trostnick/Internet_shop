@@ -100,6 +100,12 @@
     </div>
     </#if>
 
+    <#if is_my>
+    <br>
+    <form action="/camp/edit/${camp.id}">
+        <button class="btn btn-warning"> Редактировать</button>
+    </form>
+    </#if>
     <br>
     <form action="/cart/${camp.id}">
         <button class="btn btn-success"> Добавить в корзину</button>

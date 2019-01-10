@@ -1,13 +1,26 @@
 $(document).ready(function () {
 
-    $("#addTocart").submit(function (event) {
+    $("#addToCart").submit(function (event) {
         event.preventDefault();
-        fire_ajax_submit()
+        fireAjaxSubmit()
+    });
+
+    $("#count").keyup(function () {
+        var newCount = $(this).val();
+        if ($.isNumeric(newCount) && parseInt(newCount) > 0) {
+            if ($(this).val().length>4 || newCount>1000){
+                $(this).val(1000);
+                newCount=1000;
+            }
+            $(this).attr("data-count", newCount);
+        } else {
+            $(this).val($(this).data("count"))
+        }
     })
 });
 
-function fire_ajax_submit() {
-    var result_div = $("#result");
+function fireAjaxSubmit() {
+    var resultDiv = $("#result");
     params = {};
     params["camp"] = {};
     params["camp"]["id"] = campId;
@@ -15,17 +28,17 @@ function fire_ajax_submit() {
 
     $.ajax({
         type: "POST",
-        url: "/api/orderCamp",
+        url: "/api/orderPart",
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
         success: function () {
-            result_div.attr("class", "alert alert-success");
-            result_div.html('<p class="result text-success">Добавлено в корзину')
+            resultDiv.attr("class", "alert alert-success");
+            resultDiv.html('<p class="result text-success">Добавлено в корзину')
         },
         error: function (e) {
-            result_div.attr("class", "alert alert-danger");
-            result_div.html('<p class="result text-danger">' + e.responseText)
+            resultDiv.attr("class", "alert alert-danger");
+            resultDiv.html('<p class="result text-danger">' + e.responseText)
         }
 
     })

@@ -16,12 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/place")
-public class PlaceController {
+public class RestPlaceController {
 
     private final PlaceService placeService;
 
     @Autowired
-    public PlaceController(PlaceService placeService) {
+    public RestPlaceController(PlaceService placeService) {
         this.placeService = placeService;
     }
 

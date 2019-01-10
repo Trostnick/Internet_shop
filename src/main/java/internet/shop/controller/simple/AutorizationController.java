@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.simple;
 
 import internet.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

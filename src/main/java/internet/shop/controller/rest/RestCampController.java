@@ -10,10 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -21,13 +24,12 @@ import javax.validation.Valid;
  * позволяет добавлять, изменять, удалять, получать один или несколько лагерей, иконку и маленькую иконку
  * доступ осуществляется по пути "/api/camp"
  *
- *
  * @author Прохоров Дмитрий
  * @version 1.0
  */
 @RestController
 @RequestMapping("/api/camp")
-public class CampController {
+public class RestCampController {
 
     private final CampService campService;
 
@@ -38,7 +40,7 @@ public class CampController {
      * @see CampService
      */
     @Autowired
-    public CampController(CampService campService) {
+    public RestCampController(CampService campService) {
         this.campService = campService;
     }
 
@@ -47,15 +49,15 @@ public class CampController {
      * Тип данных - multipart-form/data
      * Доступ имеют только пользватели с ролью manager и admin
      *
-     * @param campForm - данные о новом лагере
-     * @param bindingResult - ошибки Валидации
+     * @param campForm      - данные о новом лагере
+     * @param bindingResult - ошибки валидации
+     * @return возвращает ответ со статусом 200. В теле ответа хранится добавленный лагерь в json формате
      * @see CampForm
      * @see CampService
-     * @return возвращает ответ со статусом 200. В теле ответа хранится добавленный лагерь в json формате
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @RolesAllowed({"manager", "admin"})
-    public ResponseEntity add(@Valid @ModelAttribute CampForm campForm, BindingResult bindingResult) {
+    public ResponseEntity add(@ModelAttribute CampForm campForm, BindingResult bindingResult) {
 
         return new ResponseEntity<>(campService.add(campForm, bindingResult), HttpStatus.OK);
     }
@@ -66,8 +68,8 @@ public class CampController {
      * Доступ имеют только пользватели с ролью manager и admin
      *
      * @param id - id лагеря в базе данных
-     * @see CampService
      * @return возвращает ответ со статусом 200 и сообщением "Successfully deleted" в виде строки
+     * @see CampService
      */
     @DeleteMapping("/{id}")
     @RolesAllowed({"admin", "manager"})
@@ -82,16 +84,18 @@ public class CampController {
      * с введенным id если он есть
      * Доступ имеют только пользватели с ролью manager и admin
      *
-     * @param id - id лагеря в базе данных
-     * @param newCamp - новые данные для лагеря
-     * @see CampService
+     * @param id            - id лагеря в базе данных
+     * @param editedCamp    - новые данные для лагеря
+     * @param bindingResult - ошибки валидации
      * @return возвращает ответ со статусом 200 и данными о замененном лагере в теле в виде json
+     * @see CampService
      */
-    @PutMapping("/{id}")
+    @PutMapping(path = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @RolesAllowed({"manager", "admin"})
-    public ResponseEntity put(@PathVariable Long id, @RequestBody Camp newCamp) {
-
-        return new ResponseEntity<>(campService.put(id, newCamp), HttpStatus.OK);
+    public ResponseEntity put(@ModelAttribute CampForm editedCamp, BindingResult bindingResult, @PathVariable Long id,
+                              @RequestParam(required = false) MultipartFile icon) {
+        editedCamp.setIcon(icon);
+        return new ResponseEntity<>(campService.put(id, editedCamp, bindingResult), HttpStatus.OK);
     }
 
     /**
@@ -99,8 +103,8 @@ public class CampController {
      * с введенным id если он есть
      *
      * @param id - id лагеря в базе данных
-     * @see CampService
      * @return возвращает ответ со статусом 200 и данными о замененном лагере в теле в виде json
+     * @see CampService
      */
     @GetMapping("/{id}")
     public ResponseEntity getOne(@PathVariable() Long id) {
@@ -112,18 +116,20 @@ public class CampController {
      * Данный метод обрабатывает GET запросы по пути "/api/camp/"
      * и возвращает список лагерей, подходящих под параметры фильтрации
      *
-     *
      * @param campFilter - параметры филтьтрации
-     * @see CampFilter
-     * @see CampService
      * @return возвращает ответ с статусом 200, в теле хранится список List лагерей,
      * подходящих под параметры филтьтрации
-     *
+     * @see CampFilter
+     * @see CampService
      */
     @GetMapping
-    public ResponseEntity getMany(CampFilter campFilter) {
+    public ResponseEntity getMany(CampFilter campFilter, @RequestParam(required = false) Long page) {
+        if (page == null) {
+            return new ResponseEntity<>(campService.getMany(campFilter), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(campService.getManyOnPage(campFilter, page), HttpStatus.OK);
+        }
 
-        return new ResponseEntity<>(campService.getMany(campFilter), HttpStatus.OK);
     }
 
     /**
@@ -131,8 +137,8 @@ public class CampController {
      * с введенным id
      *
      * @param id - id лагеря в базе данных
-     * @see CampService
      * @return возвращает ответ со статусом 200 и массив байт иконки в теле
+     * @see CampService
      */
     @GetMapping("/icon/{id}")
     public byte[] getIcon(@PathVariable Long id) {
@@ -145,8 +151,8 @@ public class CampController {
      * с введенным id
      *
      * @param id - id лагеря в базе данных
-     * @see CampService
      * @return возвращает ответ со статусом 200 и массив байт маленькой иконки в теле
+     * @see CampService
      */
     @GetMapping("/icon/small/{id}")
     public byte[] getSmallIcon(@PathVariable Long id) {

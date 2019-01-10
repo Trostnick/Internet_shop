@@ -1,9 +1,14 @@
 package internet.shop.model.form;
 
-public class OrderCampCount {
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+public class OrderPartCount {
+    @Max(Integer.MAX_VALUE)
+    @Min(1)
     private int newCount;
 
-    public OrderCampCount() {
+    public OrderPartCount() {
     }
 
     public int getNewCount() {

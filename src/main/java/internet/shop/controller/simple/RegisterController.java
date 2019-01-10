@@ -1,4 +1,4 @@
-package internet.shop.controller;
+package internet.shop.controller.simple;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

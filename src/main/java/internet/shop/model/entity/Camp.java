@@ -32,11 +32,13 @@ public class Camp {
     private int ageMax;
 
     @PositiveOrZero
+    @Max(1000000000)
     @NotNull
     private int price;
 
     @PositiveOrZero
     @NotNull
+    @Max(1000)
     private int childrenCount;
 
     private boolean removed;
@@ -52,6 +54,10 @@ public class Camp {
     @ManyToOne
     @JoinColumn(name = "place_id")
     private Place place;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Camp() {
     }
@@ -176,5 +182,11 @@ public class Camp {
         this.removed = removed;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

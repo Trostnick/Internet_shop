@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
     $(".removeOrderCamp").submit(function (event) {
         event.preventDefault();
         ajaxRemove($(this).data("id"));
@@ -10,6 +11,10 @@ $(document).ready(function () {
         var campId = $(this).data("id");
         var newCount = $(this).val();
         if ($.isNumeric(newCount) && parseInt(newCount) > 0) {
+            if ($(this).val().length>4 || newCount>1000){
+                $(this).val(1000);
+                newCount=1000;
+            }
             $(this).attr("data-count", newCount);
             ajaxChangeCount(campId, newCount)
         } else {
@@ -22,7 +27,6 @@ $(document).ready(function () {
         ajaxChangeCount(campId, newCount)
 
     })
-
 });
 
 
@@ -32,20 +36,20 @@ function ajaxRemove(campId) {
     $.ajax({
 
         type: "DELETE",
-        url: '/api/orderCamp/' + campId,
+        url: '/api/orderPart/' + campId,
         success: function () {
             var curOrderPrice = $("#orderPrice");
             var orderPrice = curOrderPrice.text().replace(/\s+/g, '');
             orderPrice = parseInt(orderPrice);
-            var curOrderCamp = $("#orderCamp-" + campId);
-            var campPrice = curOrderCamp.find(".price").text().replace(/\s+/g, '');
+            var curOrderPart = $("#orderPart-" + campId);
+            var campPrice = curOrderPart.find(".price").text().replace(/\s+/g, '');
             campPrice = parseInt(campPrice);
-            var campCount = curOrderCamp.find(".count").val();
+            var campCount = curOrderPart.find(".count").val();
             campCount = parseInt(campCount);
             orderPrice -= campPrice * campCount;
             if (orderPrice > 0) {
-                curOrderPrice.html(orderPrice);
-                curOrderCamp.remove();
+                curOrderPrice.html(orderPrice.toLocaleString());
+                curOrderPart.remove();
             } else {
                 location.reload(true);
             }
@@ -59,20 +63,21 @@ function ajaxChangeCount(campId, newCount) {
     params.newCount = newCount;
     $.ajax({
         type: "PATCH",
-        url: "/api/orderCamp/" + campId,
+        url: "/api/orderPart/" + campId,
         contentType: "application/json",
         data: JSON.stringify(params),
 
         success: function () {
             var orderPrice = 0;
-            $(".orderCamp").each(function () {
+            $(".orderPart").each(function () {
                 var campPrice = $(this).find(".price").text().replace(/\s+/g, '');
                 campPrice = parseInt(campPrice);
                 var campCount = $(this).find(".count").val();
                 campCount = parseInt(campCount);
                 orderPrice += campPrice * campCount;
+
             });
-            $("#orderPrice").html(orderPrice);
+            $("#orderPrice").html(orderPrice.toLocaleString());
 
         }
 

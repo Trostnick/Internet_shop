@@ -1,9 +1,9 @@
-package internet.shop.controller;
+package internet.shop.controller.simple;
 
 import internet.shop.model.entity.Order;
-import internet.shop.model.entity.OrderCamp;
+import internet.shop.model.entity.OrderPart;
 import internet.shop.service.CampService;
-import internet.shop.service.OrderCampService;
+import internet.shop.service.OrderPartService;
 import internet.shop.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +19,13 @@ public class CartController {
 
     private final OrderService orderService;
 
-    private final OrderCampService orderCampService;
+    private final OrderPartService orderPartService;
 
     private final CampService campService;
 
-    public CartController(OrderService orderService, OrderCampService orderCampService,
-                            CampService campService) {
-        this.orderCampService = orderCampService;
+    public CartController(OrderService orderService, OrderPartService orderPartService,
+                          CampService campService) {
+        this.orderPartService = orderPartService;
         this.orderService = orderService;
         this.campService = campService;
     }
@@ -49,19 +49,13 @@ public class CartController {
         ModelAndView modelAndView = new ModelAndView("cart");
         Map<String, Object> model = modelAndView.getModel();
 
-        List<OrderCamp> orderCampList = orderCampService.getAllInCart();
+        List<OrderPart> orderPartList = orderPartService.getAllInCart();
 
-        model.put("orderCampList", orderCampList);
-        if (!(orderCampList == null)) {
-
-            int orderPrice = 0;
-
-            for (OrderCamp orderCamp : orderCampList) {
-                orderPrice += orderCamp.getCamp().getPrice() * orderCamp.getCount();
-            }
-            model.put("orderPrice", orderPrice);
-        } else {
+        model.put("orderPartList", orderPartList);
+        if (orderPartList == null) {
             model.put("orderPrice", null);
+        } else {
+            model.put("orderPrice", orderPartService.getOrderPrice(orderPartList));
         }
 
         return modelAndView;
@@ -78,32 +72,29 @@ public class CartController {
     @GetMapping("/cart/remove")
     public ModelAndView removeCart() {
         Order curOrder = orderService.getCurOrder();
-        orderCampService.deleteAllByOrderId(curOrder.getId());
+        orderPartService.deleteAllByOrderId(curOrder.getId());
         orderService.deleteOne(curOrder);
         return new ModelAndView("redirect:/cart");
     }
 
     @GetMapping("/cart/confirm")
-    public ModelAndView confirmOrderPage(){
+    public ModelAndView confirmOrderPage() {
         ModelAndView modelAndView = new ModelAndView("confirmOrder");
         Map<String, Object> model = modelAndView.getModel();
 
-        List<OrderCamp> orderCampList = orderCampService.getAllInCart();
+        List<OrderPart> orderPartList = orderPartService.getAllInCart();
 
-        model.put("orderCampList", orderCampList);
-        int orderPrice = 0;
-
-        for (OrderCamp orderCamp : orderCampList) {
-            orderPrice += orderCamp.getCamp().getPrice() * orderCamp.getCount();
+        model.put("orderPartList", orderPartList);
+        if (orderPartList == null) {
+            model.put("orderPrice", null);
+        } else {
+            model.put("orderPrice", orderPartService.getOrderPrice(orderPartList));
         }
-        model.put("orderPrice", orderPrice);
-
-
         return modelAndView;
     }
 
     @PostMapping("/cart/confirm")
-    public ModelAndView confirm(){
+    public ModelAndView confirm() {
 
         orderService.confirm();
         return new ModelAndView("redirect:/home");

@@ -26,9 +26,11 @@ public class CampForm {
 
     @PositiveOrZero
     @NotNull
+    @Max(1000000000)
     private int price;
 
     @PositiveOrZero
+    @Max(1000)
     @NotNull
     private int childrenCount;
 

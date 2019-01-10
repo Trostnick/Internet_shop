@@ -1,11 +1,12 @@
 $(document).ready(function () {
-    $("#newCamp").submit(function (event) {
+    $("#editCamp").submit(function (event) {
         event.preventDefault();
-        fireAjaxSubmit()
+        var campId = ($(this).data("id"));
+        fireAjaxSubmit(campId)
     })
 });
 
-function fireAjaxSubmit() {
+function fireAjaxSubmit(campId) {
     var resultDiv = $(".result");
     var errorDiv = $(".errorDiv");
     errorDiv.attr("class", "errorDiv");
@@ -27,25 +28,24 @@ function fireAjaxSubmit() {
             formData.append("icon", icon[0]);
         }
     }
-    var photoArray = $("#photo").prop('files');
+    /*var photoArray = $("#photo").prop('files');
     if (!(photoArray.length === 0)) {
         for (i in photoArray) {
             if (!(photoArray[i] === 0)) {
                 formData.append("photo", photoArray[i]);
             }
         }
-    }
-
+    }*/
 
     $.ajax({
-        type: 'POST',
-        url: "/api/camp",
+        type: 'PUT',
+        url: "/api/camp/" + campId,
         enctype: "mulripart/form-data",
         data: formData,
         processData: false,
         contentType: false,
         success: function () {
-            resultDiv.attr("class", "result alert alert-success").html('Успешно добавлено');
+            resultDiv.attr("class", "result alert alert-success").html('Успешно изменено');
         },
         error: function (e) {
             if (e.status !== 400) {
@@ -62,6 +62,7 @@ function fireAjaxSubmit() {
                     $("#" + fieldName + "Error").attr("class", "errorDiv alert alert-danger").html(resultMessage);
                 }
                 resultDiv.attr("class", "result alert alert-danger").html("Данные введены неверно");
+
             }
         }
 
